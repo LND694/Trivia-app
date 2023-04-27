@@ -44,6 +44,10 @@ SqliteDatabase* SqliteDatabase::SqliteDatabase::getInstance()
 /// <returns>a bool value- if the opening was successful.</returns>
 bool SqliteDatabase::open()
 {
+	vector<Question> vecQuest = fetchQuestions(AMOUNT_QUESTIONS);
+	vector<string> answers = vector<string>();
+	const string baseCommand = "INSERT INTO QUESTIONS(QUESTION, CATEGORY, DIFFICULTY, CORRECT_ANSWER, ANSWER1, ANSWER2, ANSWER3) VALUES ";
+	string command = "";
 	//Opening/Creating the database file
 	int res = sqlite3_open(DB_FILE_NAME.c_str(), &this->m_db);
 	if (res != SQLITE_OK)
@@ -55,13 +59,33 @@ bool SqliteDatabase::open()
 	//Creating/Opening the tables of the database
 	try
 	{
-		this->runSqlCommand(COMMANDS_CREATING_DB[0]);
+		//Going over the command to create the DB
+		for (int i = 0; i < AMOUNT_TABLES; i++)
+		{
+			this->runSqlCommand(COMMANDS_CREATING_DB[i]);
+		}
 	}
 	catch (const std::exception& excp)
 	{
 		std::cout << excp.what() << std::endl;
 		return false;
 	}
+
+	//Inserting the questions into the database
+	//Going over the vector of the questions
+	for (auto i = vecQuest.begin(); i != vecQuest.end(); i++)
+	{
+		answers = i->getAnswers();
+		command = baseCommand;
+		command +="('" + i->getQuestion() + "', '";
+		command += i->getCategory() + "', '" + i->getDifficulty() + "', '";
+		command += i->getRightAnswer() + "', '" + answers[0] + "', '" + answers[1] + "', '" + answers[2];
+		command += "');";
+
+		this->runSqlCommand(command);
+	}
+	vecQuest.clear();
+
 	return true;
 }
 
@@ -71,6 +95,8 @@ bool SqliteDatabase::open()
 /// <returns> a bool value- if the closing was successful or not.</returns>
 bool SqliteDatabase::close() 
 {
+	string command = "DELETE FROM QUESTIONS;";
+	this->runSqlCommand(command);
 	sqlite3_close(this->m_db);
 	this->m_db = nullptr;
 	return true;
@@ -160,17 +186,20 @@ int SqliteDatabase::addNewUser(const User& user)
 	{
 		return USER_EXIST;
 	}
+	this->runSqlCommand(command);
 
-	try
-	{
-		this->runSqlCommand(command);
-	}
-	catch (const std::exception& excp)
-	{
-		std::cout << excp.what() << std::endl;
-		return ERROR_CODE;
-	}
+	//Initializing the statistic row of the new user
+	command = "INSERT INTO STATISTICS(USER_ID, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES INTEGER) VALUES ";
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "' , 0, 0, 0, 0);";
+	this->runSqlCommand(command);
+
 	return OK_CODE;
+}
+
+list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
+{
+	list<Question> lst;
+	return lst;
 }
 
 /// <summary>
@@ -188,9 +217,18 @@ void SqliteDatabase::runSqlCommand(const string command)
 	}
 }
 
+int SqliteDatabase::callbackIntegers(void* data, int argc, char** argv, char** azColName)
+{
+	//Going over the array of the arguments
+	for (int i = 0; i < argc; i++)
+	{
+		(static_cast<list<int>*>(data))->push_back(atoi(argv[0]));
+	}
+	return OK_CODE;
+}
+
 /// <summary>
-/// The functions extracts the data from an array to another
-/// variable.
+/// The functions extracts the data from an array for a User list.
 /// </summary>
 /// <param name="data"> The new destination of the data</param>
 /// <param name="argc"> The amount of the arguments</param>
@@ -244,6 +282,65 @@ int SqliteDatabase::callbackUsers(void* data, int argc, char** argv, char** azCo
 }
 
 /// <summary>
+/// The functions extracts the data from an array for a User list.
+/// </summary>
+/// <param name="data"> The new destination of the data</param>
+/// <param name="argc"> The amount of the arguments</param>
+/// <param name="argv"> The arguments to move</param>
+/// <param name="azColName"> The names of the columns of the data</param>
+/// <returns> a integer value- if the extraction was successful.</returns>
+int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** azColName)
+{
+	string quesiton = "", rightAnswer = "", difficulty = "", category = "";
+	vector<string> answers;
+	Question currentQuestion;
+
+	//Going over the arguments
+	for (int i = 0; i < argc; i++)
+	{
+		if (QUESTION_FIELD == string(azColName[i]))
+		{
+			quesiton = argv[i];
+		}
+		else if (CATEGORY_FIELD == string(azColName[i]))
+		{
+			category = argv[i];
+		}
+		else if (DIFFICULTY_FIELD == string(azColName[i]))
+		{
+			difficulty = argv[i];
+		}
+		else if (CORRECT_ANSWER_FIELD == string(azColName[i]))
+		{
+			rightAnswer = argv[i];
+		}
+		else if (string(azColName[i]).find(ANSWER_FIELD))
+		{
+			answers.push_back(argv[i]);
+
+			if (AMOUNT_ANSWERS - 1 == answers.size())
+			{
+				currentQuestion = Question(quesiton, answers, rightAnswer, category, difficulty);
+				(static_cast<list<Question>*>(data))->push_back(currentQuestion);
+			}
+		}
+	}
+	return OK_CODE;
+}
+
+int SqliteDatabase::callbackFloat(void* data, int argc, char** argv, char** azColName)
+{
+	*(static_cast<float*>(data)) = atoi(argv[0]);
+	return OK_CODE;
+}
+
+int SqliteDatabase::callbackString(void* data, int argc, char** argv, char** azColName)
+{
+	*(static_cast<string*>(data)) = argv[0];
+	return OK_CODE;
+}
+
+/// <summary>
 /// The function runns a command on the SQL database.
 /// </summary>
 /// <typeparam name="T"> The type of the arguments to return</typeparam>
@@ -260,6 +357,14 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackUsers, listOfData, &errMsg);
 	}
+	if (typeid(T).name() == typeid(Question).name()) // the command should return Questions
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackQuestions, listOfData, &errMsg);
+	}
+	if (typeid(T).name() == typeid(int).name()) // the command should return integers
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackIntegers, listOfData, &errMsg);
+	}
 
 	if (result != SQLITE_OK)
 	{
@@ -268,4 +373,78 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 	}
 
 	return listOfData;
+}
+
+template<class T>
+T SqliteDatabase::runSqlCommandSingleOutput(const string command)
+{
+	T* data = nullptr;
+	char* errMsg = nullptr;
+	int result = 0;
+
+	if (typeid(T).name() == typeid(string).name()) // the command should return a string
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackString, data, &errMsg);
+	}
+	else if (typeid(T).name() == typeid(float).name() || typeid(T).name() == typeid(int).name()) // the command should return a float or int
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackFloat, data, &errMsg);
+	}
+
+	if (result != SQLITE_OK)
+	{
+		throw std::exception(errMsg);
+	}
+	return *data;
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
+{
+	string command = "SELECT AVERAGE_ANSWER_TIME FROM STATISTICS WHERE USER_ID == ";
+	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+
+	return runSqlCommandSingleOutput<float>(command);
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const string player)
+{
+	string command = "SELECT AMOUNT_CORRECT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
+	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+
+	return runSqlCommandSingleOutput<int>(command);
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const string player)
+{
+	string command = "SELECT TOTAL_AMOUNT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
+	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+
+	return runSqlCommandSingleOutput<int>(command);
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const string player)
+{
+	string command = "SELECT AMOUNT_GAMES FROM STATISTICS WHERE USER_ID == ";
+	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+
+	return runSqlCommandSingleOutput<int>(command);
+}
+
+int SqliteDatabase::getPlayerScore(const string player)
+{
+	return 0;
+}
+
+vector<string>& SqliteDatabase::getHighScores()
+{
+	string command = "SELECT HIGH_SCORE FROM STATISTICS ORDER BY HIGH_SCORE ASC LIMIT 3;";
+	list<int>* bestScores = runSqlCommand<int>(command);
+	vector<string>* theBestScores = new vector<string>();
+
+	//Going over the list of the best scores
+	for (auto i = bestScores->begin(); i != bestScores->end();i++)
+	{
+		theBestScores->push_back(to_string(*i));
+	}
+	return *theBestScores;
 }

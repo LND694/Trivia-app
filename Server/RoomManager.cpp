@@ -27,13 +27,13 @@ void RoomManager::deleteRoom(const RoomId id)
 /// </summary>
 /// <param name="id"> the id of the room</param>
 /// <returns> the room state</returns>
-RoomId RoomManager::getRoomState(RoomId id)
+unsigned int RoomManager::getRoomState(RoomId id)
 {
 	return getRoom(id).getRoomData().isActive;
 }
 
 /// <summary>
-/// get a vector of the rooms data
+/// get a vector of the active rooms's data
 /// </summary>
 /// <returns> rooms data</returns>
 vector<RoomData>& RoomManager::getRooms() const
@@ -41,7 +41,10 @@ vector<RoomData>& RoomManager::getRooms() const
 	vector<RoomData> roomsData = vector<RoomData>();
 	for (auto i : this->m_rooms)
 	{
-		roomsData.push_back(i.second.getRoomData());
+		if (i.second.getRoomData().isActive)
+		{
+			roomsData.push_back(i.second.getRoomData());
+		}
 	}
 	return roomsData;
 }
