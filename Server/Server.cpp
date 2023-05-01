@@ -18,7 +18,7 @@ Server::~Server()
 
 /// <summary>
 /// The function activates the server
-/// and it starts to get messages
+/// and it starts to listening for connections
 /// </summary>
 void Server::run()
 {

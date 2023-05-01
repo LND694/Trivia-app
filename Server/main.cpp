@@ -1,4 +1,3 @@
-#include "Communicator.h"
 #include "Server.h"
 #include "WSAInitializer.h"
 #pragma comment (lib, "Ws2_32.lib")
