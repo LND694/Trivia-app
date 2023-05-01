@@ -19,13 +19,16 @@ constexpr int IFACE = 0;
 class Communicator
 {
 public:
+	//C'tor
 	Communicator();
+
 	void startHandleRequests();
 private:
+	//Help functions
 	void bindAndListen();
 	void handleNewClient(SOCKET socket);
 
-
+	//Fields
 	SOCKET m_serverSocket;
 	map<SOCKET, IRequestHandler*> m_clients;
 

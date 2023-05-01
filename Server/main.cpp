@@ -1,4 +1,5 @@
 #include "Communicator.h"
+#include "Server.h"
 #include "WSAInitializer.h"
 #pragma comment (lib, "Ws2_32.lib")
 int main(void)
@@ -6,10 +7,12 @@ int main(void)
 	try
 	{
 		WSAInitializer wasinit;//init before init the socket beacse the sokcet depends on it
-		Communicator* cm = new Communicator();
-		cm->startHandleRequests();
-		delete cm;
-		cm = nullptr;
+		Server* server = new Server();
+
+		server->run();
+		
+		delete server;
+		server = nullptr;
 	}
 	catch (std::exception& e)
 	{

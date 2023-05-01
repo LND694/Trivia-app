@@ -1,15 +1,19 @@
 #include "Communicator.h"
 
 
-
+/// <summary>
+/// C'tor of the class Communicator.
+/// </summary>
 Communicator::Communicator()
 {
-
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
 }
 
+/// <summary>
+/// The function starts to look for requests of clients and accept them.
+/// </summary>
 void Communicator::startHandleRequests()
 {
 
@@ -25,7 +29,10 @@ void Communicator::startHandleRequests()
 		handle.detach();
 	}
 }
-
+/// <summary>
+/// The function binds the Socket of the server and starts to 
+/// listen to requests.
+/// </summary>
 void Communicator::bindAndListen()
 {
 	struct sockaddr_in sa = { 0 };
@@ -33,16 +40,21 @@ void Communicator::bindAndListen()
 	sa.sin_family = AF_INET;
 	sa.sin_addr.s_addr = IFACE;
 
+	//Binding the Socket of the server to the number of the port
 	if (bind(this->m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
 	cout << "binded" << endl;
 
+	//Starting to listen to requsets from another user without accepting them
 	if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
 
 	cout << "listening... " << endl;
 }
-
+/// <summary>
+/// The function communicates with a single client only.
+/// </summary>
+/// <param name="socket">The Socket of the client to handle.</param>
 void Communicator::handleNewClient(SOCKET socket)
 {
 	int len = 0;//the length of the recieved message
@@ -54,6 +66,7 @@ void Communicator::handleNewClient(SOCKET socket)
 
 	buffer[len] = '\0';//add null terminator
 
+	//Printing the recived message
 	if (len > 0)
 	{
 		cout << "message from client: " << buffer << endl;
@@ -62,4 +75,5 @@ void Communicator::handleNewClient(SOCKET socket)
 	{
 		cout << "message from the client is empty" << endl;
 	}
+
 }
