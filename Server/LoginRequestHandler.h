@@ -4,6 +4,7 @@
 class LoginRequestHandler : public IRequestHandler
 {
 public:
+	//C'tor
 	LoginRequestHandler();
 
 private:
