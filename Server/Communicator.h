@@ -5,7 +5,6 @@
 #include <exception>
 #include <iostream>
 #include <thread>
-#include <mutex>
 #include <string>
 
 using std::map;
@@ -28,7 +27,6 @@ private:
 
 
 	SOCKET m_serverSocket;
-	map<SOCKET, IrequestHandler*> m_clients;
+	map<SOCKET, IRequestHandler*> m_clients;
 
-	char buffer[MAX_SIZE] = { 0 };//init buffer
 };

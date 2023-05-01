@@ -1,7 +1,7 @@
 #pragma once
 
 
-class IrequestHandler
+class IRequestHandler
 {
 public:
 

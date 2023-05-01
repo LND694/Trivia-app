@@ -1,8 +1,6 @@
 #include "Communicator.h"
 
 
-std::mutex mtx;
-
 
 Communicator::Communicator()
 {
@@ -48,13 +46,13 @@ void Communicator::bindAndListen()
 void Communicator::handleNewClient(SOCKET socket)
 {
 	int len = 0;//the length of the recieved message
-	std::lock_guard<std::mutex> lck(mtx);//prevent out of sync messages
+	char buffer[MAX_SIZE] = { 0 };
 	this->m_clients.insert({ socket, new LoginRequestHandler() });//init a new pair of the given socket and a login request since it is a new user
 	send(socket, "hello", sizeof("hello"), 0);
 	cout << "Hello message sent " << endl;
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
-	buffer[len] = 0;//add null terminator
+	buffer[len] = '\0';//add null terminator
 
 	if (len > 0)
 	{
