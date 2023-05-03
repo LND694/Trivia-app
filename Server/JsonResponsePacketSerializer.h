@@ -11,9 +11,9 @@ class JsonResponsePacketSerializer
 public:
 	static Buffer& serializeResponse(const ErrorResponse& errResp);
 	static Buffer& serializeResponse(const LoginResponse& logResp);
-	static Buffer& serializeResponse(const SignUpResponse& signResp);
+	static Buffer& serializeResponse(const SignUpResponse& signUpResp);
 
 private:
-	static void addNumToBuffer(Buffer* buf, const int num);
-	static int getAmountDigits(const int num);
+	static string getPaddedNumber(const int num, const int digits);
+	static void addStringToBuffer(Buffer* buf, string str);
 };

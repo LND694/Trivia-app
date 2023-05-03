@@ -14,10 +14,10 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& err
     string responseData = "{\"message\": \"" + errResp.message + "\"}";
     json msgJson = responseData;
 
-    //Making the Buffer
-    addNumToBuffer(buffer, ERROR_RESP_CODE);
-    addNumToBuffer(buffer, responseData.length());
-    buffer->push_back(msgJson);
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(ERROR_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    buffer->push_back(msgJson); //adding the msg
 
     return *buffer;
     
@@ -34,10 +34,10 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& log
     string responseData = "{\"status\": \"" + to_string(logResp.status) + "\"}";
     json msgJson = responseData;
 
-    //Making the Buffer
-    addNumToBuffer(buffer, LOGIN_RESP_CODE);
-    addNumToBuffer(buffer, responseData.length());
-    buffer->push_back(msgJson);
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(LOGIN_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    buffer->push_back(msgJson); //adding the msg
 
     return *buffer;
 }
@@ -47,52 +47,51 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& log
 /// </summary>
 /// <param name="errResp"> The SignUpResponse with the data.</param>
 /// <returns> a reference to Buffer- the Buffer with the data of the SignUpResponse.</returns>
-Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& signResp)
+Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& signUpResp)
 {
     Buffer* buffer = new Buffer();
-    string responseData = "{\"status\": \"" + to_string(signResp.status) + "\"}";
+    string responseData = "{\"status\": \"" + to_string(signUpResp.status) + "\"}";
     json msgJson = responseData;
 
-    //Making the Buffer
-    addNumToBuffer(buffer, SIGN_UP_RESP_CODE);
-    addNumToBuffer(buffer, responseData.length());
-    buffer->push_back(msgJson);
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(SIGN_UP_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    buffer->push_back(msgJson); //adding the msg
 
     return *buffer;
 }
 
 /// <summary>
-/// Th function inserts a number to the Buffer.
+/// The function add to the number '0' to
+/// tits left side to fill it to a 
+/// specific amount of digits.
 /// </summary>
-/// <param name="buf">The buf to insert to</param>
-/// <param name="num"> The num to add</param>
-void JsonResponsePacketSerializer::addNumToBuffer(Buffer* buf, const int num)
+/// <param name="num">The num to pad.</param>
+/// <param name="digits">The final amount of digits.</param>
+/// <returns>a string value- the padded number as string.</returns>
+string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int digits)
 {
-    int digit = 0;
+    string paddedNum = to_string(num);
 
-    //Going over the digits of the code
-    for (int i = 0; i < getAmountDigits(num); i++)
+    //Padding the number
+    while (paddedNum.length() < digits)
     {
-        buf->push_back(to_string(num)[i]);
+        paddedNum += '0' + paddedNum;
     }
+    return paddedNum;
 }
 
 /// <summary>
-/// The function gets the amount of the 
-/// digits of a number.
+/// The function adds the string to the buffer.
 /// </summary>
-/// <param name="num"> The number</param>
-/// <returns>The amount of its digits.</returns>
-int JsonResponsePacketSerializer::getAmountDigits(const int num)
+/// <param name="buf">The Buffer to insert to.</param>
+/// <param name="str"> The string to insert to the Buffer.</param>
+void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
 {
-    int theNum = num, count = 0;
-
-    //Going over the digits in the num
-    while (theNum != 0)
+    //Going over the string
+    for (int i = 0; i < str.length(); i++)
     {
-        count++;
-        theNum /= 10;
+        buf->push_back(str[i]);
     }
-    return count;
 }
 

@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-using std::string;
-
 class Response
 {
 
@@ -20,5 +18,5 @@ typedef struct SignUpResopnse : Response
 
 typedef struct ErrorResopnse : Response
 {
-	string message;
+	std::string message;
 } ErrorResponse;
