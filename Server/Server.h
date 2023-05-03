@@ -2,6 +2,8 @@
 
 #include "Communicator.h"
 
+const std::string EXIT_MSG = "exit";
+
 class Server
 {
 private:

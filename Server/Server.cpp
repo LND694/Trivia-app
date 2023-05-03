@@ -22,5 +22,14 @@ Server::~Server()
 /// </summary>
 void Server::run()
 {
-	this->m_communicator.startHandleRequests();
+	std::thread comThread(&Communicator::startHandleRequests, this->m_communicator);
+	std::string input = "";
+
+	comThread.detach();
+
+	//Waiting to input untill asking for exit
+	while (input != EXIT_MSG)
+	{
+		std::cin >> input;
+	}
 }
