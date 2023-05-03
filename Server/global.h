@@ -1,3 +1,7 @@
 #pragma once
 
-typedef char* Buffer;
+#include <iostream>
+
+using std::string;
+
+typedef string Buffer;
