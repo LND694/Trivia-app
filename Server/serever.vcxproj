@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="WSAInitializer.h" />
