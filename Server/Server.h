@@ -2,7 +2,7 @@
 
 #include "Communicator.h"
 
-const std::string EXIT_MSG = "exit";
+const std::string EXIT_MSG  = "exit";
 
 class Server
 {
