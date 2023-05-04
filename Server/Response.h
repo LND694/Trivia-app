@@ -6,12 +6,17 @@ class Response
 
 };
 
-typedef struct LoginResponse : Response
+struct ResponseWithStatus
+{
+	unsigned int status;
+};
+
+typedef struct LoginResponse : ResponseWithStatus
 {
 	unsigned int status;
 } LoginResponse;
 
-typedef struct SignUpResopnse : Response
+typedef struct SignUpResopnse : ResponseWithStatus
 {
 	unsigned int status;
 } SignUpResponse;
