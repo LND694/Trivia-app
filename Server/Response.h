@@ -13,12 +13,12 @@ struct ResponseWithStatus
 
 typedef struct LoginResponse : ResponseWithStatus
 {
-	unsigned int status;
+
 } LoginResponse;
 
 typedef struct SignUpResopnse : ResponseWithStatus
 {
-	unsigned int status;
+
 } SignUpResponse;
 
 typedef struct ErrorResopnse : Response
