@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 
+constexpr int OK_STATUS_CODE = 1;
+const std::string ERROR_MSG = "ERROR";
+
 class Response
 {
 
