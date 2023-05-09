@@ -70,7 +70,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	Buffer charVector(buffer, buffer + MAX_SIZE);
 	charVector[len] = '\0';//add null terminator
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		code += charVector[i];
 	}
@@ -79,7 +79,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	if (atoi(code.data()) == SIGN_UP_REQS_CODE)
 	{
 		signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(charVector);
-		cout << "email: " << signUpReq.email << " password:  " << signUpReq.password << "userna: " << signUpReq.username << endl;
+		cout << "email: " << signUpReq.email << " password:  " << signUpReq.password << " username: " << signUpReq.username << endl;
 	}
 	else
 	{

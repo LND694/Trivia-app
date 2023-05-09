@@ -7,7 +7,7 @@
 #define ASCII_VALUE_0 48
 #define NAME_KEY "username"
 #define PASSOWRD_KEY "password"
-#define EMAIL_KEY "mail"
+#define EMAIL_KEY "email"
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 
 using std::vector;

@@ -9,5 +9,5 @@ public:
 	static LoginRequest& deserializeLoginRequest(const Buffer& buffer);
 	static SignupRequest& desrializeSignupRequest(const Buffer& buffer);
 private:
-
+	static Buffer* getDataFromBuffer(const Buffer& buf);
 };
