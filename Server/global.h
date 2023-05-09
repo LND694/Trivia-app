@@ -3,12 +3,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <WinSock2.h>
 
 #define ASCII_VALUE_0 48
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
-constexpr int SIZE_CODE_FIELD = 3;
 
 using std::vector;
 using std::to_string;
