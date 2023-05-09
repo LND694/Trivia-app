@@ -30,13 +30,12 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& err
 Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& logResp)
 {
     Buffer* buffer = new Buffer();
-    string responseData = "{\"status\": \"" + to_string(logResp.status) + "\"}";
-    json msgJson = responseData;
+    string responseData = "{\"status\": " + to_string(logResp.status) + "}";
 
     //Making the buffer
     addStringToBuffer(buffer, to_string(LOGIN_RESP_CODE)); //adding the code
     addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
-    buffer->push_back(msgJson); //adding the msg
+    addStringToBuffer(buffer, responseData);
     buffer->push_back('\0');
 
     return *buffer;
@@ -51,7 +50,6 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
 {
     Buffer* buffer = new Buffer();
     string responseData = "{\"status\": " + to_string(signUpResp.status) + "}";
-    json msgJson = responseData;
 
     //Making the buffer
     addStringToBuffer(buffer, to_string(SIGN_UP_RESP_CODE)); //adding the code

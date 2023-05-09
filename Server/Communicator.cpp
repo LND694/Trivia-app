@@ -84,7 +84,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	else
 	{
 		logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(charVector);
-		cout << "password: " << logReq.password << "username: " << logReq.username << endl;
+		cout << "password: " << logReq.password << " username: " << logReq.username << endl;
 	}
 
 	//turn the buffer into request
