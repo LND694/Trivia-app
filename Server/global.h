@@ -5,7 +5,9 @@
 #include <vector>
 
 #define ASCII_VALUE_0 48
-
+#define NAME_KEY "username"
+#define PASSOWRD_KEY "password"
+#define EMAIL_KEY "mail"
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 
 using std::vector;
@@ -17,3 +19,4 @@ enum REQUEST_CODES{SIGN_UP_REQS_CODE = 101, LOGIN_REQS_CODE = 102};
 
 typedef vector<unsigned char> Buffer;
 typedef REQUEST_CODES RequestId;
+

@@ -3,7 +3,7 @@
 #include <ctime>
 #include "global.h"
 #include "JsonResponsePacketSerializer.h"
-
+#include "JsonRequestPacketDeserializer.h"
 using std::time_t;
 
 class IRequestHandler; //pre definition

@@ -13,11 +13,10 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& err
     Buffer* buffer = new Buffer();
     string responseData = "{\"message\": \"" + errResp.message + "\"}";
     json msgJson = responseData;
-
-    //Making the buffer
     addStringToBuffer(buffer, to_string(ERROR_RESP_CODE)); //adding the code
     addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
-    buffer->push_back(msgJson); //adding the msg
+    addStringToBuffer(buffer, to_string(msgJson));
+ 
 
     return *buffer;
     

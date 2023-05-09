@@ -1,5 +1,5 @@
 import socket
-
+import json
 
 def main():
 
@@ -14,11 +14,22 @@ def main():
 
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
+
+
+    # Create a dictionary representing the JSON structure
+    data = {
+     "status" : 102,
+     "username": "LND",
+        "password": "123"
+    }
+    # Serialize the dictionary into a formatted JSON string
+    formatted_json = json.dumps(data, indent=4)
+
+    answer = input("If you want to send the message, please click enter\n")
+    
+    client_socket.send(formatted_json.encode())
     data = client_socket.recv(1024).decode()
     print('Received from server: ' + data)  # show in terminal
-    answer = input("If you want to send the message, please click enter\n")
-    message = "hey boaz"
-    client_socket.send(message.encode())
 
 
     client_socket.close()  # close the connection
