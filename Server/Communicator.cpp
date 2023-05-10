@@ -70,7 +70,8 @@ void Communicator::handleNewClient(SOCKET socket)
 	Buffer charVector(buffer, buffer + MAX_SIZE);
 	charVector[len] = '\0';//add null terminator
 
-	for (int i = 0; i < 3; i++)
+	//Extracting the code from the request's buffer
+	for (int i = 0; i < SIZE_CODE_FIELD; i++)
 	{
 		code += charVector[i];
 	}

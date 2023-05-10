@@ -8,7 +8,9 @@
 #define NAME_KEY "username"
 #define PASSOWRD_KEY "password"
 #define EMAIL_KEY "email"
+
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
+constexpr int SIZE_CODE_FIELD = 3;
 
 using std::vector;
 using std::to_string;

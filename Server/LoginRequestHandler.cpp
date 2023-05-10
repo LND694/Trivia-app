@@ -20,6 +20,12 @@ bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
     return SIGN_UP_REQS_CODE == requestInfo.id || LOGIN_REQS_CODE == requestInfo.id;
 }
 
+/// <summary>
+/// The function checks a request  with the request info 
+/// and handle it.
+/// </summary>
+/// <param name="requestInfo">The unformation about the request.</param>
+/// <returns>a RequestInfo value- the results of the check</returns>
 RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
     RequestResult* reqRes = new RequestResult();
