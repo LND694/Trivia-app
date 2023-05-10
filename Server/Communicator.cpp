@@ -59,21 +59,48 @@ void Communicator::handleNewClient(SOCKET socket)
 {
 	int len = 0;//the length of the recieved message
 	char buffer[MAX_SIZE] = { 0 };
+	RequestResult res;
+	RequestInfo info;
+	LoginRequest logReq;
+	SignupRequest signUpReq;
+	string code;
 	this->m_clients.insert({ socket, new LoginRequestHandler() });//init a new pair of the given socket and a login request since it is a new user
-	send(socket, "hello", sizeof("hello"), 0);
-	cout << "Hello message sent " << endl;
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
-	buffer[len] = '\0';//add null terminator
+	Buffer charVector(buffer, buffer + MAX_SIZE);
+	charVector[len] = '\0';//add null terminator
 
-	//Printing the recived message
-	if (len > 0)
+	//Extracting the code from the request's buffer
+	for (int i = 0; i < SIZE_CODE_FIELD; i++)
 	{
-		cout << "message from client: " << buffer << endl;
+		code += charVector[i];
+	}
+
+	//deserialize request
+	if (atoi(code.data()) == SIGN_UP_REQS_CODE)
+	{
+		signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(charVector);
+		cout << "email: " << signUpReq.email << " password:  " << signUpReq.password << " username: " << signUpReq.username << endl;
 	}
 	else
 	{
-		cout << "message from the client is empty" << endl;
+		logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(charVector);
+		cout << "password: " << logReq.password << " username: " << logReq.username << endl;
 	}
+
+	//turn the buffer into request
+	info.buffer = charVector;
+	info.receivalTime = time(nullptr);//get the current time
+	info.id = (RequestId)atoi(code.c_str());
+
+	//get the response
+	res = this->m_clients.at(socket)->handleRequest(info);
+	cout << res.response.data() << endl;
+
+	//send the response
+	send(socket, reinterpret_cast<char*>(res.response.data()), res.response.size(),NULL);
+
+
+
 
 }
