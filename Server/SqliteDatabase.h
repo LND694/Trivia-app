@@ -1,8 +1,8 @@
 #pragma once
 #include "IDatabase.h"
 #include "User.h"
-#include <list>
 #include "sqlite3.h"
+#include <list>
 
 
 using std::list;
