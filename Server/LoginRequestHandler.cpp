@@ -1,11 +1,13 @@
 #include "LoginRequestHandler.h"
 
-/// <summary>
-/// C'tor of class LoginRequestHandler.
-/// </summary>
+
+
+
+
+
+
 LoginRequestHandler::LoginRequestHandler()
 {
-    //No fields yet
 }
 
 /// <summary>
@@ -16,7 +18,6 @@ LoginRequestHandler::LoginRequestHandler()
 /// <returns> a bool value- if it is relevent or not</returns>
 bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 {
-
     return SIGN_UP_REQS_CODE == requestInfo.id || LOGIN_REQS_CODE == requestInfo.id;
 }
 
@@ -28,32 +29,59 @@ bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns>a RequestInfo value- the results of the check</returns>
 RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
+  
+    if (requestInfo.id == SIGN_UP_REQS_CODE)
+    {
+        return signUp(requestInfo);//also handle it
+    }
+    return signIn(requestInfo);//also handle it
+}
+
+RequestResult& LoginRequestHandler::signIn(const RequestInfo& requestInfo)
+{
     RequestResult* reqRes = new RequestResult();
+    LoginRequest logReq;
     LoginResponse logResp;
+    ErrorResopnse errResp;
+    if(!isRequestRelevent(requestInfo))
+    {
+
+        errResp.message = ERROR_MSG;
+        reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);
+        reqRes->newHandler = this;//if there is a error the new handler will be the current
+    }
+    else
+    {
+        logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
+        this->m_handlerFactory->getLoginManager().login(logReq.username, logReq.password);
+        logResp.status = OK_STATUS_CODE;
+        reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//get the sign in details to login manager
+        reqRes->newHandler = new MenuRequestHandler();
+    }
+    return *reqRes;
+}
+
+RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
+{
+    RequestResult* reqRes = new RequestResult();
     SignUpResopnse signUpResp;
     ErrorResopnse errResp;
-    reqRes->newHandler = new LoginRequestHandler();
-
+    SignupRequest signUpReq;
     //if the request is not relevent
     if (!isRequestRelevent(requestInfo))
     {
 
         errResp.message = ERROR_MSG;
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);
+        reqRes->newHandler = this;//if there is a error the new handler will be the current
     }
-    else //the request is to login or to sign up
+    else
     {
-        //The request is a sign up request
-        if (SIGN_UP_REQS_CODE == requestInfo.id)
-        {
-            signUpResp.status = OK_STATUS_CODE;
-            reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);
-        }
-        else //The request is a login request
-        {
-            logResp.status = OK_STATUS_CODE;
-            reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);
-        }
+        signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(requestInfo.buffer);//get the sign up details to login manager
+        this->m_handlerFactory->getLoginManager().signUp(signUpReq.email, signUpReq.password, signUpReq.username);//sign up (call database)
+        signUpResp.status = OK_STATUS_CODE;
+        reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);
+        reqRes->newHandler = new MenuRequestHandler();
     }
     return *reqRes;
 }
