@@ -19,5 +19,6 @@ public:
 	Server(IDatabase* db);
 	~Server();
 
+	//Function
 	void run();
 };

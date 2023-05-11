@@ -4,16 +4,19 @@
 constexpr int OK_STATUS_CODE = 1;
 const std::string ERROR_MSG = "ERROR";
 
+//Base class
 class Response
 {
 
 };
 
+//Base struct
 struct ResponseWithStatus
 {
 	unsigned int status;
 };
 
+//Response structs
 typedef struct LoginResponse : ResponseWithStatus
 {
 

@@ -21,10 +21,10 @@ bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 }
 
 /// <summary>
-/// The function checks a request  with the request info 
-/// and handle it.
+/// The function checks a request and handle it according to 
+/// its RequestId.
 /// </summary>
-/// <param name="requestInfo">The unformation about the request.</param>
+/// <param name="requestInfo">The information about the request.</param>
 /// <returns>a RequestInfo value- the results of the check</returns>
 RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
@@ -48,7 +48,8 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
     LoginRequest logReq;
     LoginResponse logResp;
     ErrorResopnse errResp;
-    //if the request is not realevent
+
+    //if the request is not relevent
     if(!isRequestRelevent(requestInfo))
     {
         createErrorResponse(ERROR_MSG, reqRes);
@@ -66,7 +67,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
             createErrorResponse(excp.what(), reqRes);
             error = true;
         }
-        if (!error)
+        if (!error) //if there was no any error in the login process
         {
             logResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//turn the response into buffer of the request result
@@ -106,7 +107,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
             createErrorResponse(excp.what(), reqRes);
             error = true;
         }
-        if (!error)
+        if (!error) //if there was no any error in the sign up process
         {
             signUpResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);//turn the response into buffer of the request result

@@ -99,7 +99,7 @@ void LoginManager::logOut(const string username)
     //Going over the logged users
     for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end() && !userWasRemoved; i++)
     {
-        if (i->getUserName() == username)
+        if (i->getUsername() == username) // the user to disconnect was found
         {
             this->m_loggedUsers.erase(i);
             userWasRemoved = true;

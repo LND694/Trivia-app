@@ -9,7 +9,7 @@ using std::string;
 typedef struct LoginRequest {
 	string username;
 	string password;
-} LoginRequest;
+}LoginRequest;
 
 /// <summary>
 /// struct for sign up
