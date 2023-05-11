@@ -1,9 +1,12 @@
 #include "Server.h"
+
+
 /// <summary>
 /// C'tor of class Server
 /// </summary>
-Server::Server():
-	m_communicator()
+/// <param name="db"> The database of the server</param>
+Server::Server(IDatabase* db):
+	m_database(db), m_handlerFactory(db, LoginManager(db)), m_communicator(m_handlerFactory)
 {
 
 }
