@@ -18,6 +18,6 @@ public:
 	RequestResult& signUp(const RequestInfo& requestInfo);
 private:
 	IDatabase* dataBase;
-	RequestHandlerFactory* m_handlerFactory;//reference must be intilized but the c`tor must be empty
+	RequestHandlerFactory* m_handlerFactory;//reference must be intilized but there is no c`tor fo handlerFactory
 };
 
