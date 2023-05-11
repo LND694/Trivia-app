@@ -31,7 +31,7 @@ RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo
     {
         return signUp(requestInfo);//also handle it
     }
-    return signIn(requestInfo);//also handle it
+    return login(requestInfo);//also handle it
 }
 
 /// <summary>
@@ -39,7 +39,7 @@ RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo
 /// </summary>
 /// <param name="requestInfo"> the info the client sent</param>
 /// <returns> the result for the request</returns>
-RequestResult& LoginRequestHandler::signIn(const RequestInfo& requestInfo)
+RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
 {
     RequestResult* reqRes = new RequestResult();
     LoginRequest logReq;

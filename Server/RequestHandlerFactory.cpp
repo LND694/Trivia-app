@@ -2,10 +2,7 @@
 
 
 
-//LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
-//{
-//    return new LoginRequestHandler();
-//}
+
 
 LoginManager& RequestHandlerFactory::getLoginManager()
 {

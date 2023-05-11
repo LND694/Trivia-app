@@ -14,7 +14,7 @@ public:
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo);
 	RequestResult& handleRequest(const RequestInfo& requestInfo);
-	RequestResult& signIn(const RequestInfo& requestInfo);
+	RequestResult& login(const RequestInfo& requestInfo);
 	RequestResult& signUp(const RequestInfo& requestInfo);
 private:
 	IDatabase* dataBase;
