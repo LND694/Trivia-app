@@ -8,7 +8,7 @@ int main(void)
 	Server* server = nullptr;
 	try
 	{
-		db = ((IDatabase*)new SqliteDatabase());
+		db = new SqliteDatabase();
 		WSAInitializer wasinit;//init before init the socket because the sokcet depends on it
 		server = new Server(db);
 
