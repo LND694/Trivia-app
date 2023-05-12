@@ -14,7 +14,7 @@ enum RETURNED_CODES{ERROR_CODE = -1, OK_CODE = 0,
 const string DB_FILE_NAME = "triviaDB.sqlite";
 const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERNAME TEXT NOT NULL, PASSWORD TEXT NOT NULL, EMAIL TEXDT NOT NULL);"};
 
-class SqliteDatabase : IDatabase
+class SqliteDatabase : public IDatabase
 {
 public:
 	//C'tor&D'tor
