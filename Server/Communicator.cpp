@@ -66,6 +66,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	LoginRequest logReq;
 	SignupRequest signUpReq;
 	string code;
+
 	this->m_clients.insert({ socket, this->m_handlerFactory.createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
@@ -93,7 +94,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	//turn the buffer into request
 	info.buffer = charVector;
 	info.receivalTime = time(nullptr);//get the current time
-	info.id = (RequestId)atoi(code.c_str());
+	info.id = static_cast<RequestId>(atoi(code.c_str()));
 
 	//get the response
 	res = this->m_clients.at(socket)->handleRequest(info);

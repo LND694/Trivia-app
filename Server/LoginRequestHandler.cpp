@@ -3,7 +3,7 @@
 /// <summary>
 /// c`tor for login handler (currently empty)
 /// </summary>
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory reqHandFac):
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& reqHandFac):
     m_handlerFactory(reqHandFac)
 {
 
