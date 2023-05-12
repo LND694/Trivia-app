@@ -3,8 +3,10 @@
 /// <summary>
 /// c`tor for login handler (currently empty)
 /// </summary>
-LoginRequestHandler::LoginRequestHandler()
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory reqHandFac):
+    m_handlerFactory(reqHandFac)
 {
+
 }
 
 /// <summary>
@@ -19,19 +21,19 @@ bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 }
 
 /// <summary>
-/// The function checks a request  with the request info 
-/// and handle it.
+/// The function checks a request and handle it according to 
+/// its RequestId.
 /// </summary>
-/// <param name="requestInfo">The unformation about the request.</param>
+/// <param name="requestInfo">The information about the request.</param>
 /// <returns>a RequestInfo value- the results of the check</returns>
 RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-  
+    //Handling the request
     if (requestInfo.id == SIGN_UP_REQS_CODE)
     {
-        return signUp(requestInfo);//also handle it
+        return signUp(requestInfo);
     }
-    return login(requestInfo);//also handle it
+    return login(requestInfo); //login code
 }
 
 /// <summary>
@@ -41,25 +43,36 @@ RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo
 /// <returns> the result for the request</returns>
 RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
 {
+    bool error = false;
     RequestResult* reqRes = new RequestResult();
     LoginRequest logReq;
     LoginResponse logResp;
     ErrorResopnse errResp;
-    //if the request is not realevent
+
+    //if the request is not relevent
     if(!isRequestRelevent(requestInfo))
     {
-
-        errResp.message = ERROR_MSG;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
-        reqRes->newHandler = this;//if there is a error the new handler will be the current
+        createErrorResponse(ERROR_MSG, reqRes);
     }
     else
     {
         logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);//get the details from the buffer
-        this->m_handlerFactory->getLoginManager().login(logReq.username, logReq.password);//actual login
-        logResp.status = OK_STATUS_CODE;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//turn the response into buffer of the request result
-        reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the login was ssuccessful
+        try
+        {
+            this->m_handlerFactory.getLoginManager().login(logReq.username, logReq.password);//actual login
+
+        }
+        catch (const std::exception& excp)
+        {
+            createErrorResponse(excp.what(), reqRes);
+            error = true;
+        }
+        if (!error) //if there was no any error in the login process
+        {
+            logResp.status = OK_STATUS_CODE;
+            reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//turn the response into buffer of the request result
+            reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the login was ssuccessful
+        }
     }
     return *reqRes;
 }
@@ -72,6 +85,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
 /// <returns> the result of the given request</returns>
 RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
 {
+    bool error = false;
     RequestResult* reqRes = new RequestResult();
     SignUpResopnse signUpResp;
     ErrorResopnse errResp;
@@ -79,18 +93,40 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
     //if the request is not relevent
     if (!isRequestRelevent(requestInfo))
     {
-
-        errResp.message = ERROR_MSG;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);
-        reqRes->newHandler = this;//if there is a error the new handler will be the current
+        createErrorResponse(ERROR_MSG, reqRes);
     }
     else
     {
         signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(requestInfo.buffer);//get the sign up details to login manager
-        this->m_handlerFactory->getLoginManager().signUp(signUpReq.email, signUpReq.password, signUpReq.username);//sign up (call database)
-        signUpResp.status = OK_STATUS_CODE;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);//turn the response into buffer of the request result
-        reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the signUp was ssuccessful
+        try
+        {
+            this->m_handlerFactory.getLoginManager().signUp(signUpReq.email, signUpReq.password, signUpReq.username);//sign up (call database)
+        }
+        catch (const std::exception& excp)
+        {
+            createErrorResponse(excp.what(), reqRes);
+            error = true;
+        }
+        if (!error) //if there was no any error in the sign up process
+        {
+            signUpResp.status = OK_STATUS_CODE;
+            reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);//turn the response into buffer of the request result
+            reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the signUp was successful
+        }
     }
     return *reqRes;
+}
+
+/// <summary>
+/// The function creates an ErrorResponse struct and saves it in
+/// the RequestResult variable.
+/// </summary>
+/// <param name="errMsg"> The message of the error.</param>
+/// <param name="reqRes"> The RequestResult to put  the ErrorResponse in.</param>
+void LoginRequestHandler::createErrorResponse(const string errMsg, RequestResult* reqRes)
+{
+    ErrorResopnse errResp;
+    errResp.message = errMsg;
+    reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
+    reqRes->newHandler = this;//if there is a error the new handler will be the current
 }

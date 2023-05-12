@@ -2,9 +2,11 @@
 
 
 /// <summary>
-/// C'tor of the class Communicator.
+/// C'tor of class Communicator
 /// </summary>
-Communicator::Communicator()
+/// <param name="handlerFactory">The factory of the handlers of the requests.</param>
+Communicator::Communicator(RequestHandlerFactory& handlerFactory):
+	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (this->m_serverSocket == INVALID_SOCKET)
@@ -64,7 +66,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	LoginRequest logReq;
 	SignupRequest signUpReq;
 	string code;
-	this->m_clients.insert({ socket, new LoginRequestHandler() });//init a new pair of the given socket and a login request since it is a new user
+	this->m_clients.insert({ socket, this->m_handlerFactory.createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
 	Buffer charVector(buffer, buffer + MAX_SIZE);
@@ -99,8 +101,5 @@ void Communicator::handleNewClient(SOCKET socket)
 
 	//send the response
 	send(socket, reinterpret_cast<char*>(res.response.data()), res.response.size(),NULL);
-
-
-
 
 }

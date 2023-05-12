@@ -1,7 +1,5 @@
 #include "JsonResponsePacketSerializer.h"
 
-using NLOHMANN_JSON_NAMESPACE::json;
-
 /// <summary>
 /// The function makes an ErrorResponse variable to a Buffer.
 /// </summary>
@@ -36,7 +34,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& log
     addStringToBuffer(buffer, to_string(LOGIN_RESP_CODE)); //adding the code
     addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
     addStringToBuffer(buffer, responseData);
-    buffer->push_back('\0');
+    buffer->push_back('\0'); //end of the buffer
 
     return *buffer;
 }
@@ -55,7 +53,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
     addStringToBuffer(buffer, to_string(SIGN_UP_RESP_CODE)); //adding the code
     addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
     addStringToBuffer(buffer, responseData);
-    buffer->push_back('\0');
+    buffer->push_back('\0'); //end of the buffer
 
     return *buffer;
 }
@@ -71,11 +69,12 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
 string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int digits)
 {
     string paddedNum = to_string(num);
+    int initLen = paddedNum.length();
 
     //Padding the number
-    while (paddedNum.length() < digits)
+    for (int i = initLen; i < digits; i++)
     {
-        paddedNum = '0' + paddedNum;
+        paddedNum = ZERO_CHAR + paddedNum;
     }
     return paddedNum;
 }

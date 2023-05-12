@@ -7,9 +7,14 @@ using std::string;
 class LoggedUser
 {
 public:
-	string getUserName();
+	//C'tor
+	LoggedUser(const string username);
+
+	//Getter
+	string getUsername();
 
 private:
+	//Field
 	string m_username;
 };
 

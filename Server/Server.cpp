@@ -1,9 +1,12 @@
 #include "Server.h"
+
+
 /// <summary>
 /// C'tor of class Server
 /// </summary>
-Server::Server():
-	m_communicator()
+/// <param name="db"> The database of the server</param>
+Server::Server(IDatabase* db):
+	m_database(db), m_handlerFactory(db, LoginManager(db)), m_communicator(m_handlerFactory)
 {
 
 }
@@ -27,7 +30,8 @@ void Server::run()
 
 	comThread.detach();
 
-	//Waiting to input untill asking for exit
+	std::cout << "Write '"<< EXIT_MSG << "' to power off the server" << std::endl;
+	//Waiting to input until asking for exit
 	while (input != EXIT_MSG)
 	{
 		std::cin >> input;

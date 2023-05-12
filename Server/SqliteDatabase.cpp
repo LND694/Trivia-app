@@ -80,7 +80,8 @@ int SqliteDatabase::doesUserExist(const string username)
 		delete userList;
 		return ERROR_CODE;
 	}
-	//The user was not found
+
+	//The user was found
 	if (!userList->empty())
 	{
 		delete userList;
@@ -114,7 +115,7 @@ int SqliteDatabase::doesPasswordMatch(const string username, const string passwo
 		return ERROR_CODE;
 	}
 
-	//There is no User with this username&password
+	//There is a User with this username&password
 	if (!usersList->empty())
 	{
 		delete usersList;

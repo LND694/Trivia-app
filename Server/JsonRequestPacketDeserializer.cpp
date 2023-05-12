@@ -1,4 +1,3 @@
-
 #include "JsonRequestPacketDeserializer.h"
 
 
@@ -30,9 +29,9 @@ SignupRequest& JsonRequestPacketDeserializer::desrializeSignupRequest(const Buff
     SignupRequest* req = new SignupRequest();
     Buffer* data = getDataFromBuffer(buffer);
     std::string dataToParse(data->begin(), data->end());
-    auto js = json::parse(dataToParse);
+    auto js = json::parse(dataToParse); //parse into json object
 
-    req->username = js[NAME_KEY];//parse into json object
+    req->username = js[NAME_KEY];
     req->password = js[PASSOWRD_KEY];
     req->email = js[EMAIL_KEY];//defines stored in global.h
 

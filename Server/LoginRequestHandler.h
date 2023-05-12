@@ -3,21 +3,24 @@
 #include "RequestHandlerFactory.h"
 
 
-//class RequestHandlerFactory;
+class RequestHandlerFactory;
 
 class LoginRequestHandler : public IRequestHandler
 {
 public:
 	//C'tor
-	LoginRequestHandler();
+	LoginRequestHandler(RequestHandlerFactory reqHandFac);
 
 	//Functions
-	bool isRequestRelevent(const RequestInfo& requestInfo);
-	RequestResult& handleRequest(const RequestInfo& requestInfo);
+	bool isRequestRelevent(const RequestInfo& requestInfo) override;
+	RequestResult& handleRequest(const RequestInfo& requestInfo) override;
 	RequestResult& login(const RequestInfo& requestInfo);
 	RequestResult& signUp(const RequestInfo& requestInfo);
 private:
-	IDatabase* dataBase;
-	RequestHandlerFactory* m_handlerFactory;//reference must be intilized but there is no c`tor fo handlerFactory
+	//Field
+	RequestHandlerFactory& m_handlerFactory;
+
+	//Help function
+	void createErrorResponse(const string errMsg, RequestResult* reqRes);
 };
 
