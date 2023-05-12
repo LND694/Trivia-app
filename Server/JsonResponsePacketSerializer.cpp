@@ -69,9 +69,10 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
 string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int digits)
 {
     string paddedNum = to_string(num);
+    int initLen = paddedNum.length();
 
     //Padding the number
-    while (paddedNum.length() < digits)
+    for (int i = initLen; i < digits; i++)
     {
         paddedNum = ZERO_CHAR + paddedNum;
     }

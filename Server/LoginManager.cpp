@@ -11,7 +11,7 @@ LoginManager::LoginManager(IDatabase* db) :
 }
 
 /// <summary>
-/// signUp in the databse
+/// signUp in the database
 /// </summary>
 /// <param name="email"> the email of the request</param>
 /// <param name="password"> the password in the request</param>
@@ -40,7 +40,7 @@ SignupRequest& LoginManager::signUp(const string email, const string password, c
     signUpReq->username = username;
 
 
-    return* signUpReq;
+    return *signUpReq;
 }
 
 
