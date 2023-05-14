@@ -14,7 +14,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db, LoginManager logMan)
 /// The function creates a handler to login requests.
 /// </summary>
 /// <returns>a LoginRequestHandler value- the handler of the login requests.</returns>
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
     return new LoginRequestHandler(*this);
 }

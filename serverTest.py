@@ -13,14 +13,16 @@ def main():
     EXIT = "exit"
     port = 8265  # socket server port number
     email = ''
+    answer = ''
 
     if port < MIN_PORT or port > MAX_PORT:
         exit()
 
-    client_socket = socket.socket()  # instantiate
-    client_socket.connect((host, port))  # connect to the server
     answer = input("If you want to send to exit write 'exit', everything else to continue\n")
     while(answer != EXIT):
+        client_socket = socket.socket()  # instantiate
+        client_socket.connect((host, port))  # connect to the server
+
         login_or_sign_up = input("Hi client! Do you want to login(0) or to sign up(anything else)?\n")
         if login_or_sign_up == '0':
             code = LOGIN_REQS_CODE
@@ -28,9 +30,11 @@ def main():
             code = SIGN_UP_REQS_CODE
             email = input("Please enter your email: \n")
 
+        # Getting the iformation from the client about the user
         username = input("Please enter your username:\n")
         password = input("Please enter your password:\n")
 
+        # Buliding the json dictionary
         data = {"username": username, "password": password}
         if login_or_sign_up != '0':
             data.update({"email": email})
@@ -51,10 +55,10 @@ def main():
         
         client_socket.send(formatted_json.encode())
         data = client_socket.recv(1024).decode()
-        print('THe message received from server: ' + data)  # show in terminal
+        print('The message received from server: ' + data)  # show in terminal
         answer = input("If you want to send to exit write 'exit', everything else to continue\n")
 
-    client_socket.close()  # close the connection
+        client_socket.close()  # close the connection
 
 
 if __name__ == "__main__":

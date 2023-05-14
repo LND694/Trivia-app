@@ -9,7 +9,7 @@ class LoginRequestHandler : public IRequestHandler
 {
 public:
 	//C'tor
-	LoginRequestHandler(RequestHandlerFactory reqHandFac);
+	LoginRequestHandler(RequestHandlerFactory& reqHandFac);
 
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;

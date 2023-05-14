@@ -12,7 +12,7 @@ public:
 	RequestHandlerFactory(IDatabase* db, LoginManager logMan);
 
 	//Functions
-	LoginRequestHandler* createLoginRequestHandler() const;
+	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 
 private:
