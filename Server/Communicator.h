@@ -20,7 +20,7 @@ class Communicator
 {
 public:
 	//C'tor
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 
 	void startHandleRequests();
 private:
@@ -31,5 +31,6 @@ private:
 	//Fields
 	SOCKET m_serverSocket;
 	map<SOCKET, IRequestHandler*> m_clients;
+	RequestHandlerFactory& m_handlerFactory;
 
 };
