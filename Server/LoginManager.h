@@ -13,7 +13,7 @@ public:
 	LoginManager(IDatabase* db);
 
 	//Functions
-	SignupRequest& signUp(const string email, const string password, const string username);
+	SignupRequest& signUp(const User& user);
 	LoginRequest& login(const string username, const string password);
 	void logOut(const string username);
 	
