@@ -1,14 +1,18 @@
 #include "Server.h"
 
+Server* Server::m_instance = nullptr;
+Lock Server::m_lock;
 
 /// <summary>
 /// C'tor of class Server
 /// </summary>
 /// <param name="db"> The database of the server</param>
 Server::Server(IDatabase* db):
-	m_database(db), m_handlerFactory(db, LoginManager(db)), m_communicator(m_handlerFactory)
+	m_database(db)
 {
-
+	//this->m_handlerFactory = RequestHandlerFactory::getInstance()
+	this->m_handlerFactory = RequestHandlerFactory::getInstance(db, LoginManager::getInstance(db));
+	this->m_communicator = Communicator::getInstance(m_handlerFactory);
 }
 
 /// <summary>
@@ -16,7 +20,22 @@ Server::Server(IDatabase* db):
 /// </summary>
 Server::~Server()
 {
+	delete m_communicator;
+}
 
+/// <summary>
+/// The function getts the instance of the class Server.
+/// </summary>
+/// <param name="db"> The database of the server.</param>
+/// <returns> The only instance of the class Server.</returns>
+Server* Server::getInstance(IDatabase* db)
+{
+	lock_guard<Lock> lockGuard(m_lock);
+	if (m_instance == nullptr)
+	{
+		m_instance = new Server(db);
+	}
+	return m_instance;
 }
 
 /// <summary>
