@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "IDatabase.h"
-#include <cstdint>
-#include <vector>
+#include <string>
 #include <bsoncxx/builder/stream/document.hpp>
 #include <mongocxx/options/create_collection.hpp>
 #include <bsoncxx/json.hpp>
@@ -12,6 +11,8 @@
 using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
+using std::string;
+const string DB_NAME = "triviaDB";
 
 class MongoDatabase : public IDatabase
 {

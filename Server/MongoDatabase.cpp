@@ -21,7 +21,7 @@ bool MongoDatabase::open()
 	try
 	{
 		this->client = mongocxx::client{ uri };//connect to the server
-		this->db = this->client["triviaDB"];
+		this->db = this->client[DB_NAME];
 		if (!this->db.has_collection("USERS"))
 		{
 			this->db.create_collection("USERS");
@@ -78,12 +78,12 @@ int MongoDatabase::doesPasswordMatch(const string username, const string passwor
 int MongoDatabase::addNewUser(const User& user)
 {
 	// Document with username, password, and email fields
-	auto doc = make_document(kvp("email", user.getEmail()),
-		kvp("username", user.getUsername()),
-		kvp("password", user.getPassword()),
-		kvp("address",user.getAddress()),
-		kvp("birth date",user.getBornDate()),
-		kvp("phone number",user.getPhoneNum()));
+	auto doc = make_document(kvp(EMAIL_FIELD, user.getEmail()),
+		kvp(USERNAME_FIELD, user.getUsername()),
+		kvp(PASSWORD_FIELD, user.getPassword()),
+		kvp(ADDRESS_FIELD,user.getAddress()),
+		kvp(BORN_DATE_FIELD,user.getBornDate()),
+		kvp(PHONE_NUM_FIELD,user.getPhoneNum()));
 	try
 	{
 		auto insert_one_result = this->db["USERS"].insert_one(doc.view());
