@@ -33,7 +33,10 @@ SignupRequest& JsonRequestPacketDeserializer::desrializeSignupRequest(const Buff
 
     req->username = js[NAME_KEY];
     req->password = js[PASSOWRD_KEY];
-    req->email = js[EMAIL_KEY];//defines stored in global.h
+    req->email = js[EMAIL_KEY];
+    req->address = js[ADDRESS_KEY];
+    req->phoneNum = js[PHONE_NUM_KEY];
+    req->bornDate = js[BORN_DATE_KEY]; //defines stored in global.h
 
     delete data;
     return *req;
