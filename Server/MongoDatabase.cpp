@@ -17,14 +17,14 @@ MongoDatabase::MongoDatabase()
 /// <returns> if the database was opened ssucessfully or not</returns>
 bool MongoDatabase::open()
 {
-	this->uri = mongocxx::uri("mongodb://localhost:27017");
+	this->uri = mongocxx::uri(DEAFULT_URL);
 	try
 	{
 		this->client = mongocxx::client{ uri };//connect to the server
 		this->db = this->client[DB_NAME];
-		if (!this->db.has_collection("USERS"))
+		if (!this->db.has_collection(USERS_COLLECTION))
 		{
-			this->db.create_collection("USERS");
+			this->db.create_collection(USERS_COLLECTION);
 		}
 		return true;
 	}
@@ -51,10 +51,10 @@ bool MongoDatabase::close()//the database is closed automatically
 int MongoDatabase::doesUserExist(const string username)
 {
 	// Build the query
-	auto doc = make_document(kvp("username", username));
+	auto doc = make_document(kvp(USERNAME_FIELD, username));
 
 	// Execute the query
-	auto cursor = this->db["USERS"].find(doc.view());
+	auto cursor = this->db[USERS_COLLECTION].find(doc.view());
 	if (cursor.begin() != cursor.end())//if there were found
 	{
 		return USER_EXIST;
@@ -64,9 +64,9 @@ int MongoDatabase::doesUserExist(const string username)
 
 int MongoDatabase::doesPasswordMatch(const string username, const string password)
 {
-	auto doc = make_document(kvp("username", username), kvp("password", password));
+	auto doc = make_document(kvp(USERNAME_FIELD, username), kvp(PASSWORD_FIELD, password));
 	// Execute the query
-	auto cursor = this->db["USERS"].find(doc.view());
+	auto cursor = this->db[USERS_COLLECTION].find(doc.view());
 
 	if (cursor.begin() != cursor.end())// if there were found
 	{
@@ -86,7 +86,7 @@ int MongoDatabase::addNewUser(const User& user)
 		kvp(PHONE_NUM_FIELD,user.getPhoneNum()));
 	try
 	{
-		auto insert_one_result = this->db["USERS"].insert_one(doc.view());
+		auto insert_one_result = this->db[USERS_COLLECTION].insert_one(doc.view());
 		return OK_CODE;
 	}
 	catch (...)
