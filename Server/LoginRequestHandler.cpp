@@ -172,9 +172,6 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     case AT_SIGN_NOT_VALID_OR_EXIST:
         excpStr += "The email should contain the symbol '@' only once.\n";
         break;
-    case EMAIL_PREFIX_NOT_CHARS_ONLY:
-        excpStr += "The email's prefix should contain letters only.\n";
-        break;
     case EMAIL_SUFFIX_NOT_VALID:
         excpStr += "The email's suffix is not recognized. Are you sure it exists?\n";
         break;

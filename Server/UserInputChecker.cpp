@@ -101,20 +101,14 @@ bool UserInputChecker::doesHaveASpecialChar(const string str, const string speci
 CHECK_EMAIL_RESULTS UserInputChecker::isLegalEmail(const string email)
 {
     const vector<string> EMAIL_SUFFIXES = { "gmail.com", "walla.com", ".co.il", ".com", ".cyber.org.il" };
-    string prefixEmail(""), suffixEmail("");
+    string suffixEmail = "";
     if (!doesHaveJustOnceAChar(email, AT_SIGN))
     {
         return AT_SIGN_NOT_VALID_OR_EXIST;
     }
 
-    //Taking the string before the AT_SIGN and after it
-    prefixEmail = email.substr(0, email.find(AT_SIGN));
+    //Taking the string after the AT_SIGN
     suffixEmail = email.substr(email.find(AT_SIGN), email.length() - 1);
-
-    if (!doesHaveOnlyLetters(prefixEmail))
-    {
-        return EMAIL_PREFIX_NOT_CHARS_ONLY;
-    }
 
     if (!doesHaveASuffix(suffixEmail, EMAIL_SUFFIXES))
     {
