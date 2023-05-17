@@ -8,6 +8,9 @@
 #define NAME_KEY "username"
 #define PASSOWRD_KEY "password"
 #define EMAIL_KEY "email"
+#define ADDRESS_KEY "address"
+#define PHONE_NUM_KEY "phone"
+#define BORN_DATE_KEY "date"
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 constexpr int SIZE_CODE_FIELD = 3;
