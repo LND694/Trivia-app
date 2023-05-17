@@ -59,7 +59,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
         logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);//get the details from the buffer
         try
         {
-            this->m_handlerFactory.getLoginManager().login(logReq.username, logReq.password);//actual login
+            this->m_handlerFactory.getLoginManager()->login(logReq.username, logReq.password);//actual login
 
         }
         catch (const std::exception& excp)
@@ -106,7 +106,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
             {
                 throw std::exception(excpStr.c_str());
             }
-            this->m_handlerFactory.getLoginManager().signUp(signUpReq);//sign up (call database)
+            this->m_handlerFactory.getLoginManager()->signUp(signUpReq);//sign up (call database)
         }
         catch (const std::exception& excp)
         {
