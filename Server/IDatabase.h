@@ -3,9 +3,12 @@
 #include "User.h"
 #include "sqlite3.h"
 
-
 using std::string;
-
+enum RETURNED_CODES {
+	ERROR_CODE = -1, OK_CODE = 0,
+	USER_EXIST = 1, USER_NOT_EXIST = 2,
+	PASSWORD_MATCH = 3, PASSWORD_NOT_MATCH = 4
+};
 class IDatabase
 {
 public:
