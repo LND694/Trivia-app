@@ -1,6 +1,9 @@
 #include "SqliteDatabase.h"
 #include "sqlite3.h"
 
+SqliteDatabase* SqliteDatabase::m_instance = nullptr;
+Lock SqliteDatabase::m_lock;
+
 /// <summary>
 /// C'tor of class SqliteDatabase
 /// </summary>
@@ -18,6 +21,20 @@ SqliteDatabase::SqliteDatabase()
 SqliteDatabase::~SqliteDatabase()
 {
     this->close();
+}
+
+/// <summary>
+/// The function getts the instance of the class SqliteDatabase.
+/// </summary>
+/// <returns> the address of the instance</returns>
+SqliteDatabase* SqliteDatabase::SqliteDatabase::getInstance()
+{
+	lock_guard<Lock> lockGuard(m_lock);
+	if (m_instance == nullptr)
+	{
+		m_instance = new SqliteDatabase();
+	}
+	return m_instance;
 }
 
 /// <summary>

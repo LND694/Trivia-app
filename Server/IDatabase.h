@@ -2,13 +2,16 @@
 #include <iostream>
 #include "User.h"
 #include "sqlite3.h"
+#include "global.h"
+#include "Singleton.h"
 
 
 using std::string;
 
-class IDatabase
+class IDatabase : public Singleton
 {
 public:
+
 	//Open&Close functions 
 	virtual bool open() = 0;
 	virtual bool close() = 0;

@@ -23,9 +23,12 @@ BORN_DATE TEXT NOT NULL);"};
 class SqliteDatabase : public IDatabase
 {
 public:
-	//C'tor&D'tor
-	SqliteDatabase();
+	//D'tor
 	~SqliteDatabase();
+
+	static SqliteDatabase* getInstance();
+	SqliteDatabase(SqliteDatabase& other) = delete;
+	void operator=(const SqliteDatabase& other) = delete;
 
 	//Open&Close functions 
 	bool open() override;
@@ -36,9 +39,17 @@ public:
 	int doesPasswordMatch(const string username, const string password) override;
 	int addNewUser(const User& user) override;
 
+protected:
+	//C'tor
+	SqliteDatabase();
+
 private:
 	//Field
 	sqlite3* m_db;
+
+	//Singleton fields
+	static SqliteDatabase* m_instance;
+	static Lock m_lock;
 
 	//Help functions
 	void runSqlCommand(const string command);
