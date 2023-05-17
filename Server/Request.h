@@ -16,5 +16,8 @@ typedef struct LoginRequest {
 /// </summary>
 typedef struct SignupRequest : LoginRequest {
 	string email;
+	string address;
+	string phoneNum;
+	string bornDate;
 
 }SingSignupRequest;
