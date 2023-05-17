@@ -1,5 +1,6 @@
 #pragma once
 #include "SqliteDatabase.h"
+#include "MongoDatabase.h"
 #include "LoggedUser.h"
 #include <vector>
 #include "Request.h"

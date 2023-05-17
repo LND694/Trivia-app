@@ -5,7 +5,6 @@
 #include "global.h"
 #include "Singleton.h"
 
-
 using std::string;
 enum RETURNED_CODES {
 	ERROR_CODE = -1, OK_CODE = 0,
