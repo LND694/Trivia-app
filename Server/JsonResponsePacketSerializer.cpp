@@ -1,5 +1,23 @@
 #include "JsonResponsePacketSerializer.h"
 
+JsonResponsePacketSerializer* JsonResponsePacketSerializer::m_instance = nullptr;
+Lock JsonResponsePacketSerializer::m_lock;
+
+/// <summary>
+/// The function getts the only instance of the static
+/// class JsonResponsePacketSerializer.
+/// </summary>
+/// <returns> The instance of the class.</returns>
+JsonResponsePacketSerializer* JsonResponsePacketSerializer::getInstance()
+{
+    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    if (m_instance == nullptr)
+    {
+        m_instance = new JsonResponsePacketSerializer();
+    }
+    return m_instance;
+}
+
 /// <summary>
 /// The function makes an ErrorResponse variable to a Buffer.
 /// </summary>

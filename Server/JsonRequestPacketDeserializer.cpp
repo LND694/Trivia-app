@@ -1,5 +1,21 @@
 #include "JsonRequestPacketDeserializer.h"
 
+JsonRequestPacketDeserializer* JsonRequestPacketDeserializer::m_instance = nullptr;
+Lock JsonRequestPacketDeserializer::m_lock;
+
+/// <summary>
+/// The function gett the only instance of the class JsonRequestPacketDeserializer.
+/// </summary>
+/// <returns>The only instance of the class JsonRequestPacketDeserializer.</returns>
+JsonRequestPacketDeserializer* JsonRequestPacketDeserializer::getInstance()
+{
+    lock_guard<Lock> lockGuard(m_lock);
+    if (m_instance == nullptr)
+    {
+        m_instance = new JsonRequestPacketDeserializer();
+    }
+    return m_instance;
+}
 
 /// <summary>
 /// deserializer for buffer into login request

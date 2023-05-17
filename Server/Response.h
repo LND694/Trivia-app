@@ -11,7 +11,7 @@ class Response
 };
 
 //Base struct
-struct ResponseWithStatus
+struct ResponseWithStatus : Response
 {
 	unsigned int status;
 };
