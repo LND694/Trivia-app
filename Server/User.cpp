@@ -1,12 +1,12 @@
 #include "User.h"
 
 User::User(const int id, const string username, const string password, const string email, const string address, const string phone, const string bornDate) :
-	m_id(id), m_username(username), m_password(password), m_email(email), m_addr(address), m_phone(phone), m_bornDate(bornDate)
+m_id(id), m_username(username), m_password(password), m_email(email), m_addr(address), m_phone(phone), m_bornDate(bornDate)
 {
 
 }
 
-User::User(const string username, const string password, const string email, const string address, const string phoneNum, const string bornDate) :
+User::User(const string username, const string password, const string email, const string address, const string phoneNum, const string bornDate):
 	m_username(username), m_password(password), m_email(email), m_addr(address), m_phone(phoneNum), m_bornDate(bornDate)
 {
 

@@ -133,12 +133,13 @@ int SqliteDatabase::doesPasswordMatch(const string username, const string passwo
 /// <param name="email"> The email of the new user</param>
 /// <returns>an integer value- if the user already exsit, if there was
 /// an error or if the adding was OK.</returns>
-int SqliteDatabase::addNewUser(const string username, const string password, const string email)
+int SqliteDatabase::addNewUser(const User& user)
 {
-	string command = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL) VALUES ";
-	command += "('" + username + "', '" + password + "', '" + email + "');";
+	string command = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL, ADDRESS, PHONE_NUM, BORN_DATE) VALUES ";
+	command += "('" + user.getUsername() + "', '" + user.getPassword() + "', '"+ user.getEmail() + "', '" 
+		+ user.getAddress() + "', '" + user.getPhoneNum() + "', '" + user.getBornDate() + "'); ";
 
-	if (USER_EXIST == doesUserExist(username))
+	if (USER_EXIST == doesUserExist(user.getUsername()))
 	{
 		return USER_EXIST;
 	}
@@ -181,9 +182,9 @@ void SqliteDatabase::runSqlCommand(const string command)
 /// <returns> a integer value- if the extraction was successful.</returns>
 int SqliteDatabase::callbackUsers(void* data, int argc, char** argv, char** azColName)
 {
-	string username = "", password = "", email = "";
+	string username = "", password = "", email = "", address = "", phoneNum = "", bornDate = "";
 	int id = 0;
-	User currUser = User(id, username, password, email);
+	User currUser = User(id, username, password, email, address, phoneNum, bornDate);
 
 	//Going over the arguments
 	for (int i = 0; i < argc; i++)
@@ -204,9 +205,21 @@ int SqliteDatabase::callbackUsers(void* data, int argc, char** argv, char** azCo
 		else if (EMAIL_FIELD == string(azColName[i]))
 		{
 			email = argv[i];
+		}
+		else if (ADDRESS_FIELD == string(azColName[i]))
+		{
+			address = argv[i];
+		}
+		else if (PHONE_NUM_FIELD == string(azColName[i]))
+		{
+			phoneNum = argv[i];
+		}
+		else if (BORN_DATE_FIELD == string(azColName[i]))
+		{
+			bornDate = argv[i];
 
 			//Adding another user to the list
-			currUser = User(id, username, password, email);
+			currUser = User(id, username, password, email, address, phoneNum, bornDate);
 			(static_cast<list<User>*>(data))->push_back(currUser);
 		}
 	}

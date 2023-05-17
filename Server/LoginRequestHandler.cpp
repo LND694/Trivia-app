@@ -86,6 +86,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
 RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
 {
     bool error = false;
+    string excpStr = "";
     RequestResult* reqRes = new RequestResult();
     SignUpResopnse signUpResp;
     ErrorResopnse errResp;
@@ -100,7 +101,12 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
         signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(requestInfo.buffer);//get the sign up details to login manager
         try
         {
-            this->m_handlerFactory.getLoginManager().signUp(signUpReq.email, signUpReq.password, signUpReq.username);//sign up (call database)
+            excpStr = LoginRequestHandler::checkIfInputValid(signUpReq);
+            if (!excpStr.empty()) // there is an invalid input
+            {
+                throw std::exception(excpStr.c_str());
+            }
+            this->m_handlerFactory.getLoginManager().signUp(signUpReq);//sign up (call database)
         }
         catch (const std::exception& excp)
         {
@@ -129,4 +135,80 @@ void LoginRequestHandler::createErrorResponse(const string errMsg, RequestResult
     errResp.message = errMsg;
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
     reqRes->newHandler = this;//if there is a error the new handler will be the current
+}
+
+/// <summary>
+/// The function checks if the input of the signupRequest 
+/// was valid or not.
+/// </summary>
+/// <param name="signupReq"> The signupRequest with the data to check.</param>
+/// <returns> The string of the invalid data which was given.</returns>
+string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
+{
+    string excpStr = "";
+    CHECK_PASSWORD_RESULTS passRes = UserInputChecker::doesPasswordLegal(signupReq.password);
+    CHECK_EMAIL_RESULTS emailRes = UserInputChecker::isLegalEmail(signupReq.email);
+    CHECK_PHONE_NUM_RESULTS phoneRes = UserInputChecker::isPhoneNumberLegal(signupReq.phoneNum);
+    CHECK_ADDRESS_RESULTS addrRes = UserInputChecker::isAddressValid(signupReq.address);
+    CHECK_DATE_RESULTS dateRes = UserInputChecker::isDateValid(signupReq.bornDate);
+
+    //Password results checking
+    switch (passRes)
+    {
+    case LENGTH_PASSWORD_INVALID:
+        excpStr += "The length of the password should be " + to_string(PASSWORD_RIGHT_LEN) + ".\n";
+        break;
+    case DOES_NOT_HAVE_LETTERS_OR_DIGITS:
+        excpStr += "The password should contain letters and digits.\n";
+        break;
+    case DOES_NOT_HAVE_SPECIAL_SYMBOL:
+        excpStr += "The password should contain one of these symbols: {" + SPECIAL_CHARS_PASSWORD + "}.\n";
+        break;
+    }
+
+    //Email results checking
+    switch (emailRes)
+    {
+    case AT_SIGN_NOT_VALID_OR_EXIST:
+        excpStr += "The email should contain the symbol '@' only once.\n";
+        break;
+    case EMAIL_SUFFIX_NOT_VALID:
+        excpStr += "The email's suffix is not recognized. Are you sure it exists?\n";
+        break;
+    }
+
+    //Phone number results checking
+    switch (phoneRes)
+    {
+    case LENGTH_PHONE_NUM_INVALID:
+        excpStr += "The length of the phone should be " + to_string(PHONE_NUM_RIGHT_LEN) + " after the adding the '-' char.\n";
+        break;
+    case INVALID_PREFIX_PHONE_NUM:
+        excpStr += "The phone's prefix is not recognized. Are you sure it exists?\n";
+        break;
+    case WRONG_FORMAT_PHONE_NUM:
+        excpStr += "The format of phone number should be like this: {prefix - number}\n";
+        break;
+    }
+
+    //Address results check
+    switch (addrRes)
+    {
+    case WRONG_FORMAT_ADDRESS:
+        excpStr += "The format of the address should be like this: {Street, Apartment, City). Apt can only has number.\n";
+        break;
+    }
+
+    //Date results checking
+    switch (dateRes)
+    {
+    case WRONG_FORMAT_DATE:
+        excpStr += "The format of a born date should be like this: {DD.MM.YYYY}, or with '/' instead of '.'";
+        break;
+    case DATE_NOT_EXIST:
+        excpStr += "This date does not exist. Are you sure you have born this day?\n";
+        break;
+    }
+
+    return excpStr;
 }

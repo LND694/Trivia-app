@@ -10,7 +10,13 @@ using std::list;
 
 
 const string DB_FILE_NAME = "triviaDB.sqlite";
-const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERNAME TEXT NOT NULL, PASSWORD TEXT NOT NULL, EMAIL TEXDT NOT NULL);"};
+const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+USERNAME TEXT NOT NULL, \
+PASSWORD TEXT NOT NULL, \
+EMAIL TEXT NOT NULL, \
+ADDRESS TEXT NOT NULL, \
+PHONE_NUM TEXT NOT NULL, \
+BORN_DATE TEXT NOT NULL);"};
 
 class SqliteDatabase : public IDatabase
 {
@@ -26,7 +32,7 @@ public:
 	//User functions
 	int doesUserExist(const string username) override;
 	int doesPasswordMatch(const string username, const string password) override;
-	int addNewUser(const string username, const string password, const string email) override;
+	int addNewUser(const User& user) override;
 
 private:
 	//Field

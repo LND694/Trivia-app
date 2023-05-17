@@ -13,7 +13,11 @@ def main():
     EXIT = "exit"
     port = 8265  # socket server port number
     email = ''
+    address = ''
+    phone_num = ''
+    born_date = ''
     answer = ''
+
 
     if port < MIN_PORT or port > MAX_PORT:
         exit()
@@ -28,16 +32,21 @@ def main():
             code = LOGIN_REQS_CODE
         else:
             code = SIGN_UP_REQS_CODE
+            # Getting the information from the client about the user
             email = input("Please enter your email: \n")
+            address = input("Please enter your address in this format-{street,apartment,city}:\n")
+            phone_num = input("Please enter your phone number in this format-{prefix-num}:\n")
+            born_date = input("Please enter your born date in this format-{DD.MM.YYYY} or with '/' instead of with '.':\n")
 
-        # Getting the iformation from the client about the user
+        # Getting the username and the password of the user
         username = input("Please enter your username:\n")
         password = input("Please enter your password:\n")
 
+
         # Buliding the json dictionary
         data = {"username": username, "password": password}
-        if login_or_sign_up != '0':
-            data.update({"email": email})
+        if login_or_sign_up != '0': # Sign up
+            data.update({"email": email, "address": address, "phone":phone_num, "date":born_date})
 
         # Getting the length of the dictionary data
         len_data = 0
