@@ -81,7 +81,6 @@ int MongoDatabase::addNewUser(const User& user)
 	auto doc = make_document(kvp("email", user.getEmail()),
 		kvp("username", user.getUsername()),
 		kvp("password", user.getPassword()),
-		kvp("id",user.getId()),
 		kvp("address",user.getAddress()),
 		kvp("birth date",user.getBornDate()),
 		kvp("phone number",user.getPhoneNum()));
