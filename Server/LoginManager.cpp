@@ -32,7 +32,6 @@ SignupRequest& LoginManager::signUp(const string email, const string password, c
         throw std::exception("The user is already exist.");
     }
     this->m_dataBase->addNewUser(username, password, email);
-
     //Creating a SignUpRequest
     signUpReq = new SignupRequest();
     signUpReq->email = email;
