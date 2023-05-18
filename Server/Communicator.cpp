@@ -1,16 +1,42 @@
 #include "Communicator.h"
 
 
+Communicator* Communicator::m_instance = nullptr;
+Lock Communicator::m_lock;
+
 /// <summary>
 /// C'tor of class Communicator
 /// </summary>
 /// <param name="handlerFactory">The factory of the handlers of the requests.</param>
-Communicator::Communicator(RequestHandlerFactory& handlerFactory):
+Communicator::Communicator(RequestHandlerFactory* handlerFactory):
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
+}
+
+/// <summary>
+/// D'tor of class Communicator
+/// </summary>
+Communicator::~Communicator()
+{
+
+}
+
+/// <summary>
+/// The function getts the instance of the class Communicator.
+/// </summary>
+/// <param name="handlerFactory"> The RequestHandlerFactory of the Communicator.</param>
+/// <returns> The instance of the class Communicator.</returns>
+Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
+{
+	lock_guard<Lock> lockGuard(m_lock);
+	if (m_instance == nullptr)
+	{
+		m_instance = new Communicator(handlerFactory);
+	}
+	return m_instance;
 }
 
 /// <summary>
@@ -67,7 +93,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	SignupRequest signUpReq;
 	string code;
 
-	this->m_clients.insert({ socket, this->m_handlerFactory.createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
+	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
 	Buffer charVector(buffer, buffer + MAX_SIZE);

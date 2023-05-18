@@ -2,6 +2,8 @@
 #include <iostream>
 #include "User.h"
 #include "sqlite3.h"
+#include "global.h"
+#include "Singleton.h"
 
 using std::string;
 enum RETURNED_CODES {
@@ -9,9 +11,11 @@ enum RETURNED_CODES {
 	USER_EXIST = 1, USER_NOT_EXIST = 2,
 	PASSWORD_MATCH = 3, PASSWORD_NOT_MATCH = 4
 };
-class IDatabase
+
+class IDatabase : public Singleton
 {
 public:
+
 	//Open&Close functions 
 	virtual bool open() = 0;
 	virtual bool close() = 0;

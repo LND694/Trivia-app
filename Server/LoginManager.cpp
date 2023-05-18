@@ -1,5 +1,8 @@
 #include "LoginManager.h"
 
+LoginManager* LoginManager::m_instance = nullptr;
+Lock LoginManager::m_lock;
+
 /// <summary>
 /// C'tor of class LoginManager
 /// </summary>
@@ -8,6 +11,21 @@ LoginManager::LoginManager(IDatabase* db) :
     m_dataBase(db), m_loggedUsers(vector<LoggedUser>())
 {
 
+}
+
+/// <summary>
+/// The function getts the instance of the class LoginManager.
+/// </summary>
+/// <param name="db">The database for the object LoginManager.</param>
+/// <returns> the address of the instance</returns>
+LoginManager* LoginManager::getInstance(IDatabase* db)
+{
+    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    if (m_instance == nullptr)
+    {
+        m_instance = new LoginManager(db);
+    }
+    return m_instance;
 }
 
 /// <summary>
