@@ -1,0 +1,29 @@
+#include "Server.h"
+#include "WSAInitializer.h"
+#pragma comment (lib, "Ws2_32.lib")
+
+int main(void)
+{
+	IDatabase* db = nullptr;
+	Server* server = nullptr;
+	try
+	{
+		db = SqliteDatabase::getInstance();
+		WSAInitializer wasinit;//init before init the socket because the sokcet depends on it
+		server = Server::getInstance(db);
+
+		server->run();
+		
+
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << endl;
+		return 1;
+	}
+	delete server;
+	server = nullptr;
+	delete db;
+	db = nullptr;
+	return 0;
+}

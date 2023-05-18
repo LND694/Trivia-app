@@ -1,0 +1,113 @@
+#include "JsonResponsePacketSerializer.h"
+
+JsonResponsePacketSerializer* JsonResponsePacketSerializer::m_instance = nullptr;
+Lock JsonResponsePacketSerializer::m_lock;
+
+/// <summary>
+/// The function getts the only instance of the static
+/// class JsonResponsePacketSerializer.
+/// </summary>
+/// <returns> The instance of the class.</returns>
+JsonResponsePacketSerializer* JsonResponsePacketSerializer::getInstance()
+{
+    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    if (m_instance == nullptr)
+    {
+        m_instance = new JsonResponsePacketSerializer();
+    }
+    return m_instance;
+}
+
+/// <summary>
+/// The function makes an ErrorResponse variable to a Buffer.
+/// </summary>
+/// <param name="errResp"> The ErrorResponse with the data.</param>
+/// <returns> a reference to Buffer- the Buffer with the data of the ErrorResponse.</returns>
+Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& errResp)
+{
+    Buffer* buffer = new Buffer();
+    string responseData = "{\"message\": \"" + errResp.message + "\"}";
+
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(ERROR_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    addStringToBuffer(buffer, responseData);
+    buffer->push_back('\0');
+
+    return *buffer;
+    
+}
+
+/// <summary>
+/// The function makes a LoginResponse variable to a Buffer.
+/// </summary>
+/// <param name="errResp"> The LoginResponse with the data.</param>
+/// <returns> a reference to Buffer- the Buffer with the data of the LoginResponse.</returns>
+Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& logResp)
+{
+    Buffer* buffer = new Buffer();
+    string responseData = "{\"status\": " + to_string(logResp.status) + "}";
+
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(LOGIN_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    addStringToBuffer(buffer, responseData);
+    buffer->push_back('\0'); //end of the buffer
+
+    return *buffer;
+}
+
+/// <summary>
+/// The function makes a SignUpResponse variable to a Buffer.
+/// </summary>
+/// <param name="errResp"> The SignUpResponse with the data.</param>
+/// <returns> a reference to Buffer- the Buffer with the data of the SignUpResponse.</returns>
+Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& signUpResp)
+{
+    Buffer* buffer = new Buffer();
+    string responseData = "{\"status\": " + to_string(signUpResp.status) + "}";
+
+    //Making the buffer
+    addStringToBuffer(buffer, to_string(SIGN_UP_RESP_CODE)); //adding the code
+    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    addStringToBuffer(buffer, responseData);
+    buffer->push_back('\0'); //end of the buffer
+
+    return *buffer;
+}
+
+/// <summary>
+/// The function add to the number '0' to
+/// tits left side to fill it to a 
+/// specific amount of digits.
+/// </summary>
+/// <param name="num">The num to pad.</param>
+/// <param name="digits">The final amount of digits.</param>
+/// <returns>a string value- the padded number as string.</returns>
+string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int digits)
+{
+    string paddedNum = to_string(num);
+    int initLen = paddedNum.length();
+
+    //Padding the number
+    for (int i = initLen; i < digits; i++)
+    {
+        paddedNum = ZERO_CHAR + paddedNum;
+    }
+    return paddedNum;
+}
+
+/// <summary>
+/// The function adds the string to the buffer.
+/// </summary>
+/// <param name="buf">The Buffer to insert to.</param>
+/// <param name="str"> The string to insert to the Buffer.</param>
+void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
+{
+    //Going over the string
+    for (int i = 0; i < str.length(); i++)
+    {
+        buf->push_back(str[i]);
+    }
+}
+
