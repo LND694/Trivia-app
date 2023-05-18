@@ -1,5 +1,8 @@
 #include "LoginManager.h"
 
+LoginManager* LoginManager::m_instance = nullptr;
+Lock LoginManager::m_lock;
+
 /// <summary>
 /// C'tor of class LoginManager
 /// </summary>
@@ -11,15 +14,30 @@ LoginManager::LoginManager(IDatabase* db) :
 }
 
 /// <summary>
+/// The function getts the instance of the class LoginManager.
+/// </summary>
+/// <param name="db">The database for the object LoginManager.</param>
+/// <returns> the address of the instance</returns>
+LoginManager* LoginManager::getInstance(IDatabase* db)
+{
+    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    if (m_instance == nullptr)
+    {
+        m_instance = new LoginManager(db);
+    }
+    return m_instance;
+}
+
+/// <summary>
 /// signUp in the database
 /// </summary>
 /// <param name="email"> the email of the request</param>
 /// <param name="password"> the password in the request</param>
 /// <param name="username"> the username in the request</param>
 /// <returns>SignUp request after register in the database</returns>
-SignupRequest& LoginManager::signUp(const string email, const string password, const string username)
+SignupRequest& LoginManager::signUp(const User& user)
 {
-    int result = this->m_dataBase->doesUserExist(username);
+    int result = this->m_dataBase->doesUserExist(user.getUsername());
     SignupRequest* signUpReq = nullptr;
 
     //Checking the result of the scan of the DB
@@ -31,13 +49,16 @@ SignupRequest& LoginManager::signUp(const string email, const string password, c
     {
         throw std::exception("The user is already exist.");
     }
-    this->m_dataBase->addNewUser(username, password, email);
+    this->m_dataBase->addNewUser(user);
 
     //Creating a SignUpRequest
     signUpReq = new SignupRequest();
-    signUpReq->email = email;
-    signUpReq->password = password;
-    signUpReq->username = username;
+    signUpReq->email = user.getEmail();
+    signUpReq->password = user.getPassword();
+    signUpReq->username = user.getUsername();
+    signUpReq->address = user.getAddress();
+    signUpReq->phoneNum = user.getPhoneNum();
+    signUpReq->bornDate = user.getBornDate();
 
 
     return *signUpReq;

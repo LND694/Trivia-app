@@ -1,21 +1,33 @@
 #pragma once
 #include "SqliteDatabase.h"
+#include "MongoDatabase.h"
 #include "LoggedUser.h"
 #include <vector>
 #include "Request.h"
+#include "Singleton.h"
+#include "global.h"
 
 using std::vector;
 
-class LoginManager
+class LoginManager : Singleton
 {
 public:
-	//C'tor
-	LoginManager(IDatabase* db);
+	static LoginManager* getInstance(IDatabase* db);
+	LoginManager(LoginManager& other) = delete;
+	void operator=(const LoginManager& other) = delete;
 
 	//Functions
-	SignupRequest& signUp(const string email, const string password, const string username);
+	SignupRequest& signUp(const User& user);
 	LoginRequest& login(const string username, const string password);
 	void logOut(const string username);
+
+protected:
+	//Singleton fields
+	static LoginManager* m_instance;
+	static Lock m_lock;
+
+	//C'tor
+	LoginManager(IDatabase* db);
 	
 private:
 	//Fields

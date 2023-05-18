@@ -8,18 +8,25 @@
 using std::list;
 
 
-enum RETURNED_CODES{ERROR_CODE = -1, OK_CODE = 0,
-	USER_EXIST = 1, USER_NOT_EXIST = 2, 
-	PASSWORD_MATCH = 3, PASSWORD_NOT_MATCH = 4};
+
 const string DB_FILE_NAME = "triviaDB.sqlite";
-const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERNAME TEXT NOT NULL, PASSWORD TEXT NOT NULL, EMAIL TEXDT NOT NULL);"};
+const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+USERNAME TEXT NOT NULL, \
+PASSWORD TEXT NOT NULL, \
+EMAIL TEXT NOT NULL, \
+ADDRESS TEXT NOT NULL, \
+PHONE_NUM TEXT NOT NULL, \
+BORN_DATE TEXT NOT NULL);"};
 
 class SqliteDatabase : public IDatabase
 {
 public:
-	//C'tor&D'tor
-	SqliteDatabase();
+	//D'tor
 	~SqliteDatabase();
+
+	static SqliteDatabase* getInstance();
+	SqliteDatabase(SqliteDatabase& other) = delete;
+	void operator=(const SqliteDatabase& other) = delete;
 
 	//Open&Close functions 
 	bool open() override;
@@ -28,11 +35,19 @@ public:
 	//User functions
 	int doesUserExist(const string username) override;
 	int doesPasswordMatch(const string username, const string password) override;
-	int addNewUser(const string username, const string password, const string email) override;
+	int addNewUser(const User& user) override;
+
+protected:
+	//C'tor
+	SqliteDatabase();
 
 private:
 	//Field
 	sqlite3* m_db;
+
+	//Singleton fields
+	static SqliteDatabase* m_instance;
+	static Lock m_lock;
 
 	//Help functions
 	void runSqlCommand(const string command);

@@ -1,6 +1,7 @@
 #pragma once
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
+#include "UserInputChecker.h"
 
 
 class RequestHandlerFactory;
@@ -22,5 +23,6 @@ private:
 
 	//Help function
 	void createErrorResponse(const string errMsg, RequestResult* reqRes);
+	static string checkIfInputValid(const SignupRequest& signupReq);
 };
 
