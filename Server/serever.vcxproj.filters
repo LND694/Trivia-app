@@ -72,9 +72,6 @@
     <ClInclude Include="User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MongoDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UserInputChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -126,9 +123,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SqliteDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MongoDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">

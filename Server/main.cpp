@@ -8,7 +8,7 @@ int main(void)
 	Server* server = nullptr;
 	try
 	{
-		db = SqliteDatabase::getInstance();
+		db = new MongoDatabase();
 		WSAInitializer wasinit;//init before init the socket because the sokcet depends on it
 		server = Server::getInstance(db);
 
