@@ -26,7 +26,7 @@ JsonResponsePacketSerializer* JsonResponsePacketSerializer::getInstance()
 Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& errResp)
 {
     Buffer* buffer = new Buffer();
-    string responseData = echoFormat(getField("message", errResp.message));
+    string responseData = echoFormat(getField<string>("message", errResp.message));
 
     return *makeBuffer(ERROR_RESP_CODE, responseData);
 }
@@ -38,7 +38,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& err
 /// <returns> a reference to Buffer- the Buffer with the data of the LoginResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& logResp)
 {
-    string responseData = echoFormat(getField("status", logResp.status));
+    string responseData = echoFormat(getField<unsigned int>("status", to_string(logResp.status)));
 
     return *makeBuffer(LOGIN_RESP_CODE, responseData);
 }
@@ -50,7 +50,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& log
 /// <returns> a reference to Buffer- the Buffer with the data of the SignUpResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& signUpResp)
 {
-    string responseData = echoFormat(getField("status", signUpResp.status));
+    string responseData = echoFormat(getField<unsigned int>("status", to_string(signUpResp.status)));
 
     return *makeBuffer(SIGN_UP_RESP_CODE, responseData);
 }
@@ -62,7 +62,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
 /// <returns> a reference to the Buffer- the new Buffer with the data of the LogoutResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const LogoutResponse& logOutResp)
 {
-    string responseData = echoFormat(getField("status", logOutResp.status));
+    string responseData = echoFormat(getField<unsigned int>("status", to_string(logOutResp.status)));
 
     return *makeBuffer(LOGOUT_RESP_CODE, responseData);
 }
@@ -74,50 +74,50 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LogoutResponse& lo
 /// <returns>a reference to the Buffer- the new Buffer with the data of the GetRoomsResponse</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& getRoomsResp)
 {
-    string responseData = getField("status", getRoomsResp.status) + SEPERATOR;
+    string responseData = getField<unsigned int>("status", to_string(getRoomsResp.status)) + SEPERATOR;
     string roomsData = "";
     int count = 1;
 
     //Getting the data from the rooms of the GetRoomsResp
     for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.begin(); i++)
     {
-        roomsData += getField("room" + to_string(count), getRoomDataString(*i)) + SEPERATOR;
+        roomsData += getRoomDataString(*i) + SEPERATOR;
     }
     roomsData.pop_back(); //removing the last SEPERATOR
-    responseData += echoFormat(roomsData);
+    responseData += echoFormat(getField<string>("Rooms", roomsData));
     return *makeBuffer(GET_ROOMS_RESP_CODE, echoFormat(responseData));
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse& getPlayersInRoomResp)
 {
-    string responseData = getPlayersString(getPlayersInRoomResp.players);
+    string responseData = echoFormat(getField<string>("PlayersInRoom", getVectorString(getPlayersInRoomResp.players)));
     return *makeBuffer(GET_PLAYERS_IN_ROOM_RESP_CODE, responseData);
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse& joinRoomResp)
 {
-    string responseData = echoFormat(getField("status", joinRoomResp.status));
+    string responseData = echoFormat(getField<unsigned int>("status", to_string(joinRoomResp.status)));
     return *makeBuffer(JOIN_ROOM_RESP_CODE, responseData);
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse& createRoomResp)
 {
-    string responseData = echoFormat(getField("status", createRoomResp.status));
+    string responseData = echoFormat(getField<unsigned int>("status", to_string(createRoomResp.status)));
     return *makeBuffer(CREATE_ROOM_RESP_CODE, responseData);
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreResponse& getHighScoreResp)
 {
-    string responseData = getField("status", getHighScoreResp.status);
-    string statisticsData = getStatisticsString(getHighScoreResp.statistics);
+    string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
+    string statisticsData = getVectorString(getHighScoreResp.statistics);
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoFormat(responseData));
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsResponse& getPersonStatsResp)
 {
-    string responseData = getField("status", getPersonStatsResp.status);
-    string statisticsData = getStatisticsString(getPersonStatsResp.statistics);
+    string responseData = getField<unsigned int>("status", to_string(getPersonStatsResp.status));
+    string statisticsData = getVectorString(getPersonStatsResp.statistics);
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoFormat(responseData));
 }
@@ -149,40 +149,19 @@ string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int di
 /// </summary>
 /// <param name="players"> The vector with the data</param>
 /// <returns> The string from the vector</returns>
-string JsonResponsePacketSerializer::getPlayersString(const vector<string>& players)
+string JsonResponsePacketSerializer::getVectorString(const vector<string>& vec)
 {
-    string playersStr = "";
-    int count = 1;
+    string vectorStr = "";
 
     //Going over the players's vector
-    for (auto i = players.begin(); i != players.end(); i++)
+    for (auto i = vec.begin(); i != vec.end(); i++)
     {
-        playersStr += getField("player" + to_string(count), *i) + SEPERATOR;
-        count++;
+        vectorStr += *i + SEPERATOR;
     }
-    playersStr.pop_back(); // removing the last SEPERATOR
-    return echoFormat(playersStr);
+    vectorStr.pop_back(); // removing the last SEPERATOR
+    return vectorStr;
 }
 
-/// <summary>
-/// The function makes a vector of statistics to a string
-/// </summary>
-/// <param name="players"> The vector with the data</param>
-/// <returns> The string from the vector</returns>
-string JsonResponsePacketSerializer::getStatisticsString(const vector<string>& statistics)
-{
-    string playersStr = "";
-    int count = 1;
-
-    //Going over the statistics's vector
-    for (auto i = statistics.begin(); i != statistics.end(); i++)
-    {
-        playersStr += getField("statistic" + to_string(count), *i) + SEPERATOR;
-        count++;
-    }
-    playersStr.pop_back(); // removing the last SEPERATOR
-    return echoFormat(playersStr);
-}
 
 /// <summary>
 /// The function extract the data from a RoomFata struct
@@ -192,12 +171,12 @@ string JsonResponsePacketSerializer::getStatisticsString(const vector<string>& s
 /// <returns> The string with the data of the room.</returns>
 string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
 {
-    string roomDataStr = getField("id", roomData.id) + SEPERATOR;
-    roomDataStr += getField("name", roomData.name) + SEPERATOR;
-    roomDataStr += getField("maxPlayers", roomData.maxPlayers) + SEPERATOR;
-    roomDataStr += getField("numOfQuestionsInGame", roomData.numOfQuestionsInGame) + SEPERATOR;
-    roomDataStr += getField("timePerQuestions", roomData.timePerQuestions) + SEPERATOR;
-    roomDataStr += getField("isActive", roomData.isActive) + SEPERATOR;
+    string roomDataStr = getField<unsigned int>("id", to_string(roomData.id)) + SEPERATOR;
+    roomDataStr += getField<string>("name", roomData.name) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("maxPlayers", to_string(roomData.maxPlayers)) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("numOfQuestionsInGame", to_string(roomData.numOfQuestionsInGame)) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestions)) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("isActive", to_string(roomData.isActive));
 
     return echoFormat(roomDataStr);
 }

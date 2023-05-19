@@ -1,4 +1,5 @@
 #pragma once
+#pragma error (disable:2665)
 
 #include "json.hpp"
 #include "Response.h"
@@ -41,20 +42,20 @@ private:
 	static Buffer* makeBuffer(const RESPONSE_CODES code, string responseData);
 	static void addStringToBuffer(Buffer* buf, string str);
 
-	static string getPlayersString(const vector<string>& players);
-	static string getStatisticsString(const vector<string>& statistics);
+	static string getVectorString(const vector<string>& vec);
 	static string getRoomDataString(const RoomData& roomData);
 
 
 	template <class T>
-	static string getField(const string nameField, const T value);
+	static string getField(const string nameField, const string value);
 };
 
-template<class T>
-inline string JsonResponsePacketSerializer::getField(const string nameField, const T value)
+template <class T>
+inline string JsonResponsePacketSerializer::getField(const string nameField, const string value)
 { 
 	string str =  "'" + nameField + "':";
-	string valueStr = to_string(value);
+	string valueStr = "";
+
 
 	if (typeid(T).name() == typeid(string).name()) // the value is a string
 	{
