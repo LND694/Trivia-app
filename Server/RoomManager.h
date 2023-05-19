@@ -13,6 +13,6 @@ public:
 	vector<RoomData>& getRooms() const;
 	Room& getRoom(const RoomId id);
 private:
-	map<unsigned int, Room> m_rooms;
+	map<RoomId, Room> m_rooms;
 };
 
