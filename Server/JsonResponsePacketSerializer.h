@@ -1,13 +1,10 @@
 #pragma once
 #pragma error (disable:2665)
 
-#include "json.hpp"
 #include "Room.h"
-#include "Response.h"
 #include "global.h"
+#include "Response.h"
 #include "Singleton.h"
-
-using NLOHMANN_JSON_NAMESPACE::json;
 
 #define ZERO_CHAR '0'
 #define SEPERATOR ", "
