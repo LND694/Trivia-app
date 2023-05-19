@@ -2,15 +2,16 @@
 #include "Room.h"
 #include <map>
 using std::map;
+typedef unsigned int RoomId;
 
 class RoomManager
 {
 public:
 	void createRoom(const LoggedUser& user,RoomData& data);
-	void deleteRoom(const unsigned int id);
-	unsigned int getRoomState(const unsigned int id);
-	vector<RoomData> getRooms() const;
-	Room& getRoom(const unsigned int id);
+	void deleteRoom(const RoomId id);
+	unsigned int getRoomState(const RoomId id);
+	vector<RoomData>& getRooms() const;
+	Room& getRoom(const RoomId id);
 private:
 	map<unsigned int, Room> m_rooms;
 };

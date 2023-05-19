@@ -1,5 +1,10 @@
 #include "Room.h"
 
+/// <summary>
+/// c`tor for room
+/// </summary>
+/// <param name="data"> the data for the room</param>
+/// <param name="user"> the creator of the room</param>
 Room::Room(const RoomData& data, const LoggedUser& user)
 {
 	this->m_metadata = data;
@@ -20,9 +25,10 @@ void Room::addUser(const LoggedUser& user)
 /// remove a user from the list of users
 /// </summary>
 /// <param name="user"> the user to remove</param>
-void Room::removeUser(const LoggedUser& user)
+void Room::removeUser(LoggedUser& user)
 {
-	std::remove(this->m_users.begin(), this->m_users.end(), user);
+	//using lambda function beacuse stl doesnt know how to handle LoggedUser:
+	std::remove_if(this->m_users.begin(), this->m_users.end(), [&user](LoggedUser player) {return user.getUsername() == player.getUsername(); });
 }
 
 
@@ -30,7 +36,7 @@ void Room::removeUser(const LoggedUser& user)
 /// get a vector of the names of the users in the room
 /// </summary>
 /// <returns> the names of the users in the room</returns>
-vector<string> Room::getAllUsers() const
+vector<string>& Room::getAllUsers() const
 {
 	vector<string> res = vector<string>();
 	for (auto i : this->m_users)
@@ -40,7 +46,7 @@ vector<string> Room::getAllUsers() const
 	return res;
 }
 
-RoomData& Room::getRoomData() const
+RoomData& Room::getRoomData()
 {
 	return this->m_metadata;
 }

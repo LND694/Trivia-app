@@ -20,9 +20,9 @@ class Room
 public:
 	Room(const RoomData& data, const LoggedUser& user);
 	void addUser(const LoggedUser& user);
-	void removeUser(const LoggedUser& user);
-	vector<string> getAllUsers() const;
-	RoomData& getRoomData() const;
+	void removeUser(LoggedUser& user);
+	vector<string>& getAllUsers() const;
+	RoomData& getRoomData();
 private:
 	RoomData m_metadata;
 	vector<LoggedUser> m_users;
