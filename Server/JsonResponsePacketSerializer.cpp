@@ -25,8 +25,7 @@ JsonResponsePacketSerializer* JsonResponsePacketSerializer::getInstance()
 /// <returns> a reference to Buffer- the Buffer with the data of the ErrorResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& errResp)
 {
-    Buffer* buffer = new Buffer();
-    string responseData = echoFormat(getField<string>("message", errResp.message));
+    string responseData = echoJsonFormat(getField<string>("message", errResp.message));
 
     return *makeBuffer(ERROR_RESP_CODE, responseData);
 }
@@ -38,7 +37,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const ErrorResponse& err
 /// <returns> a reference to Buffer- the Buffer with the data of the LoginResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& logResp)
 {
-    string responseData = echoFormat(getField<unsigned int>("status", to_string(logResp.status)));
+    string responseData = echoJsonFormat(getField<unsigned int>("status", to_string(logResp.status)));
 
     return *makeBuffer(LOGIN_RESP_CODE, responseData);
 }
@@ -50,7 +49,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LoginResponse& log
 /// <returns> a reference to Buffer- the Buffer with the data of the SignUpResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& signUpResp)
 {
-    string responseData = echoFormat(getField<unsigned int>("status", to_string(signUpResp.status)));
+    string responseData = echoJsonFormat(getField<unsigned int>("status", to_string(signUpResp.status)));
 
     return *makeBuffer(SIGN_UP_RESP_CODE, responseData);
 }
@@ -62,7 +61,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const SignUpResponse& si
 /// <returns> a reference to the Buffer- the new Buffer with the data of the LogoutResponse.</returns>
 Buffer& JsonResponsePacketSerializer::serializeResponse(const LogoutResponse& logOutResp)
 {
-    string responseData = echoFormat(getField<unsigned int>("status", to_string(logOutResp.status)));
+    string responseData = echoJsonFormat(getField<unsigned int>("status", to_string(logOutResp.status)));
 
     return *makeBuffer(LOGOUT_RESP_CODE, responseData);
 }
@@ -84,25 +83,25 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& 
         roomsData += getRoomDataString(*i) + SEPERATOR;
     }
     roomsData.pop_back(); //removing the last SEPERATOR
-    responseData += echoFormat(getField<string>("Rooms", roomsData));
-    return *makeBuffer(GET_ROOMS_RESP_CODE, echoFormat(responseData));
+    responseData += echoJsonFormat(getField<string>("Rooms", roomsData));
+    return *makeBuffer(GET_ROOMS_RESP_CODE, echoJsonFormat(responseData));
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse& getPlayersInRoomResp)
 {
-    string responseData = echoFormat(getField<string>("PlayersInRoom", getVectorString(getPlayersInRoomResp.players)));
+    string responseData = echoJsonFormat(getField<string>("PlayersInRoom", getVectorString(getPlayersInRoomResp.players)));
     return *makeBuffer(GET_PLAYERS_IN_ROOM_RESP_CODE, responseData);
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse& joinRoomResp)
 {
-    string responseData = echoFormat(getField<unsigned int>("status", to_string(joinRoomResp.status)));
+    string responseData = echoJsonFormat(getField<unsigned int>("status", to_string(joinRoomResp.status)));
     return *makeBuffer(JOIN_ROOM_RESP_CODE, responseData);
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse& createRoomResp)
 {
-    string responseData = echoFormat(getField<unsigned int>("status", to_string(createRoomResp.status)));
+    string responseData = echoJsonFormat(getField<unsigned int>("status", to_string(createRoomResp.status)));
     return *makeBuffer(CREATE_ROOM_RESP_CODE, responseData);
 }
 
@@ -111,7 +110,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreRespon
     string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
     string statisticsData = getVectorString(getHighScoreResp.statistics);
     responseData += SEPERATOR + statisticsData;
-    return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoFormat(responseData));
+    return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoJsonFormat(responseData));
 }
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsResponse& getPersonStatsResp)
@@ -119,7 +118,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
     string responseData = getField<unsigned int>("status", to_string(getPersonStatsResp.status));
     string statisticsData = getVectorString(getPersonStatsResp.statistics);
     responseData += SEPERATOR + statisticsData;
-    return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoFormat(responseData));
+    return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoJsonFormat(responseData));
 }
 
 
@@ -178,7 +177,7 @@ string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
     roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestions)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("isActive", to_string(roomData.isActive));
 
-    return echoFormat(roomDataStr);
+    return echoJsonFormat(roomDataStr);
 }
 
 /// <summary>
@@ -201,7 +200,7 @@ void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
 /// </summary>
 /// <param name="str"> The data to format.</param>
 /// <returns> The formated data</returns>
-string JsonResponsePacketSerializer::echoFormat(const string str)
+string JsonResponsePacketSerializer::echoJsonFormat(const string str)
 {
     return "{" + str + "}";
 }

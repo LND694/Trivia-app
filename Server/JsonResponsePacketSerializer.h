@@ -38,7 +38,7 @@ protected:
 private:
 	//Help functions
 	static string getPaddedNumber(const int num, const int digits);
-	static string echoFormat(const string str);
+	static string echoJsonFormat(const string str);
 	static Buffer* makeBuffer(const RESPONSE_CODES code, string responseData);
 	static void addStringToBuffer(Buffer* buf, string str);
 
@@ -50,20 +50,28 @@ private:
 	static string getField(const string nameField, const string value);
 };
 
+/// <summary>
+/// The function combines the key and
+/// the vlue to a field format.
+/// </summary>
+/// <typeparam name="T"> The real type of the value(what it has)</typeparam>
+/// <param name="nameField"> The name of the new field</param>
+/// <param name="value"> The value of the key.</param>
+/// <returns> The name and the value as a Field format</returns>
 template <class T>
 inline string JsonResponsePacketSerializer::getField(const string nameField, const string value)
 { 
-	string str =  "'" + nameField + "':";
+	string str =  "'" + nameField + "':"; //the string needs "'"
 	string valueStr = "";
 
 
 	if (typeid(T).name() == typeid(string).name()) // the value is a string
 	{
-		str += "'" + valueStr + "'";
+		str += "'" + value + "'"; //the string needs "'"
 	}
-	else
+	else // not a string
 	{
 		str += valueStr;
 	}
-	return str;
+	return str; //the string as a field
 }

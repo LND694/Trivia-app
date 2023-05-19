@@ -4,9 +4,6 @@
 #include <vector>
 #include "Room.h"
 
-using std::string;
-using std::vector;
-
 constexpr int OK_STATUS_CODE = 1;
 const string ERROR_MSG = "ERROR";
 
