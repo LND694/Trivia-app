@@ -2,6 +2,7 @@
 #pragma error (disable:2665)
 
 #include "json.hpp"
+#include "Room.h"
 #include "Response.h"
 #include "global.h"
 #include "Singleton.h"

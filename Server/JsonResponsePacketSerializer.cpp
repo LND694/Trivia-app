@@ -174,7 +174,7 @@ string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
     roomDataStr += getField<string>("name", roomData.name) + SEPERATOR;
     roomDataStr += getField<unsigned int>("maxPlayers", to_string(roomData.maxPlayers)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("numOfQuestionsInGame", to_string(roomData.numOfQuestionsInGame)) + SEPERATOR;
-    roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestions)) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestion)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("isActive", to_string(roomData.isActive));
 
     return echoJsonFormat(roomDataStr);
