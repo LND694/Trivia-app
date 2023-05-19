@@ -147,6 +147,7 @@
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="sqlite3.h" />
@@ -166,6 +167,8 @@
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="MongoDatabase.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
