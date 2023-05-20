@@ -58,6 +58,47 @@ SignupRequest& JsonRequestPacketDeserializer::desrializeSignupRequest(const Buff
     return *req;
 }
 
+
+
+GetPlayersInRoomRequest& JsonRequestPacketDeserializer::desrializeGetPlayersRequest(const Buffer& buffer)
+{
+    GetPlayersInRoomRequest* req = new GetPlayersInRoomRequest();
+    Buffer* data = getDataFromBuffer(buffer);
+    std::string dataToParse(data->begin(), data->end());
+    auto js = json::parse(dataToParse); //parse into json object
+    req->roomId = js[ROOM_ID];//defines stored in global.h
+
+    delete data;
+    return *req;
+}
+
+JoinRoomRequest& JsonRequestPacketDeserializer::desrializeJoinRoomRequest(const Buffer& buffer)
+{
+    JoinRoomRequest* req = new JoinRoomRequest();
+    Buffer* data = getDataFromBuffer(buffer);
+    std::string dataToParse(data->begin(), data->end());
+    auto js = json::parse(dataToParse); //parse into json object
+    req->roomId = js[ROOM_ID];//defines stored in global.h
+
+    delete data;
+    return *req;
+}
+
+CreateRoomRequest& JsonRequestPacketDeserializer::desrializeCreateRoomRequest(const Buffer& buffer)
+{
+    CreateRoomRequest* req = new CreateRoomRequest();
+    Buffer* data = getDataFromBuffer(buffer);
+    std::string dataToParse(data->begin(), data->end());
+    auto js = json::parse(dataToParse); //parse into json object
+
+    req->answerTimeout = js[ANSWER_TIMEOUT];
+    req->maxUsers = js[MAX_USERS];
+    req->questionCount = js[QUESTION_COUNT];
+    req->roomName = js[ROOM_NAME];//defines stored in global.h
+    delete data;
+    return *req;
+}
+
 /// <summary>
 /// The function getts the segment of the data 
 /// and inserting it into another Buffer.
