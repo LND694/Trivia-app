@@ -12,7 +12,7 @@
 #define ADDRESS_KEY "address"
 #define PHONE_NUM_KEY "phone"
 #define BORN_DATE_KEY "date"
-#define ROON_ID "roomId"
+#define ROOM_ID "roomId"
 #define ANSWER_TIMEOUT "answerTimeout"
 #define MAX_USERS "maxUsers"
 #define QUESTION_COUNT "questionCount"

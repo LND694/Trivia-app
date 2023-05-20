@@ -58,13 +58,15 @@ SignupRequest& JsonRequestPacketDeserializer::desrializeSignupRequest(const Buff
     return *req;
 }
 
+
+
 GetPlayersInRoomRequest& JsonRequestPacketDeserializer::desrializeGetPlayersRequest(const Buffer& buffer)
 {
     GetPlayersInRoomRequest* req = new GetPlayersInRoomRequest();
     Buffer* data = getDataFromBuffer(buffer);
     std::string dataToParse(data->begin(), data->end());
     auto js = json::parse(dataToParse); //parse into json object
-    req->roomId = js[ROON_ID];//defines stored in global.h
+    req->roomId = js[ROOM_ID];//defines stored in global.h
 
     delete data;
     return *req;
@@ -76,7 +78,7 @@ JoinRoomRequest& JsonRequestPacketDeserializer::desrializeJoinRoomRequest(const 
     Buffer* data = getDataFromBuffer(buffer);
     std::string dataToParse(data->begin(), data->end());
     auto js = json::parse(dataToParse); //parse into json object
-    req->roomId = js[ROON_ID];//defines stored in global.h
+    req->roomId = js[ROOM_ID];//defines stored in global.h
 
     delete data;
     return *req;

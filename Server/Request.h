@@ -20,15 +20,20 @@ typedef struct SignupRequest : LoginRequest {
 	string phoneNum;
 	string bornDate;
 
-}SingSignupRequest;
+}SignSignupRequest;
 
 
-typedef struct GetPlayersInRoomRequest
+typedef struct RequestWithRoomId
 {
 	unsigned int roomId;
+}RequestWithRoomId;
+
+typedef struct GetPlayersInRoomRequest : RequestWithRoomId
+{
+
 }GetPlayersInRoomRequest;
 
-typedef struct JoinRoomRequest : GetPlayersInRoomRequest
+typedef struct JoinRoomRequest : RequestWithRoomId
 {
 
 }JoinRoomRequest;
