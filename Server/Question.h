@@ -6,10 +6,6 @@
 using std::string;
 using std::vector;
 
-#define QUESTION_FIELD "QUESTION"
-#define ANSWER_FIELD "ANSWER"
-#define RIGHT_OPTION_FIELD "RIGHT_OPTION"
-
 constexpr unsigned int AMOUNT_ANSWERS = 4;
 
 class Question
