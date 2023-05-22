@@ -17,7 +17,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     curlpp::Easy request;
 
 
-    string apiUrl = opentdbUrl + std::to_string(amountOfQuestions) + "&type=multiple";
+    string apiUrl = OPENTDB_URL + std::to_string(amountOfQuestions) + "&type=multiple";
     // Set the write callback function
     // Set the URL
     request.setOpt(curlpp::options::Url(apiUrl));
