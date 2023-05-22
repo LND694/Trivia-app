@@ -9,6 +9,11 @@ MongoDatabase::MongoDatabase()
 	{
 		throw std::exception("Cannot open the database");
 	}
+	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);//insert 10 question everytime
+}
+
+MongoDatabase::~MongoDatabase()
+{
 }
 
 /// <summary>
@@ -17,10 +22,11 @@ MongoDatabase::MongoDatabase()
 /// <returns> if the database was opened ssucessfully or not</returns>
 bool MongoDatabase::open()
 {
-	this->uri = mongocxx::uri(DEAFULT_URL);
 	try
 	{
-		this->client = mongocxx::client{ uri };//connect to the server
+		this->client = mongocxx::client{ mongocxx::uri{} };//connect to the server
+		auto dbs = this->client.list_database_names();
+		
 		this->db = this->client[DB_NAME];
 		if (!this->db.has_collection(USERS_COLLECTION))
 		{
@@ -94,3 +100,76 @@ int MongoDatabase::addNewUser(const User& user)
 		return ERROR_CODE;
 	}
 }
+
+list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
+{
+	list<Question>* q = new list<Question>();
+	return *q;
+}
+
+float MongoDatabase::getPlayerAverageAnswerTime(const string player)
+{
+	return 0.0f;
+}
+
+int MongoDatabase::getNumOfCorrectAnswers(const string player)
+{
+	return 0;
+}
+
+int MongoDatabase::getNumOfTotalAnswers(const string player)
+{
+	return 0;
+}
+
+int MongoDatabase::getNumOfPlayerGames(const string player)
+{
+	return 0;
+}
+
+int MongoDatabase::getPlayerScore(const string player)
+{
+	return 0;
+}
+
+vector<string> MongoDatabase::getHighScores()
+{
+	return vector<string>();
+}
+
+/// <summary>
+/// insert questions to the mongo database
+/// </summary>
+/// <param name="numOfQuestions"> the number of questions to insert</param>
+void MongoDatabase::insertQuestions(const int numOfQuestions)
+{
+	vector<Question> questions = fetchQuestions(numOfQuestions);//get questions from opentdb api
+
+	if (!this->db.has_collection("QUESTIONS"))
+	{
+		this->db.create_collection("QUESTIONS");
+	}
+	auto coll = this->db["QUESTIONS"];
+	// Insert the questions into MongoDB
+	for (const auto& question : questions) {
+		// Create a BSON document with an array
+		auto document = bsoncxx::builder::stream::document{};
+		auto arrayBuilder = document << "category" << question.getCategory()
+			<< "question" << question.getQuestion()
+			<< "correct_answer" << question.getRightAnswer()
+			<< "difficulty" << question.getDifficulty()
+			<< "incorrect_answers" << bsoncxx::builder::stream::open_array;
+
+		for (const auto& incorrectAnswer : question.getAnswers()) {
+			arrayBuilder << incorrectAnswer;
+		}
+
+		arrayBuilder << bsoncxx::builder::stream::close_array;
+
+		// Insert the document into the collection
+		coll.insert_one(document.view());
+	}
+}
+
+
+

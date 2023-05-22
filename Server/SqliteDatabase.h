@@ -37,6 +37,18 @@ public:
 	int doesPasswordMatch(const string username, const string password) override;
 	int addNewUser(const User& user) override;
 
+
+	//Question functions
+	list<Question>& getQuestions(const int amountQuestions) override;
+	float getPlayerAverageAnswerTime(const string player) override;
+	int getNumOfCorrectAnswers(const string player) override;
+	int getNumOfTotalAnswers(const string player) override;
+	int getNumOfPlayerGames(const string player) override;
+	int getPlayerScore(const string player) override;
+	vector<string> getHighScores() override;
+
+	void fetchQuestions(const int numOfQuestions);
+
 protected:
 	//C'tor
 	SqliteDatabase();

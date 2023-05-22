@@ -1,5 +1,4 @@
 #pragma once
-#pragma error (disable:2665)
 
 #include "Room.h"
 #include "global.h"

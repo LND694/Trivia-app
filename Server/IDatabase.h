@@ -1,13 +1,21 @@
 #pragma once
-#include <iostream>
 #include <list>
 #include "User.h"
 #include "Question.h"
 #include "sqlite3.h"
 #include "global.h"
 #include "Singleton.h"
-
-using std::string;
+#include "json.hpp"
+#include <mongocxx/options/create_collection.hpp>
+#include <bsoncxx/builder/stream/document.hpp>
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
+#include <mongocxx/stdx.hpp>
+#include <mongocxx/uri.hpp>
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Easy.hpp>
+#include <curlpp/Options.hpp>
+using  NLOHMANN_JSON_NAMESPACE::json;
 using std::list;
 enum RETURNED_CODES {
 	ERROR_CODE = -1, OK_CODE = 0,
@@ -36,4 +44,9 @@ public:
 	virtual int getNumOfPlayerGames(const string player) = 0;
 	virtual int getPlayerScore(const string player) = 0;
 	virtual vector<string> getHighScores() = 0;
+protected:
+	vector<Question>& fetchQuestions(const int numOfQuestions);
+private:
+
+	size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output);
 };
