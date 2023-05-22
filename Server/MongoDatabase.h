@@ -1,19 +1,14 @@
 ﻿#pragma once
 #include "IDatabase.h"
-#include <string>
-#include <mongocxx/options/create_collection.hpp>
-#include <bsoncxx/json.hpp>
-#include <mongocxx/client.hpp>
-#include <mongocxx/instance.hpp>
-#include <mongocxx/stdx.hpp>
-#include <mongocxx/uri.hpp>
+
 using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_document;
+using bsoncxx::builder::basic::make_array;
 using std::string;
 const string DB_NAME = "triviaDB";
 const string DEAFULT_URL = "mongodb://localhost:27017";
 const string USERS_COLLECTION = "USERS";
-
+constexpr int DEFAULT_QUESTIONS_AMOUNT = 50;
 class MongoDatabase : public IDatabase
 {
 public:
@@ -29,9 +24,19 @@ public:
 	int doesPasswordMatch(const string username, const string password) override;
 	int addNewUser(const  User& user) override;
 
+
+	//Question functions
+	list<Question>& getQuestions(const int amountQuestions) override;
+	float getPlayerAverageAnswerTime(const string player) override;
+	int getNumOfCorrectAnswers(const string player) override;
+	int getNumOfTotalAnswers(const string player) override;
+	int getNumOfPlayerGames(const string player) override;
+	int getPlayerScore(const string player) override;
+	vector<string>& getHighScores() override;
+
 private:
+	void insertQuestions(const int numOfQuestions);
 	mongocxx::database db;
-	mongocxx::uri uri;
 	mongocxx::client client;
 };
 
