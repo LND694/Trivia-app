@@ -204,9 +204,10 @@ int SqliteDatabase::getPlayerScore(const string player)
 	return 0;
 }
 
-vector<string> SqliteDatabase::getHighScores()
+vector<string>& SqliteDatabase::getHighScores()
 {
-	return vector<string>();
+	vector<string>* vec = new vector<string>();
+	return *vec;
 }
 
 void SqliteDatabase::fetchQuestions(const int numOfQuestions)

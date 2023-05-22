@@ -7,10 +7,18 @@
 /// <returns> vector of questions </returns>
 vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
 {
+    vector<Question>* questions = new vector<Question>();
+    string question;
+    string category;
+    string correctAnswer;
+    string difficulty;
+    vector<string> incorrectAnswers;
     curlpp::Easy request;
-    string apiUrl = "https://opentdb.com/api.php?amount=" + std::to_string(amountOfQuestions) + "&type=multiple";
+
+
+    string apiUrl = opentdbUrl + std::to_string(amountOfQuestions) + "&type=multiple";
     // Set the write callback function
-    std::string response;
+    string response;
     // Set the URL
     request.setOpt(curlpp::options::Url(apiUrl));
 
@@ -22,12 +30,6 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     request.perform();
 
     auto apiResponse = json::parse(response);//parse to json
-    vector<Question>* questions = new vector<Question>();
-    string question;
-    string category;
-    string correctAnswer;
-    string difficulty;
-    vector<string> incorrectAnswers;
     if (apiResponse["response_code"].get<int>() == 0) {
         for (const auto& result : apiResponse["results"])
         {
@@ -50,9 +52,3 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
 
 }
 
-size_t IDatabase::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output)
-{
-    size_t totalSize = size * nmemb;
-    output->append(static_cast<char*>(contents), totalSize);
-    return totalSize;
-}

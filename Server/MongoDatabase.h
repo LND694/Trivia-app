@@ -32,7 +32,7 @@ public:
 	int getNumOfTotalAnswers(const string player) override;
 	int getNumOfPlayerGames(const string player) override;
 	int getPlayerScore(const string player) override;
-	vector<string> getHighScores() override;
+	vector<string>& getHighScores() override;
 
 private:
 	void insertQuestions(const int numOfQuestions);

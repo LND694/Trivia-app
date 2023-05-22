@@ -17,6 +17,9 @@
 #include <curlpp/Options.hpp>
 using  NLOHMANN_JSON_NAMESPACE::json;
 using std::list;
+
+const string opentdbUrl = "https://opentdb.com/api.php?amount=";
+
 enum RETURNED_CODES {
 	ERROR_CODE = -1, OK_CODE = 0,
 	USER_EXIST = 1, USER_NOT_EXIST = 2,
@@ -43,10 +46,8 @@ public:
 	virtual int getNumOfTotalAnswers(const string player) = 0;
 	virtual int getNumOfPlayerGames(const string player) = 0;
 	virtual int getPlayerScore(const string player) = 0;
-	virtual vector<string> getHighScores() = 0;
+	virtual vector<string>& getHighScores() = 0;
 protected:
 	vector<Question>& fetchQuestions(const int numOfQuestions);
-private:
 
-	size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output);
 };

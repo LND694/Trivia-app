@@ -132,9 +132,10 @@ int MongoDatabase::getPlayerScore(const string player)
 	return 0;
 }
 
-vector<string> MongoDatabase::getHighScores()
+vector<string>& MongoDatabase::getHighScores()
 {
-	return vector<string>();
+	vector<string>* vec = new vector<string>();
+	return *vec;
 }
 
 /// <summary>
