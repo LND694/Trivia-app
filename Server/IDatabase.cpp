@@ -12,13 +12,13 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     string category;
     string correctAnswer;
     string difficulty;
+    string response;
     vector<string> incorrectAnswers;
     curlpp::Easy request;
 
 
     string apiUrl = opentdbUrl + std::to_string(amountOfQuestions) + "&type=multiple";
     // Set the write callback function
-    string response;
     // Set the URL
     request.setOpt(curlpp::options::Url(apiUrl));
 
