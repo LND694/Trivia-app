@@ -46,7 +46,8 @@ bool SqliteDatabase::open()
 {
 	vector<Question> vecQuest = fetchQuestions(AMOUNT_QUESTIONS);
 	vector<string> answers = vector<string>();
-	const string baseCommand = "INSERT INTO QUESTIONS(QUESTION, CATEGORY, DIFFICULTY, CORRECT_ANSWER, ANSWER1, ANSWER2, ANSWER3) VALUES ";
+	list<User>* users = nullptr;
+	string baseCommand = "INSERT INTO QUESTIONS(QUESTION, CATEGORY, DIFFICULTY, CORRECT_ANSWER, ANSWER1, ANSWER2, ANSWER3) VALUES ";
 	string command = "";
 	//Opening/Creating the database file
 	int res = sqlite3_open(DB_FILE_NAME.c_str(), &this->m_db);
@@ -86,6 +87,19 @@ bool SqliteDatabase::open()
 	}
 	vecQuest.clear();
 
+	//Getting all the users to initialize the SCORES table
+	command = "SELECT * FROM USERS;";
+	users = runSqlCommand<User>(command);
+
+	baseCommand = "INSERT INTO SCORES (USER_ID, SCORE) VALUES";
+	//Going over all the users
+	for (auto i = users->begin(); i != users->end(); i++)
+	{
+		command = baseCommand + "(" + to_string(i->getId()) + ", 0);";
+		runSqlCommand(command);
+	}
+	users->clear();
+
 	return true;
 }
 
@@ -96,6 +110,8 @@ bool SqliteDatabase::open()
 bool SqliteDatabase::close() 
 {
 	string command = "DELETE FROM QUESTIONS;";
+	this->runSqlCommand(command);
+	command = "DELETE FROM SCORES;";
 	this->runSqlCommand(command);
 	sqlite3_close(this->m_db);
 	this->m_db = nullptr;
@@ -189,17 +205,26 @@ int SqliteDatabase::addNewUser(const User& user)
 	this->runSqlCommand(command);
 
 	//Initializing the statistic row of the new user
-	command = "INSERT INTO STATISTICS(USER_ID, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES INTEGER) VALUES ";
-	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "' , 0, 0, 0, 0);";
+	command = "INSERT INTO STATISTICS(USER_ID, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES) VALUES ";
+	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0);";
+	this->runSqlCommand(command);
+
+	command = "INSERT INTO SCORES(USER_ID, SCORE) VALUES ((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "'), 0);";
 	this->runSqlCommand(command);
 
 	return OK_CODE;
 }
 
+/// <summary>
+/// The function extracts from the database a 
+/// certain amount of questions.
+/// </summary>
+/// <param name="amountQuestions"> The amount of questions to extracts.</param>
+/// <returns> The list of the questions.</returns>
 list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 {
-	list<Question> lst;
-	return lst;
+	string command = "SELECT * FROM QUESTIONS LIMIT " + to_string(amountQuestions) + ";";
+	return *this->runSqlCommand<Question>(command);
 }
 
 /// <summary>
@@ -375,6 +400,13 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 	return listOfData;
 }
 
+/// <summary>
+/// The function runns a SQL command which certainly 
+/// return only 1 argument from a simple type.
+/// </summary>
+/// <typeparam name="T"> The type of the argument to return.</typeparam>
+/// <param name="command"> The command to run</param>
+/// <returns> The result of the command on the database</returns>
 template<class T>
 T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 {
@@ -395,9 +427,19 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		throw std::exception(errMsg);
 	}
-	return *data;
+	if (data != nullptr)
+	{
+		return *data;
+	}
+	return 0;
 }
 
+/// <summary>
+/// The function getts the average answer time of a
+/// certain user.
+/// </summary>
+/// <param name="player"> The name of the user.</param>
+/// <returns> The average time of the user.</returns>
 float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
 {
 	string command = "SELECT AVERAGE_ANSWER_TIME FROM STATISTICS WHERE USER_ID == ";
@@ -406,6 +448,12 @@ float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
 	return runSqlCommandSingleOutput<float>(command);
 }
 
+/// <summary>
+/// The function getts the amount of the correct answers which the
+/// user has.
+/// </summary>
+/// <param name="player"> The name of the user.s</param>
+/// <returns> The amount of the correct answers.</returns>
 int SqliteDatabase::getNumOfCorrectAnswers(const string player)
 {
 	string command = "SELECT AMOUNT_CORRECT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
@@ -414,6 +462,12 @@ int SqliteDatabase::getNumOfCorrectAnswers(const string player)
 	return runSqlCommandSingleOutput<int>(command);
 }
 
+/// <summary>
+/// The function getts the amount of the answers which the
+/// user has.
+/// </summary>
+/// <param name="player"> The name of the user.</param>
+/// <returns> The amount of the answers.</returns>
 int SqliteDatabase::getNumOfTotalAnswers(const string player)
 {
 	string command = "SELECT TOTAL_AMOUNT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
@@ -422,6 +476,12 @@ int SqliteDatabase::getNumOfTotalAnswers(const string player)
 	return runSqlCommandSingleOutput<int>(command);
 }
 
+/// <summary>
+/// The function getts the amount of the games which the
+/// user has played.
+/// </summary>
+/// <param name="player"> The name of the user.</param>
+/// <returns> The amount of the games.</returns>
 int SqliteDatabase::getNumOfPlayerGames(const string player)
 {
 	string command = "SELECT AMOUNT_GAMES FROM STATISTICS WHERE USER_ID == ";
@@ -430,14 +490,31 @@ int SqliteDatabase::getNumOfPlayerGames(const string player)
 	return runSqlCommandSingleOutput<int>(command);
 }
 
+/// <summary>
+/// The function getts the last score of a single user.
+/// </summary>
+/// <param name="player"> The user's name</param>
+/// <returns> His last score</returns>
 int SqliteDatabase::getPlayerScore(const string player)
 {
-	return 0;
+	string command = "SELECT SCORE FROM SCORES WHERE USER_ID == ";
+	int score = 0;
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
+	if (!doesUserExist(player))
+	{
+		return USER_NOT_EXIST;
+	}
+	score = runSqlCommandSingleOutput<int>(command);
+	return score;
 }
 
+/// <summary>
+/// The function getts the highest scores in the database.
+/// </summary>
+/// <returns> The highest scores.</returns>
 vector<string>& SqliteDatabase::getHighScores()
 {
-	string command = "SELECT HIGH_SCORE FROM STATISTICS ORDER BY HIGH_SCORE ASC LIMIT 3;";
+	string command = "SELECT HIGH_SCORE FROM STATISTICS ORDER BY HIGH_SCORE ASC LIMIT " + to_string(AMOUNT_HIGH_SCORES) + ";";
 	list<int>* bestScores = runSqlCommand<int>(command);
 	vector<string>* theBestScores = new vector<string>();
 
