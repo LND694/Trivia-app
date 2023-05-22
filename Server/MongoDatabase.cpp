@@ -151,6 +151,8 @@ void MongoDatabase::insertQuestions(const int numOfQuestions)
 		this->db.create_collection("QUESTIONS");
 	}
 	auto coll = this->db["QUESTIONS"];
+	// Delete all prev documents in the collection
+	coll.delete_many({});
 	// Insert the questions into MongoDB
 	for (const auto& question : questions) {
 		// Create a BSON document with an array
