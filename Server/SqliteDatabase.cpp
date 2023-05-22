@@ -173,6 +173,47 @@ int SqliteDatabase::addNewUser(const User& user)
 	return OK_CODE;
 }
 
+list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
+{
+	list<Question>* q = new list<Question>();
+	return *q;
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
+{
+	return 0.0f;
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const string player)
+{
+	return 0;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const string player)
+{
+	return 0;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const string player)
+{
+	return 0;
+}
+
+int SqliteDatabase::getPlayerScore(const string player)
+{
+	return 0;
+}
+
+vector<string>& SqliteDatabase::getHighScores()
+{
+	vector<string>* vec = new vector<string>();
+	return *vec;
+}
+
+void SqliteDatabase::fetchQuestions(const int numOfQuestions)
+{
+}
+
 /// <summary>
 /// The function runns an SQL command on the database.
 /// </summary>
