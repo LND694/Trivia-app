@@ -18,7 +18,7 @@
 using  NLOHMANN_JSON_NAMESPACE::json;
 using std::list;
 
-const string opentdbUrl = "https://opentdb.com/api.php?amount=";
+const string OPENTDB_URL = "https://opentdb.com/api.php?amount=";
 
 enum RETURNED_CODES {
 	ERROR_CODE = -1, OK_CODE = 0,
