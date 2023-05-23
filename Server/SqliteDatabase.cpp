@@ -85,7 +85,7 @@ bool SqliteDatabase::open()
 
 		this->runSqlCommand(command);
 	}
-	vecQuest.clear();
+	vecQuest.~vector();
 
 	//Getting all the users to initialize the SCORES table
 	command = "SELECT * FROM USERS;";
@@ -98,7 +98,7 @@ bool SqliteDatabase::open()
 		command = baseCommand + "(" + to_string(i->getId()) + ", 0);";
 		runSqlCommand(command);
 	}
-	users->clear();
+	users->~list();
 
 	return true;
 }
@@ -136,17 +136,17 @@ int SqliteDatabase::doesUserExist(const string username)
 	catch (const std::exception& excp)
 	{
 		std::cout << excp.what() << std::endl;
-		delete userList;
+		userList->~list();
 		return ERROR_CODE;
 	}
 
 	//The user was found
 	if (!userList->empty())
 	{
-		delete userList;
+		userList->~list();
 		return USER_EXIST;
 	}
-	delete userList;
+	userList->~list();
 	return USER_NOT_EXIST;
 
 }
@@ -177,19 +177,17 @@ int SqliteDatabase::doesPasswordMatch(const string username, const string passwo
 	//There is a User with this username&password
 	if (!usersList->empty())
 	{
-		delete usersList;
+		usersList->~list();
 		return PASSWORD_MATCH;
 	}
-	delete usersList;
+	usersList->~list();
 	return PASSWORD_NOT_MATCH;
 }
 
 /// <summary>
 /// The function adds another user to the database.
 /// </summary>
-/// <param name="username"> The username of the new user</param>
-/// <param name="password"> The password of the new user</param>
-/// <param name="email"> The email of the new user</param>
+/// <param name="user">The user to insert</param>
 /// <returns>an integer value- if the user already exsit, if there was
 /// an error or if the adding was OK.</returns>
 int SqliteDatabase::addNewUser(const User& user)
@@ -523,5 +521,6 @@ vector<string>& SqliteDatabase::getHighScores()
 	{
 		theBestScores->push_back(to_string(*i));
 	}
+	bestScores->~list();
 	return *theBestScores;
 }
