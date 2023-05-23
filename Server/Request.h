@@ -20,7 +20,7 @@ typedef struct SignupRequest : LoginRequest {
 	string phoneNum;
 	string bornDate;
 
-}SignSignupRequest;
+}SignupRequest;
 
 
 typedef struct RequestWithRoomId
