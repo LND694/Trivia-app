@@ -49,7 +49,7 @@ void Server::run()
 
 	comThread.detach();
 
-	std::cout << "Write '"<< EXIT_MSG << "' to power off the server" << std::endl;
+	std::cout << "Write '"<< EXIT_MSG << "' to power off the server " << std::endl;
 	//Waiting to input until asking for exit
 	while (input != EXIT_MSG)
 	{

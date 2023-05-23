@@ -127,6 +127,6 @@ void Communicator::handleNewClient(SOCKET socket)
 	cout << res.response.data() << endl;
 
 	//send the response
-	send(socket, reinterpret_cast<char*>(res.response.data()), res.response.size(),NULL);
+	send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()),NULL);
 
 }

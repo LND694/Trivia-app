@@ -133,7 +133,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
 string JsonResponsePacketSerializer::getPaddedNumber(const int num, const int digits)
 {
     string paddedNum = to_string(num);
-    int initLen = paddedNum.length();
+    int initLen = static_cast<int>(paddedNum.length());
 
     //Padding the number
     for (int i = initLen; i < digits; i++)
@@ -216,7 +216,7 @@ Buffer* JsonResponsePacketSerializer::makeBuffer(const RESPONSE_CODES code, stri
 {
     Buffer* buffer = new Buffer();
     addStringToBuffer(buffer, to_string(code)); //adding the code
-    addStringToBuffer(buffer, getPaddedNumber(responseData.length(), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
+    addStringToBuffer(buffer, getPaddedNumber(static_cast<int>(responseData.length()), SIZE_LENGTH_DATA_FIELD)); //addding the size of the message
     addStringToBuffer(buffer, responseData); //adding the message
     buffer->push_back('\0'); //end of the buffer
     return buffer;
