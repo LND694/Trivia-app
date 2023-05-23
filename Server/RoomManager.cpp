@@ -38,15 +38,15 @@ unsigned int RoomManager::getRoomState(RoomId id)
 /// <returns> rooms data</returns>
 vector<RoomData>& RoomManager::getRooms() const
 {
-	vector<RoomData> roomsData = vector<RoomData>();
+	vector<RoomData>* roomsData = new vector<RoomData>();
 	for (auto i : this->m_rooms)
 	{
 		if (i.second.getRoomData().isActive)
 		{
-			roomsData.push_back(i.second.getRoomData());
+			roomsData->push_back(i.second.getRoomData());
 		}
 	}
-	return roomsData;
+	return *roomsData;
 }
 
 /// <summary>

@@ -38,12 +38,12 @@ void Room::removeUser(LoggedUser& user)
 /// <returns> the names of the users in the room</returns>
 vector<string>& Room::getAllUsers() const
 {
-	vector<string> res = vector<string>();
+	vector<string>* res = new vector<string>();
 	for (auto i : this->m_users)
 	{
-		res.push_back(i.getUsername());
+		res->push_back(i.getUsername());
 	}
-	return res;
+	return *res;
 }
 
 RoomData& Room::getRoomData()
