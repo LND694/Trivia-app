@@ -15,10 +15,12 @@
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
+
 using  NLOHMANN_JSON_NAMESPACE::json;
 using std::list;
 
 const string OPENTDB_URL = "https://opentdb.com/api.php?amount=";
+constexpr int AMOUNT_QUESTIONS = 50;
 
 enum RETURNED_CODES {
 	ERROR_CODE = -1, OK_CODE = 0,

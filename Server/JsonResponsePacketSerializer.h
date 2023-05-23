@@ -59,7 +59,6 @@ template <class T>
 inline string JsonResponsePacketSerializer::getField(const string nameField, const string value)
 { 
 	string str =  "'" + nameField + "':"; //the string needs "'"
-	string valueStr = "";
 
 
 	if (typeid(T).name() == typeid(string).name()) // the value is a string
@@ -68,7 +67,7 @@ inline string JsonResponsePacketSerializer::getField(const string nameField, con
 	}
 	else // not a string
 	{
-		str += valueStr;
+		str += value;
 	}
 	return str; //the string as a field
 }
