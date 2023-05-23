@@ -1,8 +1,11 @@
 #include "StatisticsManager.h"
 
-
-StatisticsManager::StatisticsManager(IDatabase* m_database)
-    : m_database(m_database)
+/// <summary>
+/// c`tor for the StatisticsManager
+/// </summary>
+/// <param name="db"> the database</param>
+StatisticsManager::StatisticsManager(IDatabase* db)
+    : m_database(db)
 {
 }
 

@@ -6,7 +6,7 @@ class StatisticsManager
 {
 public:
 
-	StatisticsManager(IDatabase* m_database);
+	StatisticsManager(IDatabase* db);
 	~StatisticsManager();
 	vector<string>& getHighScore();
 	vector<string>& getUserStatistics(const string username);
