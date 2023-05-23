@@ -153,6 +153,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserInputChecker.h" />
     <ClInclude Include="WSAInitializer.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserInputChecker.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
