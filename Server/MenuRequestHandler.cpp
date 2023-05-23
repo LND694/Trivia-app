@@ -49,6 +49,7 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 	if (!this->isRequestRelevent(requestInfo))
 	{
+		res = new RequestResult();
 		createErrorResponse(ERROR_MSG, res);
 	}
 	else
@@ -75,9 +76,6 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 			break;
 		case GET_PERS_STATS_REQS_CODE:
 			*res = getPersonalStats(requestInfo);
-			break;
-		default:
-			createErrorResponse(ERROR_MSG, res);
 			break;
 		}
 	}
