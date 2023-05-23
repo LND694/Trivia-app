@@ -20,7 +20,7 @@ SqliteDatabase::SqliteDatabase()
 /// </summary>
 SqliteDatabase::~SqliteDatabase()
 {
-    this->close();
+	this->close();
 }
 
 /// <summary>
@@ -78,7 +78,7 @@ bool SqliteDatabase::open()
 	{
 		answers = i->getAnswers();
 		command = baseCommand;
-		command +="('" + i->getQuestion() + "', '";
+		command += "('" + i->getQuestion() + "', '";
 		command += i->getCategory() + "', '" + i->getDifficulty() + "', '";
 		command += i->getRightAnswer() + "', '" + answers[0] + "', '" + answers[1] + "', '" + answers[2];
 		command += "');";
@@ -107,7 +107,7 @@ bool SqliteDatabase::open()
 /// The function closes the database file.
 /// </summary>
 /// <returns> a bool value- if the closing was successful or not.</returns>
-bool SqliteDatabase::close() 
+bool SqliteDatabase::close()
 {
 	string command = "DELETE FROM QUESTIONS;";
 	this->runSqlCommand(command);
@@ -193,7 +193,7 @@ int SqliteDatabase::doesPasswordMatch(const string username, const string passwo
 int SqliteDatabase::addNewUser(const User& user)
 {
 	string command = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL, ADDRESS, PHONE_NUM, BORN_DATE) VALUES ";
-	command += "('" + user.getUsername() + "', '" + user.getPassword() + "', '"+ user.getEmail() + "', '" 
+	command += "('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', '"
 		+ user.getAddress() + "', '" + user.getPhoneNum() + "', '" + user.getBornDate() + "'); ";
 
 	if (USER_EXIST == doesUserExist(user.getUsername()))
@@ -211,47 +211,6 @@ int SqliteDatabase::addNewUser(const User& user)
 	this->runSqlCommand(command);
 
 	return OK_CODE;
-}
-
-list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
-{
-	list<Question>* q = new list<Question>();
-	return *q;
-}
-
-float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
-{
-	return 0.0f;
-}
-
-int SqliteDatabase::getNumOfCorrectAnswers(const string player)
-{
-	return 0;
-}
-
-int SqliteDatabase::getNumOfTotalAnswers(const string player)
-{
-	return 0;
-}
-
-int SqliteDatabase::getNumOfPlayerGames(const string player)
-{
-	return 0;
-}
-
-int SqliteDatabase::getPlayerScore(const string player)
-{
-	return 0;
-}
-
-vector<string>& SqliteDatabase::getHighScores()
-{
-	vector<string>* vec = new vector<string>();
-	return *vec;
-}
-
-void SqliteDatabase::fetchQuestions(const int numOfQuestions)
-{
 }
 
 /// <summary>
@@ -470,7 +429,7 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		return *data;
 	}
-	return 0;
+	return ERROR_CODE;
 }
 
 /// <summary>
@@ -558,7 +517,7 @@ vector<string>& SqliteDatabase::getHighScores()
 	vector<string>* theBestScores = new vector<string>();
 
 	//Going over the list of the best scores
-	for (auto i = bestScores->begin(); i != bestScores->end();i++)
+	for (auto i = bestScores->begin(); i != bestScores->end(); i++)
 	{
 		theBestScores->push_back(to_string(*i));
 	}

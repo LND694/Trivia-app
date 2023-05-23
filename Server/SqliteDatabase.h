@@ -57,15 +57,15 @@ public:
 	int addNewUser(const User& user) override;
 
 	//Question function
-	list<Question>& getQuestions(const int amountQuestions);
+	list<Question>& getQuestions(const int amountQuestions) override;
 
 	//Statistics functions
-	float getPlayerAverageAnswerTime(const string player);
-	int getNumOfCorrectAnswers(const string player);
-	int getNumOfTotalAnswers(const string player);
-	int getNumOfPlayerGames(const string player);
-	int getPlayerScore(const string player);
-	vector<string>& getHighScores();
+	float getPlayerAverageAnswerTime(const string player) override;
+	int getNumOfCorrectAnswers(const string player) override;
+	int getNumOfTotalAnswers(const string player) override;
+	int getNumOfPlayerGames(const string player) override;
+	int getPlayerScore(const string player) override;
+	vector<string>& getHighScores() override;
 
 protected:
 	//C'tor
