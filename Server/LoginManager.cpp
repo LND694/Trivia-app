@@ -20,7 +20,7 @@ LoginManager::LoginManager(IDatabase* db) :
 /// <returns> the address of the instance</returns>
 LoginManager* LoginManager::getInstance(IDatabase* db)
 {
-    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    lock_guard<Lock> lockGuard(m_lock);
     if (m_instance == nullptr)
     {
         m_instance = new LoginManager(db);
