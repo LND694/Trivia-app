@@ -8,6 +8,8 @@ using std::string;
 const string DB_NAME = "triviaDB";
 const string DEAFULT_URL = "mongodb://localhost:27017";
 const string USERS_COLLECTION = "USERS";
+const string STATS_COLLECTION = "STATS";
+const string QUESTIONS_COLLECTION = "QUESTIONS";
 constexpr int DEFAULT_QUESTIONS_AMOUNT = 50;
 class MongoDatabase : public IDatabase
 {

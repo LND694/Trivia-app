@@ -341,7 +341,7 @@ int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** 
 		{
 			answers.push_back(argv[i]);
 
-			if (AMOUNT_ANSWERS - 1 == answers.size())
+			if (static_cast<unsigned long long>(AMOUNT_ANSWERS) - 1 == answers.size())//support compatibility with wider type
 			{
 				currentQuestion = Question(quesiton, answers, rightAnswer, category, difficulty);
 				(static_cast<list<Question>*>(data))->push_back(currentQuestion);
@@ -353,7 +353,7 @@ int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::callbackFloat(void* data, int argc, char** argv, char** azColName)
 {
-	*(static_cast<float*>(data)) = atoi(argv[0]);
+	*(static_cast<float*>(data)) = static_cast<float>(atoi(argv[0]));//support conversion from int to float (atoi returns int)
 	return OK_CODE;
 }
 
