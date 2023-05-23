@@ -45,7 +45,7 @@ bool MenuRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> The result of the request</returns>
 RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-    RequestResult* res = new RequestResult();
+    RequestResult* res = nullptr;
 
 	if (!this->isRequestRelevent(requestInfo))
 	{
