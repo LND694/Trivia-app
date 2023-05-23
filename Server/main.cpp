@@ -9,8 +9,7 @@ int main(void)
 	mongocxx::instance instance{}; // This should be done only once.
 	try
 	{
-		//mongocxx::instance instance{}; //this should be done only once
-		db = SqliteDatabase::getInstance();
+		db = new MongoDatabase();
 		WSAInitializer wasinit;//init before init the socket because the sokcet depends on it
 		server = Server::getInstance(db);
 		server->run();
