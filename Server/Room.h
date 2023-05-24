@@ -21,7 +21,7 @@ public:
 	Room(const RoomData& data, const LoggedUser& user);
 	void addUser(const LoggedUser& user);
 	void removeUser(LoggedUser& user);
-	vector<string>& getAllUsers() const;
+	vector<string>& getAllUsers();
 	RoomData& getRoomData();
 private:
 	RoomData m_metadata;
