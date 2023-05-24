@@ -46,7 +46,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
     bool error = false;
     RequestResult* reqRes = new RequestResult();
     LoginRequest logReq;
-    LoginResponse logResp;
+    LoginResponse logResp = LoginResponse();
     ErrorResopnse errResp;
 
     //if the request is not relevent
@@ -71,7 +71,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
         {
             logResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//turn the response into buffer of the request result
-            reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the login was ssuccessful
+            reqRes->newHandler = this->m_handlerFactory.createMenuRequestHandler(LoggedUser(logReq.username));//send a new menuHandler if the login was ssuccessful
         }
     }
     return *reqRes;
@@ -88,7 +88,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
     bool error = false;
     string excpStr = "";
     RequestResult* reqRes = new RequestResult();
-    SignUpResopnse signUpResp;
+    SignUpResopnse signUpResp = SignUpResopnse();
     ErrorResopnse errResp;
     SignupRequest signUpReq;
     //if the request is not relevent
@@ -117,7 +117,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
         {
             signUpResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);//turn the response into buffer of the request result
-            reqRes->newHandler = new MenuRequestHandler();//send a new menuHandler if the signUp was successful
+            reqRes->newHandler = this->m_handlerFactory.createMenuRequestHandler(LoggedUser(signUpReq.username));//send a new menuHandler if the login was ssuccessful
         }
     }
     return *reqRes;
