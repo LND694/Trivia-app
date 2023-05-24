@@ -256,7 +256,7 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 
 	//Creating the room
 	RoomData roomData;
-	roomData.id = this->m_roomManager.getRooms().size() + 1;
+	roomData.id = static_cast<int>(this->m_roomManager.getRooms().size() + 1);
 	roomData.name = createRoomReqs.roomName;
 	roomData.isActive = true;
 	roomData.maxPlayers = createRoomReqs.maxUsers;

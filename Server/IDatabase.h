@@ -20,6 +20,8 @@ using  NLOHMANN_JSON_NAMESPACE::json;
 using std::list;
 
 const string OPENTDB_URL = "https://opentdb.com/api.php?amount=";
+const string SUBSTR1 = "&quot;";
+const string SUBSTR2 = "&#039;";
 constexpr int AMOUNT_QUESTIONS = 50;
 
 enum RETURNED_CODES {
@@ -51,5 +53,6 @@ public:
 	virtual vector<string>& getHighScores() = 0;
 protected:
 	vector<Question>& fetchQuestions(const int numOfQuestions);
-
+private:
+	string eraseSubString(string str, const string substr);
 };
