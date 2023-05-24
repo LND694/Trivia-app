@@ -15,8 +15,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     string response;
     vector<string> incorrectAnswers;
     curlpp::Easy request;
-
-
+ 
     string apiUrl = OPENTDB_URL + std::to_string(amountOfQuestions) + "&type=multiple";
     // Set the write callback function
     // Set the URL
@@ -35,6 +34,8 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
         {
             category = result["category"].get<std::string>();
             question = result["question"].get<std::string>();
+            question = eraseSubString(question, SUBSTR1);//erase common "&quot;"
+            question = eraseSubString(question, SUBSTR2);//erase common "&#039;"
             correctAnswer = result["correct_answer"].get<std::string>();
             difficulty = result["difficulty"].get<std::string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
@@ -50,5 +51,23 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     }
     return *questions;
 
+}
+
+/// <summary>
+/// erase a certain substring from a string
+/// </summary>
+/// <param name="str"> a string</param>
+/// <param name="substr"> the substring to find in the string</param>
+/// <returns> string without the substring</returns>
+string IDatabase::eraseSubString(string str, const string substr)
+{
+    std::size_t ind;
+    ind = str.find(substr);
+    while (ind != string::npos)
+    {
+        str.erase(ind, SUBSTR1.length());
+        ind = str.find(SUBSTR1);
+    }
+    return str;
 }
 

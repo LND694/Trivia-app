@@ -11,7 +11,7 @@ class RequestHandlerFactory;
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-	MenuRequestHandler(const LoggedUser& loggedUser, RoomManager& roomManager, 
+	MenuRequestHandler(const LoggedUser& loggedUser, RoomManager& roomManager,
 		StatisticsManager& statisticsManager, RequestHandlerFactory* handlerFactory);
 	~MenuRequestHandler();
 	//Functions
