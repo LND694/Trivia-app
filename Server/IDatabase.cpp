@@ -53,6 +53,12 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
 
 }
 
+/// <summary>
+/// erase a certain substring from a string
+/// </summary>
+/// <param name="str"> a string</param>
+/// <param name="substr"> the substring to find in the string</param>
+/// <returns> string without the substring</returns>
 string IDatabase::eraseSubString(string str, const string substr)
 {
     std::size_t ind;
