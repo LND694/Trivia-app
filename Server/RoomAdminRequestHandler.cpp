@@ -7,6 +7,6 @@ bool RoomAdminRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 
 RequestResult& RoomAdminRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-    RequestResult req;
-    return req;
+    RequestResult* req = new RequestResult();
+    return *req;
 }
