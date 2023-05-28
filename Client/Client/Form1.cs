@@ -18,31 +18,11 @@ namespace Client
         {
             InitializeComponent();
 
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_WOC1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_WOC2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
+            for(int i = 0; i < this.Controls.Count; i++)
+            {
+                this.Controls[i].Visible = false;
+            }
+            this.openPanel.Visible = true;
         }
 
         private void button_WOC3_Click(object sender, EventArgs e)
@@ -52,23 +32,94 @@ namespace Client
 
         private void MoveTab(Panel preTab, Panel nextTab)
         {
-            //Hiding all the controls of the previous tab
-            for (int i = 0; i < preTab.Controls.Count; i++)
-            {
-                preTab.Controls[i].Visible = false;
-            }
-
-            //Showing all the controls of next tab
-            for (int i = 0; i < nextTab.Controls.Count; i++)
-            {
-                nextTab.Controls[i].Visible = true;
-            }
-            nextTab.BringToFront();
+            preTab.Visible = false;
+            nextTab.Visible = true;
         }
 
-        private void openPanel_Paint(object sender, PaintEventArgs e)
+        private void button_WOC4_Click(object sender, EventArgs e)
         {
+            MoveTab(signUpPanel, menuPanel);
+        }
 
+        private void button_WOC11_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(menuPanel, openPanel);
+        }
+
+        private void button_WOC1_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(openPanel, signUpPanel);
+        }
+
+        private void button_WOC5_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button_WOC2_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(openPanel, loginPanel);
+        }
+
+        private void button_WOC13_Click(object sender, EventArgs e)
+        {
+            MoveTab(statisticsPanel, menuPanel);
+        }
+
+        private void button_WOC10_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(menuPanel, statisticsPanel);
+        }
+
+        private void button_WOC7_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(loginPanel, openPanel);
+        }
+
+        private void button_WOC6_Click_1(object sender, EventArgs e)
+        {
+            MoveTab(loginPanel, menuPanel);
+        }
+
+        private void button_WOC16_Click(object sender, EventArgs e)
+        {
+            MoveTab(personalStatsPanel, statisticsPanel);
+        }
+
+        private void button_WOC15_Click(object sender, EventArgs e)
+        {
+            MoveTab(bestPlayersPanel, statisticsPanel);
+        }
+
+        private void button_WOC14_Click(object sender, EventArgs e)
+        {
+            MoveTab(statisticsPanel, bestPlayersPanel);
+        }
+
+        private void button_WOC12_Click(object sender, EventArgs e)
+        {
+            MoveTab(statisticsPanel, personalStatsPanel);
+
+        }
+
+        private void button_WOC20_Click(object sender, EventArgs e)
+        {
+            MoveTab(createRoomPanel, menuPanel);
+        }
+
+        private void button_WOC19_Click(object sender, EventArgs e)
+        {
+            MoveTab(enterRoomPanel, menuPanel);
+        }
+
+        private void button_WOC9_Click(object sender, EventArgs e)
+        {
+            MoveTab(menuPanel, createRoomPanel);
+        }
+
+        private void button_WOC8_Click(object sender, EventArgs e)
+        {
+            MoveTab(menuPanel, enterRoomPanel);
         }
     }
 }
