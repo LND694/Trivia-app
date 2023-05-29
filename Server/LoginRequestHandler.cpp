@@ -88,7 +88,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
     bool error = false;
     string excpStr = "";
     RequestResult* reqRes = new RequestResult();
-    SignUpResopnse signUpResp = SignUpResopnse();
+    SignUpResponse signUpResp = SignUpResponse();
     ErrorResopnse errResp;
     SignupRequest signUpReq;
     //if the request is not relevent

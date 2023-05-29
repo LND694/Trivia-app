@@ -32,7 +32,7 @@ typedef struct LoginResponse : ResponseWithStatus
 
 } LoginResponse;
 
-typedef struct SignUpResopnse : ResponseWithStatus
+typedef struct SignUpResponse : ResponseWithStatus
 {
 
 } SignUpResponse;
