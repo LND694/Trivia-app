@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +20,8 @@ namespace Client
         {
             InitializeComponent();
 
+            //Making all the controls in the Form to be invisible 
+            //except for the opening panel(tab)
             for(int i = 0; i < this.Controls.Count; i++)
             {
                 this.Controls[i].Visible = false;
@@ -30,6 +34,11 @@ namespace Client
             MoveTab(this.signUpPanel, this.openPanel);
         }
 
+        /// <summary>
+        /// The functon moves from one panel to another.
+        /// </summary>
+        /// <param name="preTab"> The last tab to move from</param>
+        /// <param name="nextTab"> The next tab to move to</param>
         private void MoveTab(Panel preTab, Panel nextTab)
         {
             preTab.Visible = false;
@@ -120,6 +129,22 @@ namespace Client
         private void button_WOC8_Click(object sender, EventArgs e)
         {
             MoveTab(menuPanel, enterRoomPanel);
+        }
+
+        private U sendRequestToServer<T, U>(T request)
+        {
+            //Making the request enable to pass to the Server
+            string FILE_PATH = "serialized.bin";
+            using (FileStream fs = new FileStream(FILE_PATH, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, request);
+            }
+
+            //Sending the msg to server and getting an answer
+            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>("Json string");
+            return var;
+
         }
     }
 }
