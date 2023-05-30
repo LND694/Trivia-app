@@ -14,6 +14,8 @@ namespace Client
         [STAThread]
         static void Main()
         {
+            Communicator cm = new Communicator();
+            cm.connect();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

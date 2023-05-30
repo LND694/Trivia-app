@@ -52,6 +52,7 @@
     <Compile Include="Button_WOC.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Communicator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="JsonResponsePacketDeserializer.cs" />
     <Compile Include="Request.cs" />
