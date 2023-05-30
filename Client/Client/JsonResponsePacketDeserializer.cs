@@ -40,5 +40,21 @@ namespace Client
             }
             return JsonConvert.DeserializeObject<T>(data);
         }
+        public static ResponseWithStatistics DeserializeResponse(string buffer)
+        {
+            return new ResponseWithStatistics(buffer[9], GetQueueFromString(buffer.Substring(10, buffer.Length - 1)));
+        }
+        private static Queue<string> GetQueueFromString(string strQueue)
+        {
+            string[] array = strQueue.Split(Constants.SEPERATOR);
+            Queue<string> queue = new Queue<string>();
+
+            //Going over the array of the strings
+            for(int i = 0; i < array.Length; i++)
+            {
+                queue.Enqueue(array[i]);
+            }
+            return queue;
+        }
     }
 }

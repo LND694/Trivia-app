@@ -42,7 +42,7 @@ namespace Client
         {
             this.status = status;
         }
-        public int getStatus()
+        public int GetStatus()
         {
             return this.status;
         }
