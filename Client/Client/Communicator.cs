@@ -49,6 +49,7 @@ namespace Client
         {
             byte[] buffer = File.ReadAllBytes("serialized.bin");
             socket.Send(buffer);
+            File.Delete("serialized.bin");
         }
 
     }
