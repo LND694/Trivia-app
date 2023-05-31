@@ -85,6 +85,7 @@ private:
 	static int callbackUsers(void* data, int argc, char** argv, char** azColName);
 	static int callbackQuestions(void* data, int argc, char** argv, char** azColName);
 	static int callbackFloat(void* data, int argc, char** argv, char** azColName);
+	static int callbackInt(void* data, int argc, char** argv, char** azColName);
 	static int callbackString(void* data, int argc, char** argv, char** azColName);
 	template <class T>
 	list<T>* runSqlCommand(const string command);

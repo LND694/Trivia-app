@@ -203,8 +203,8 @@ int SqliteDatabase::addNewUser(const User& user)
 	this->runSqlCommand(command);
 
 	//Initializing the statistic row of the new user
-	command = "INSERT INTO STATISTICS(USER_ID, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES) VALUES ";
-	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0);";
+	command = "INSERT INTO STATISTICS(USER_ID, HIGH_SCORE, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES) VALUES ";
+	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0, 0);";
 	this->runSqlCommand(command);
 
 	command = "INSERT INTO SCORES(USER_ID, SCORE) VALUES ((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "'), 0);";
@@ -357,6 +357,12 @@ int SqliteDatabase::callbackFloat(void* data, int argc, char** argv, char** azCo
 	return OK_CODE;
 }
 
+int SqliteDatabase::callbackInt(void* data, int argc, char** argv, char** azColName)
+{
+	*(static_cast<int*>(data)) = static_cast<int>(atoi(argv[0]));
+	return OK_CODE;
+}
+
 int SqliteDatabase::callbackString(void* data, int argc, char** argv, char** azColName)
 {
 	*(static_cast<string*>(data)) = argv[0];
@@ -416,9 +422,13 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackString, data, &errMsg);
 	}
-	else if (typeid(T).name() == typeid(float).name() || typeid(T).name() == typeid(int).name()) // the command should return a float or int
+	else if (typeid(T).name() == typeid(float).name()) // the command should return a float or int
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackFloat, data, &errMsg);
+	}
+	else if (typeid(T).name() == typeid(int).name())
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, data, &errMsg);
 	}
 
 	if (result != SQLITE_OK)
