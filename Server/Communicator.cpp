@@ -106,18 +106,6 @@ void Communicator::handleNewClient(SOCKET socket)
 		code += data->at(i);
 	}
 
-	//deserialize request
-	if (atoi(code.data()) == SIGN_UP_REQS_CODE)
-	{
-		signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(*data);
-		cout << "email: " << signUpReq.email << " password:  " << signUpReq.password << " username: " << signUpReq.username << " born: " << signUpReq.bornDate << endl;
-	}
-	else
-	{
-		logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(*data);
-		cout << "password: " << logReq.password << " username: " << logReq.username << endl;
-	}
-
 	//turn the buffer into request
 	info.buffer = *data;
 	info.receivalTime = time(nullptr);//get the current time
