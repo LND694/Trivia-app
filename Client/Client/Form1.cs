@@ -242,15 +242,10 @@ namespace Client
         {
             //Making the request enable to pass to the Server
             string reqMsg = JsonRequestPacketSerializer.SerializeRequest<T>(request, codeReq);
-            string FILE_PATH = "serialized.bin";
-            using (FileStream fs = new FileStream(FILE_PATH, FileMode.Create))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, reqMsg);
-            }
-
+            Communicator cn = new Communicator();
             //Sending the msg to server and getting an answer
-            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>("Buffer string");
+            cn.sendRequestToServer(reqMsg);
+            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(cn.getResponseFromServer());
             return var;
 
         }
@@ -372,6 +367,11 @@ namespace Client
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

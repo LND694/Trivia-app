@@ -11,7 +11,7 @@ namespace Client
 {
     internal class Communicator
     {
-        private Socket socket;
+        private static Socket socket;
         static private IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
         static private int port = 8265;
 
@@ -20,7 +20,7 @@ namespace Client
         /// </summary>
         public void connect()
         {
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Specify the IP address and port number to connect
             // Connect to the server
             socket.Connect(ipAddress, port);
@@ -36,20 +36,25 @@ namespace Client
         /// </summary>
         public void disconnect()
         {
-            if(this.socket.Connected)
+            if(socket.Connected)
             {
-                this.socket.Disconnect(true);//the socket can be reused
+                socket.Disconnect(true);//the socket can be reused
             }
         }
 
         /// <summary>
         /// send a serialized request to the server
         /// </summary>
-        public void sendRequestToServer()
+        public void sendRequestToServer(string data)
         {
-            byte[] buffer = File.ReadAllBytes("serialized.bin");
-            socket.Send(buffer);
-            File.Delete("serialized.bin");
+            socket.Send(Encoding.ASCII.GetBytes(data));
+        }
+
+        public string getResponseFromServer()
+        {
+            byte[] buffer = new byte[1024];
+            socket.Receive(buffer);
+            return buffer.ToString();
         }
 
     }

@@ -103,6 +103,8 @@
             this.button_WOC15 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox42 = new System.Windows.Forms.TextBox();
             this.createRoomPanel = new System.Windows.Forms.Panel();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.textBox54 = new System.Windows.Forms.TextBox();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.textBox56 = new System.Windows.Forms.TextBox();
             this.textBox52 = new System.Windows.Forms.TextBox();
@@ -120,8 +122,6 @@
             this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox62 = new System.Windows.Forms.TextBox();
             this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.textBox54 = new System.Windows.Forms.TextBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -131,10 +131,10 @@
             this.personalStatsPanel.SuspendLayout();
             this.bestPlayersPanel.SuspendLayout();
             this.createRoomPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.enterRoomPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.SuspendLayout();
             // 
             // signUpPanel
@@ -1201,6 +1201,36 @@
             this.createRoomPanel.Size = new System.Drawing.Size(1442, 645);
             this.createRoomPanel.TabIndex = 9;
             // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(664, 369);
+            this.numericUpDown3.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown3.TabIndex = 23;
+            this.numericUpDown3.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // textBox54
+            // 
+            this.textBox54.BackColor = System.Drawing.Color.LightSalmon;
+            this.textBox54.Font = new System.Drawing.Font("PMingLiU-ExtB", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox54.Location = new System.Drawing.Point(401, 362);
+            this.textBox54.Multiline = true;
+            this.textBox54.Name = "textBox54";
+            this.textBox54.ReadOnly = true;
+            this.textBox54.Size = new System.Drawing.Size(214, 37);
+            this.textBox54.TabIndex = 22;
+            this.textBox54.Text = "Amount Questions:";
+            this.textBox54.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(664, 303);
@@ -1440,36 +1470,6 @@
             this.button_WOC19.UseVisualStyleBackColor = false;
             this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
             // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(664, 369);
-            this.numericUpDown3.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown3.TabIndex = 23;
-            this.numericUpDown3.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // textBox54
-            // 
-            this.textBox54.BackColor = System.Drawing.Color.LightSalmon;
-            this.textBox54.Font = new System.Drawing.Font("PMingLiU-ExtB", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox54.Location = new System.Drawing.Point(401, 362);
-            this.textBox54.Multiline = true;
-            this.textBox54.Name = "textBox54";
-            this.textBox54.ReadOnly = true;
-            this.textBox54.Size = new System.Drawing.Size(214, 37);
-            this.textBox54.TabIndex = 22;
-            this.textBox54.Text = "Amount Questions:";
-            this.textBox54.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1487,6 +1487,7 @@
             this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.signUpPanel.ResumeLayout(false);
             this.signUpPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -1504,11 +1505,11 @@
             this.bestPlayersPanel.PerformLayout();
             this.createRoomPanel.ResumeLayout(false);
             this.createRoomPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.enterRoomPanel.ResumeLayout(false);
             this.enterRoomPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             this.ResumeLayout(false);
 
         }
