@@ -115,15 +115,14 @@ LoginRequest& LoginManager::login(const string username, const string password)
 /// <param name="username">The username of the user to disconnect.</param>
 void LoginManager::logOut(const string username)
 {
-    bool userWasRemoved = false;
 
-    //Going over the logged users
-    for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end() && !userWasRemoved; i++)
-    {
-        if (i->getUsername() == username) // the user to disconnect was found
-        {
-            this->m_loggedUsers.erase(i);
-            userWasRemoved = true;
-        }
-    }
+    std::erase_if(this->m_loggedUsers, [username](LoggedUser& currentUsername){return username == currentUsername.getUsername(); });
+    ////Going over the logged users
+    //for (auto i = this->m_loggedUsers.begin(); !this->m_loggedUsers.empty() && i != this->m_loggedUsers.end(); i++)
+    //{
+    //    if (i->getUsername() == username) // the user to disconnect was found
+    //    {
+    //        this->m_loggedUsers.erase(i);
+    //    }
+    //}
 }

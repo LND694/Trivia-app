@@ -119,6 +119,9 @@ void Communicator::handleNewClient(SOCKET socket)
 
 		//send the response
 		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
+
+		this->m_clients.at(socket) = res.newHandler;
+		code = "";
 	}
 }
 
