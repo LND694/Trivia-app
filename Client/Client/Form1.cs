@@ -92,7 +92,29 @@ namespace Client
 
         private void button_WOC11_Click_1(object sender, EventArgs e)
         {
-            MoveTab(menuPanel, openPanel);
+            const string TITLE_ERROR = "Log Out Error";
+            LogoutResponse logoutResponse = null;
+
+            try
+            {
+                logoutResponse = SendRequestToServer<NullableConverter, LogoutResponse>(null, REQUEST_CODES.LOGOUT_REQS_CODE);
+            }
+            catch(Exception excp)
+            {
+                ShowErrorMessage(excp.Message, TITLE_ERROR);
+            }
+            if(logoutResponse!= null)
+            {
+                if(logoutResponse.GetStatus() != Constants.OK_STATUS_CODE)
+                {
+                    ShowErrorMessage("Error login out", TITLE_ERROR);
+                }
+                else
+                {
+                    MoveTab(menuPanel, openPanel);
+                }
+            }
+
         }
 
         private void button_WOC1_Click_1(object sender, EventArgs e)
