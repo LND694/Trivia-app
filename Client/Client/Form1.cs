@@ -17,8 +17,10 @@ namespace Client
     public partial class Form1 : Form
     {
         Queue<RoomData> rooms;
+        Communicator communicator;
         public Form1()
         {
+            this.communicator = new Communicator();
             InitializeComponent();
 
             //Making all the controls in the Form to be invisible 
@@ -245,14 +247,13 @@ namespace Client
             MoveTab(menuPanel, enterRoomPanel);
         }
 
-        private static U SendRequestToServer<T, U>(T request, int codeReq)
+        private U SendRequestToServer<T, U>(T request, int codeReq)
         {
             //Making the request enable to pass to the Server
             string reqMsg = JsonRequestPacketSerializer.SerializeRequest<T>(request, codeReq);
-            Communicator cn = new Communicator();
             //Sending the msg to server and getting an answer
-            cn.sendRequestToServer(reqMsg);
-            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(cn.getResponseFromServer());
+            this.communicator.sendRequestToServer(reqMsg);
+            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(this.communicator.getResponseFromServer());
             return var;
 
         }
