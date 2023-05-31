@@ -16,6 +16,7 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        Communicator cm = null;
         Queue<RoomData> rooms;
         Communicator communicator;
         public Form1()
@@ -23,10 +24,11 @@ namespace Client
             this.communicator = new Communicator();
             communicator.Connect();
             InitializeComponent();
-
+            this.cm = new Communicator();
+            this.cm.connect();
             //Making all the controls in the Form to be invisible 
             //except for the opening panel(tab)
-            for(int i = 0; i < this.Controls.Count; i++)
+            for (int i = 0; i < this.Controls.Count; i++)
             {
                 this.Controls[i].Visible = false;
             }
