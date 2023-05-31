@@ -93,6 +93,7 @@ namespace Client
 
     public class RequestWithRoomId : Request
     {
+        [JsonProperty("roomId")]
         private int roomId;
 
         public RequestWithRoomId(int roomId):
@@ -123,9 +124,16 @@ namespace Client
 
     public class CreateRoomRequest : Request
     {
+        [JsonProperty("roomName")]
         private string roomName;
+
+        [JsonProperty("maxUsers")]
         private int maxUsers;
+
+        [JsonProperty("questionCount")]
         private int questionCount;
+
+        [JsonProperty("answerTimeout")]
         private int answerTimeout;
 
         public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):

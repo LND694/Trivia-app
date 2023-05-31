@@ -37,6 +37,7 @@ namespace Client
     //Base struct
     public class ResponseWithStatus : Response
     {
+        [JsonProperty("status")]
         private int status;
 
         public ResponseWithStatus(int status):
