@@ -54,7 +54,7 @@ namespace Client
         {
             byte[] buffer = new byte[1024];
             socket.Receive(buffer);
-            return buffer.ToString();
+            return System.Text.Encoding.Default.GetString(buffer);
         }
 
     }
