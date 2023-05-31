@@ -21,6 +21,7 @@ namespace Client
         public Form1()
         {
             this.communicator = new Communicator();
+            communicator.Connect();
             InitializeComponent();
 
             //Making all the controls in the Form to be invisible 
@@ -252,8 +253,8 @@ namespace Client
             //Making the request enable to pass to the Server
             string reqMsg = JsonRequestPacketSerializer.SerializeRequest<T>(request, codeReq);
             //Sending the msg to server and getting an answer
-            this.communicator.sendRequestToServer(reqMsg);
-            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(this.communicator.getResponseFromServer());
+            this.communicator.SendRequestToServer(reqMsg);
+            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(this.communicator.GetResponseFromServer());
             return var;
 
         }

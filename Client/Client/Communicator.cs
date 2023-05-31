@@ -18,7 +18,7 @@ namespace Client
         /// <summary>
         /// connect to the server
         /// </summary>
-        public void connect()
+        public void Connect()
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Specify the IP address and port number to connect
@@ -34,7 +34,7 @@ namespace Client
         /// <summary>
         /// disconnect from the server
         /// </summary>
-        public void disconnect()
+        public void Disconnect()
         {
             if(socket.Connected)
             {
@@ -45,16 +45,16 @@ namespace Client
         /// <summary>
         /// send a serialized request to the server
         /// </summary>
-        public void sendRequestToServer(string data)
+        public void SendRequestToServer(string data)
         {
             socket.Send(Encoding.ASCII.GetBytes(data));
         }
 
-        public string getResponseFromServer()
+        public string GetResponseFromServer()
         {
             byte[] buffer = new byte[1024];
             socket.Receive(buffer);
-            return buffer.ToString();
+            return System.Text.Encoding.Default.GetString(buffer);
         }
 
     }

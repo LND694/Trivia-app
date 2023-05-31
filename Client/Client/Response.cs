@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 
 
@@ -176,7 +178,9 @@ namespace Client
 
     public class ErrorResopnse : Response
     {
+        [JsonProperty("message")]
         private string message;
+
 
         public ErrorResopnse(string message):
             base()
