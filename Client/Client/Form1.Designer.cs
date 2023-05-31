@@ -1487,7 +1487,6 @@
             this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.signUpPanel.ResumeLayout(false);
             this.signUpPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

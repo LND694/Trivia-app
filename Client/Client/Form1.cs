@@ -54,8 +54,15 @@ namespace Client
             string date = this.monthCalendar1.SelectionRange.Start.ToShortDateString();
             string phoneNum = this.comboBox1.Text + "-" + this.textBox11.Text;
             string address = street + "," + apartment + "," + city;
-            SignupRequest signupReq = new SignupRequest(username, password, email, address, phoneNum, date);
             SignUpResponse signupResp = null;
+            SignupRequest signupReq = null;
+
+            if (date.Length < Constants.DATE_LENGTH)
+            {
+                date = Constants.ZERO_CHAR + date;
+            }
+
+            signupReq = new SignupRequest(username, password, email, address, phoneNum, date);
 
             try
             {
@@ -367,11 +374,6 @@ namespace Client
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

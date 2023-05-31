@@ -12,6 +12,7 @@ namespace Client
         public const int ROOM_NOT_FOUND_ID = -1;
         public const int SIZE_CODE_FIELD = 3;
         public const int SIZE_LENGTH_DATA_FIELD = 10;
+        public const int DATE_LENGTH = 10;
         public const char SPACE = ' ';
         public const char SEPERATOR = ' ';
         public const char NEW_LINE = '\n';
