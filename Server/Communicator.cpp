@@ -92,41 +92,59 @@ void Communicator::handleNewClient(SOCKET socket)
 	LoginRequest logReq;
 	SignupRequest signUpReq;
 	string code;
-
+	Buffer* data;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
-	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
-
-	Buffer charVector(buffer, buffer + MAX_SIZE);
-	charVector[len] = '\0';//add null terminator
-
-	//Extracting the code from the request's buffer
-	for (int i = 0; i < SIZE_CODE_FIELD; i++)
+	while (this->m_clients.at(socket) != nullptr)
 	{
-		code += charVector[i];
-	}
+		len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
 
-	//deserialize request
-	if (atoi(code.data()) == SIGN_UP_REQS_CODE)
+		Buffer charVector(buffer, buffer + MAX_SIZE);
+		charVector[len] = '\0';//add null terminator
+
+		data = getDataFromBuffer(charVector);
+		//Extracting the code from the request's buffer
+		for (int i = 0; i < SIZE_CODE_FIELD; i++)
+		{
+			code += data->at(i);
+		}
+
+		//turn the buffer into request
+		info.buffer = *data;
+		info.receivalTime = time(nullptr);//get the current time
+		info.id = static_cast<RequestId>(atoi(code.c_str()));
+
+		//get the response
+		res = this->m_clients.at(socket)->handleRequest(info);
+		cout << res.response.data() << endl;
+
+		//send the response
+		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
+
+		this->m_clients.at(socket) = res.newHandler;
+		code = "";
+	}
+}
+
+/// <summary>
+/// The function getts the segment of the data 
+/// and inserting it into another Buffer.
+/// </summary>
+/// <param name="buf"> The Buffer of the full request.</param>
+/// <returns> a pointer to a Buffer variable- the data only.</returns>
+Buffer* Communicator::getDataFromBuffer(const Buffer& buf)
+{
+	Buffer* data = new Buffer();
+	unsigned char currentChar = 0;
+
+	//Going over the buffer, starting from the data segment
+	for (int i = 0; i < buf.size(); i++)
 	{
-		signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(charVector);
-		cout << "email: " << signUpReq.email << " password:  " << signUpReq.password << " username: " << signUpReq.username << endl;
+		currentChar = buf[i];
+		//if the character is not a letter or a scope
+		if (currentChar != SPACE && currentChar != NEW_LINE && currentChar != END_STR_SYMBOL);
+		{
+			data->push_back(currentChar);
+		}
 	}
-	else
-	{
-		logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(charVector);
-		cout << "password: " << logReq.password << " username: " << logReq.username << endl;
-	}
-
-	//turn the buffer into request
-	info.buffer = charVector;
-	info.receivalTime = time(nullptr);//get the current time
-	info.id = static_cast<RequestId>(atoi(code.c_str()));
-
-	//get the response
-	res = this->m_clients.at(socket)->handleRequest(info);
-	cout << res.response.data() << endl;
-
-	//send the response
-	send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()),NULL);
-
+	return data;
 }

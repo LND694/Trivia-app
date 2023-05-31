@@ -45,42 +45,42 @@ bool MenuRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> The result of the request</returns>
 RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-    RequestResult* res = nullptr;
+	RequestResult res;
 
 	if (!this->isRequestRelevent(requestInfo))
 	{
-		res = new RequestResult();
-		createErrorResponse(ERROR_MSG, res);
+		res = RequestResult();
+		createErrorResponse(ERROR_MSG, &res);
 	}
 	else
 	{
 		switch (requestInfo.id)
 		{
 		case LOGOUT_REQS_CODE:
-			*res = signout(requestInfo);
+			return signout(requestInfo);
 			break;
 		case GET_ROOMS_REQS_CODE:
-			*res = getRooms(requestInfo);
+			return getRooms(requestInfo);
 			break;
 		case GET_PLAYERS_IN_ROOM_REQS_CODE:
-			*res = getPlayersInRoom(requestInfo);
+			return getPlayersInRoom(requestInfo);
 			break;
 		case JOIN_ROOM_REQS_CODE:
-			*res = joinRoom(requestInfo);
+			return joinRoom(requestInfo);
 			break;
 		case CREATE_ROOM_REQS_CODE:
-			*res = createRoom(requestInfo);
+			return createRoom(requestInfo);
 			break;
 		case GET_HIGH_SCORE_REQS_CODE:
-			*res = getHighScore(requestInfo);
+			return getHighScore(requestInfo);
 			break;
 		case GET_PERS_STATS_REQS_CODE:
-			*res = getPersonalStats(requestInfo);
+			return getPersonalStats(requestInfo);
 			break;
 		}
 	}
 
-    return *res;
+    return res;
 }
 
 /// <summary>

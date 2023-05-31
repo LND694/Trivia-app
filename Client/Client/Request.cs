@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +26,10 @@ namespace Client
     }
     public class LoginRequest : Request
     {
+        [JsonProperty("username")]
         private string username;
+
+        [JsonProperty("password")]
         private string password;
 
         public LoginRequest(string username, string password):
@@ -46,9 +51,16 @@ namespace Client
 
     public class SignupRequest : LoginRequest
     {
+        [JsonProperty("email")]
         private string email;
+
+        [JsonProperty("address")]
         private string address;
+
+        [JsonProperty("phone")]
         private string phoneNum;
+
+        [JsonProperty("date")]
         private string bornDate;
 
         public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate):
@@ -81,6 +93,7 @@ namespace Client
 
     public class RequestWithRoomId : Request
     {
+        [JsonProperty("roomId")]
         private int roomId;
 
         public RequestWithRoomId(int roomId):
@@ -111,9 +124,16 @@ namespace Client
 
     public class CreateRoomRequest : Request
     {
+        [JsonProperty("roomName")]
         private string roomName;
+
+        [JsonProperty("maxUsers")]
         private int maxUsers;
+
+        [JsonProperty("questionCount")]
         private int questionCount;
+
+        [JsonProperty("answerTimeout")]
         private int answerTimeout;
 
         public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):

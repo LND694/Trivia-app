@@ -20,11 +20,11 @@ namespace Client
             char currentChar = ' ';
 
             //Going over the string, starting from the data segment
-            for (int i = Constants.SIZE_CODE_FIELD + Constants.SIZE_LENGTH_DATA_FIELD + 2; i < buffer.Length; i++)
+            for (int i = Constants.SIZE_CODE_FIELD + Constants.SIZE_LENGTH_DATA_FIELD; i < buffer.Length; i++)
             {
-                currentChar = data[i];
+                currentChar = buffer[i];
                 //if the character is not a letter or a scope
-                if (currentChar != Constants.SPACE && currentChar != Constants.NEW_LINE && currentChar != Constants.END_STR_SYMBOL)
+                if (/*currentChar != Constants.SPACE &&*/currentChar != Constants.NEW_LINE && currentChar != Constants.END_STR_SYMBOL)
                 {
                     data += currentChar;
                 }

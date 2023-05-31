@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 
 
@@ -35,6 +37,7 @@ namespace Client
     //Base struct
     public class ResponseWithStatus : Response
     {
+        [JsonProperty("status")]
         private int status;
 
         public ResponseWithStatus(int status):
@@ -176,7 +179,9 @@ namespace Client
 
     public class ErrorResopnse : Response
     {
+        [JsonProperty("message")]
         private string message;
+
 
         public ErrorResopnse(string message):
             base()

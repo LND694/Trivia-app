@@ -18,8 +18,11 @@ namespace Client
     {
         Communicator cm = null;
         Queue<RoomData> rooms;
+        Communicator communicator;
         public Form1()
         {
+            this.communicator = new Communicator();
+            communicator.Connect();
             InitializeComponent();
             this.cm = new Communicator();
             this.cm.connect();
@@ -56,8 +59,15 @@ namespace Client
             string date = this.monthCalendar1.SelectionRange.Start.ToShortDateString();
             string phoneNum = this.comboBox1.Text + "-" + this.textBox11.Text;
             string address = street + "," + apartment + "," + city;
-            SignupRequest signupReq = new SignupRequest(username, password, email, address, phoneNum, date);
             SignUpResponse signupResp = null;
+            SignupRequest signupReq = null;
+
+            if (date.Length < Constants.DATE_LENGTH)
+            {
+                date = Constants.ZERO_CHAR + date;
+            }
+
+            signupReq = new SignupRequest(username, password, email, address, phoneNum, date);
 
             try
             {
@@ -84,7 +94,29 @@ namespace Client
 
         private void button_WOC11_Click_1(object sender, EventArgs e)
         {
-            MoveTab(menuPanel, openPanel);
+            const string TITLE_ERROR = "Log Out Error";
+            LogoutResponse logoutResponse = null;
+
+            try
+            {
+                logoutResponse = SendRequestToServer<NullableConverter, LogoutResponse>(null, REQUEST_CODES.LOGOUT_REQS_CODE);
+            }
+            catch(Exception excp)
+            {
+                ShowErrorMessage(excp.Message, TITLE_ERROR);
+            }
+            if(logoutResponse!= null)
+            {
+                if(logoutResponse.GetStatus() != Constants.OK_STATUS_CODE)
+                {
+                    ShowErrorMessage("Error login out", TITLE_ERROR);
+                }
+                else
+                {
+                    MoveTab(menuPanel, openPanel);
+                }
+            }
+
         }
 
         private void button_WOC1_Click_1(object sender, EventArgs e)
@@ -240,19 +272,13 @@ namespace Client
             MoveTab(menuPanel, enterRoomPanel);
         }
 
-        private static U SendRequestToServer<T, U>(T request, int codeReq)
+        private U SendRequestToServer<T, U>(T request, int codeReq)
         {
             //Making the request enable to pass to the Server
             string reqMsg = JsonRequestPacketSerializer.SerializeRequest<T>(request, codeReq);
-            string FILE_PATH = "serialized.bin";
-            using (FileStream fs = new FileStream(FILE_PATH, FileMode.Create))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, reqMsg);
-            }
-
             //Sending the msg to server and getting an answer
-            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>("Buffer string");
+            this.communicator.SendRequestToServer(reqMsg);
+            U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(this.communicator.GetResponseFromServer());
             return var;
 
         }
