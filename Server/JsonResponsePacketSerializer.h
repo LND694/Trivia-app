@@ -6,7 +6,9 @@
 #include "Singleton.h"
 
 #define ZERO_CHAR '0'
-#define SEPERATOR ", "
+#define SEPERATOR ","
+
+constexpr char SEPERATOR_ARGS = '|';
 
 class JsonResponsePacketSerializer : public Singleton
 {

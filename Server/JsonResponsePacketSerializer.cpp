@@ -78,12 +78,11 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& 
     int count = 1;
 
     //Getting the data from the rooms of the GetRoomsResp
-    for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.begin(); i++)
+    for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.end(); i++)
     {
-        roomsData += getRoomDataString(*i) + SEPERATOR;
+        roomsData += SEPERATOR_ARGS + getRoomDataString(*i);
     }
-    roomsData.pop_back(); //removing the last SEPERATOR
-    responseData += echoJsonFormat(getField<string>("Rooms", roomsData));
+    responseData += getField<string>("Rooms", roomsData);
     return *makeBuffer(GET_ROOMS_RESP_CODE, echoJsonFormat(responseData));
 }
 
@@ -177,7 +176,7 @@ string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
     roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestion)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("isActive", to_string(roomData.isActive));
 
-    return echoJsonFormat(roomDataStr);
+    return roomDataStr;
 }
 
 /// <summary>
