@@ -16,6 +16,7 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        //The fields of the Form.
         Communicator cm = null;
         Queue<RoomData> rooms;
         Communicator communicator;
@@ -25,7 +26,8 @@ namespace Client
             communicator.Connect();
             InitializeComponent();
             this.cm = new Communicator();
-            this.cm.connect();
+            this.cm.Connect();
+
             //Making all the controls in the Form to be invisible 
             //except for the opening panel(tab)
             for (int i = 0; i < this.Controls.Count; i++)
@@ -259,19 +261,27 @@ namespace Client
 
         private void button_WOC8_Click(object sender, EventArgs e)
         {
-            Queue<RoomData> queueRooms = null;
+            Queue<RoomData> copyRooms = null;
             UpdateListRooms();
+            copyRooms = CopyQueue<RoomData>(this.rooms);
 
             //Inserting all the rooms in the combo box
-            queueRooms = new Queue<RoomData>(this.rooms);
             comboBox2.Text = "";
-            while(queueRooms.Count > 0)
+            while(copyRooms.Count > 0)
             {
-                comboBox2.Items.Add(queueRooms.Dequeue().GetName() + Constants.NEW_LINE);
+                comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
             }
             MoveTab(menuPanel, enterRoomPanel);
         }
 
+        /// <summary>
+        /// The function sends a request to theserver and getts its response.
+        /// </summary>
+        /// <typeparam name="T"> The type of the request to send.</typeparam>
+        /// <typeparam name="U"> The type of the response to get.</typeparam>
+        /// <param name="request"> The request to send.</param>
+        /// <param name="codeReq"> The code of the request.</param>
+        /// <returns> The response of the server.</returns>
         private U SendRequestToServer<T, U>(T request, int codeReq)
         {
             //Making the request enable to pass to the Server
@@ -283,6 +293,11 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// The function shows an Error message to the user.
+        /// </summary>
+        /// <param name="message"> The data of the ErrorMessageBox.</param>
+        /// <param name="title"> The title of the ErrorMessageBox.</param>
         private void ShowErrorMessage(string message, string title)
         {
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -290,11 +305,14 @@ namespace Client
 
         private void UpdateListRooms()
         {
-            GetRoomsResponse rooms = null; 
-
+            GetRoomsResponse rooms = null;
+            string response = "";
             try
             {
-                rooms = SendRequestToServer<NullableConverter, GetRoomsResponse>(null, REQUEST_CODES.GET_ROOMS_REQS_CODE);
+                //Getting the rooms from the server
+                this.communicator.SendRequestToServer(JsonRequestPacketSerializer.SerializeRequest<NullableConverter>(null, REQUEST_CODES.GET_ROOMS_REQS_CODE));
+                response = this.communicator.GetResponseFromServer();
+                rooms = JsonResponsePacketDeserializer.DeserializeRoomResponse(response);
             }
             catch (Exception excp)
             {
@@ -303,7 +321,7 @@ namespace Client
 
             if(rooms != null)
             {
-                this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
+                this.rooms = CopyQueue<RoomData>(rooms.GetRoomDatas());
             }
 
         }
@@ -311,7 +329,7 @@ namespace Client
         private int GetIdRoomByName(string name)
         {
             int id = Constants.ROOM_NOT_FOUND_ID;
-            Queue<RoomData> roomDatas = new Queue<RoomData>(this.rooms);
+            Queue<RoomData> roomDatas = CopyQueue<RoomData>(this.rooms);
             RoomData roomData = null;
 
             //Going over the rooms
@@ -331,7 +349,7 @@ namespace Client
             const string TITLE_ERROR = "Error Entering Room";
             JoinRoomRequest joinRoomRequest = null;
             JoinRoomResponse joinRoomResponse = null;
-            int roomId = GetIdRoomByName(comboBox2.Text);
+            int roomId = GetIdRoomByName(comboBox2.Text.Substring(0, comboBox2.Text.Length - 1));
 
             if(Constants.ROOM_NOT_FOUND_ID == roomId)
             {
@@ -400,6 +418,35 @@ namespace Client
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
+        }
+
+        /// <summary>
+        /// The funciton copies a Queue to another Queue,
+        /// while saving the original one.
+        /// </summary>
+        /// <typeparam name="T"> The typee of the argument of the Queue</typeparam>
+        /// <param name="q"> The Queue to copy</param>
+        /// <returns> The copied Queue.</returns>
+        private Queue<T> CopyQueue<T>(Queue<T> q)
+        {
+            T val;
+            Queue<T> q2 = new Queue<T>();
+            Queue<T> q3 = new Queue<T>();
+
+            //Going over the original Queue arguments
+            while(q.Count > 0)
+            {
+                val = q.Dequeue();
+                q2.Enqueue(val);
+                q3.Enqueue(val);
+            }
+
+            //Restoring the original Queue
+            while(q2.Count > 0)
+            {
+                q.Enqueue(q2.Dequeue());
+            }
+            return q3;
         }
     }
 }
