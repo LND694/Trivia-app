@@ -52,7 +52,7 @@ void Communicator::startHandleRequests()
 		client_socket = accept(this->m_serverSocket, NULL, NULL);
 		if (client_socket != INVALID_SOCKET)
 			cout << "Client accepted !" << endl;
-		// create new thread to handle the new client for client	and detach from it
+		// create new thread to handle the new client for client and detach from it
 		std::thread handle(&Communicator::handleNewClient,this, client_socket);
 		handle.detach();
 	}
@@ -120,8 +120,9 @@ void Communicator::handleNewClient(SOCKET socket)
 		//send the response
 		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
-		this->m_clients.at(socket) = res.newHandler;
+		delete data;
 		code = "";
+		this->m_clients.at(socket) = res.newHandler;
 	}
 }
 
