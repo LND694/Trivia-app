@@ -121,7 +121,7 @@ void Communicator::handleNewClient(SOCKET socket)
 		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
 		this->m_clients.at(socket) = res.newHandler;
-		code = "";
+		code = "";//reset code
 	}
 }
 
@@ -141,7 +141,7 @@ Buffer* Communicator::getDataFromBuffer(const Buffer& buf)
 	{
 		currentChar = buf[i];
 		//if the character is not a letter or a scope
-		if (currentChar != SPACE && currentChar != NEW_LINE && currentChar != END_STR_SYMBOL);
+		if (currentChar != SPACE && currentChar != NEW_LINE && currentChar != END_STR_SYMBOL)
 		{
 			data->push_back(currentChar);
 		}

@@ -61,9 +61,7 @@
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.personalStatsPanel = new System.Windows.Forms.Panel();
-            this.textBox47 = new System.Windows.Forms.TextBox();
             this.textBox48 = new System.Windows.Forms.TextBox();
-            this.textBox33 = new System.Windows.Forms.TextBox();
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.textBox31 = new System.Windows.Forms.TextBox();
             this.textBox30 = new System.Windows.Forms.TextBox();
@@ -102,6 +100,14 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.textBox61 = new System.Windows.Forms.TextBox();
             this.textBox62 = new System.Windows.Forms.TextBox();
+            this.textBox47 = new System.Windows.Forms.TextBox();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.button_WOC16 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC15 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC7 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC6 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC3 = new ePOSOne.btnProduct.Button_WOC();
@@ -116,12 +122,6 @@
             this.button_WOC14 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC13 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC12 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC16 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC15 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC7 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC6 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -540,19 +540,6 @@
             this.personalStatsPanel.Size = new System.Drawing.Size(1442, 645);
             this.personalStatsPanel.TabIndex = 7;
             // 
-            // textBox47
-            // 
-            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox47.Location = new System.Drawing.Point(785, 404);
-            this.textBox47.Multiline = true;
-            this.textBox47.Name = "textBox47";
-            this.textBox47.ReadOnly = true;
-            this.textBox47.Size = new System.Drawing.Size(230, 35);
-            this.textBox47.TabIndex = 16;
-            this.textBox47.Text = "0";
-            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // textBox48
             // 
             this.textBox48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
@@ -565,19 +552,7 @@
             this.textBox48.TabIndex = 15;
             this.textBox48.Text = "High Score:";
             this.textBox48.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox33
-            // 
-            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 296);
-            this.textBox33.Multiline = true;
-            this.textBox33.Name = "textBox33";
-            this.textBox33.ReadOnly = true;
-            this.textBox33.Size = new System.Drawing.Size(230, 35);
-            this.textBox33.TabIndex = 14;
-            this.textBox33.Text = "0";
-            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox48.TextChanged += new System.EventHandler(this.textBox48_TextChanged);
             // 
             // textBox32
             // 
@@ -736,7 +711,7 @@
             // 
             this.textBox44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox44.Font = new System.Drawing.Font("Segoe UI Historic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox44.Location = new System.Drawing.Point(659, 235);
+            this.textBox44.Location = new System.Drawing.Point(659, 237);
             this.textBox44.Multiline = true;
             this.textBox44.Name = "textBox44";
             this.textBox44.ReadOnly = true;
@@ -1090,6 +1065,147 @@
             this.textBox62.Text = "Enter Room";
             this.textBox62.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox47
+            // 
+            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox47.Location = new System.Drawing.Point(785, 404);
+            this.textBox47.Multiline = true;
+            this.textBox47.Name = "textBox47";
+            this.textBox47.ReadOnly = true;
+            this.textBox47.Size = new System.Drawing.Size(230, 35);
+            this.textBox47.TabIndex = 16;
+            this.textBox47.Text = "0";
+            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox47.TextChanged += new System.EventHandler(this.textBox47_TextChanged);
+            // 
+            // textBox33
+            // 
+            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox33.Location = new System.Drawing.Point(1118, 296);
+            this.textBox33.Multiline = true;
+            this.textBox33.Name = "textBox33";
+            this.textBox33.ReadOnly = true;
+            this.textBox33.Size = new System.Drawing.Size(230, 35);
+            this.textBox33.TabIndex = 14;
+            this.textBox33.Text = "0";
+            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // button_WOC16
+            // 
+            this.button_WOC16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button_WOC16.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC16.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC16.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC16.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC16.Location = new System.Drawing.Point(549, 526);
+            this.button_WOC16.Name = "button_WOC16";
+            this.button_WOC16.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC16.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC16.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC16.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC16.TabIndex = 6;
+            this.button_WOC16.Text = "<Back";
+            this.button_WOC16.TextColor = System.Drawing.Color.Black;
+            this.button_WOC16.UseVisualStyleBackColor = false;
+            this.button_WOC16.Click += new System.EventHandler(this.button_WOC16_Click);
+            // 
+            // button_WOC15
+            // 
+            this.button_WOC15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button_WOC15.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC15.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC15.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC15.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC15.Location = new System.Drawing.Point(549, 490);
+            this.button_WOC15.Name = "button_WOC15";
+            this.button_WOC15.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC15.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC15.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC15.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC15.TabIndex = 6;
+            this.button_WOC15.Text = "<Back";
+            this.button_WOC15.TextColor = System.Drawing.Color.Black;
+            this.button_WOC15.UseVisualStyleBackColor = false;
+            this.button_WOC15.Click += new System.EventHandler(this.button_WOC15_Click);
+            // 
+            // button_WOC7
+            // 
+            this.button_WOC7.BackColor = System.Drawing.Color.MediumSpringGreen;
+            this.button_WOC7.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC7.ButtonColor = System.Drawing.Color.Fuchsia;
+            this.button_WOC7.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC7.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.button_WOC7.Location = new System.Drawing.Point(50, 553);
+            this.button_WOC7.Name = "button_WOC7";
+            this.button_WOC7.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC7.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC7.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC7.Size = new System.Drawing.Size(154, 47);
+            this.button_WOC7.TabIndex = 13;
+            this.button_WOC7.Text = "<Back";
+            this.button_WOC7.TextColor = System.Drawing.Color.Black;
+            this.button_WOC7.UseVisualStyleBackColor = false;
+            this.button_WOC7.Click += new System.EventHandler(this.button_WOC7_Click_1);
+            // 
+            // button_WOC6
+            // 
+            this.button_WOC6.BackColor = System.Drawing.Color.MediumSpringGreen;
+            this.button_WOC6.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC6.ButtonColor = System.Drawing.Color.DeepSkyBlue;
+            this.button_WOC6.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC6.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.button_WOC6.Location = new System.Drawing.Point(676, 553);
+            this.button_WOC6.Name = "button_WOC6";
+            this.button_WOC6.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC6.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC6.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC6.Size = new System.Drawing.Size(154, 47);
+            this.button_WOC6.TabIndex = 6;
+            this.button_WOC6.Text = "Login";
+            this.button_WOC6.TextColor = System.Drawing.Color.Black;
+            this.button_WOC6.UseVisualStyleBackColor = false;
+            this.button_WOC6.Click += new System.EventHandler(this.button_WOC6_Click_1);
+            // 
+            // button_WOC17
+            // 
+            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
+            this.button_WOC17.Name = "button_WOC17";
+            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC17.TabIndex = 3;
+            this.button_WOC17.Text = "Enter Room";
+            this.button_WOC17.TextColor = System.Drawing.Color.Black;
+            this.button_WOC17.UseVisualStyleBackColor = false;
+            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
+            // 
+            // button_WOC19
+            // 
+            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
+            this.button_WOC19.Name = "button_WOC19";
+            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC19.TabIndex = 5;
+            this.button_WOC19.Text = "Cancel";
+            this.button_WOC19.TextColor = System.Drawing.Color.Black;
+            this.button_WOC19.UseVisualStyleBackColor = false;
+            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
+            // 
             // button_WOC18
             // 
             this.button_WOC18.BackColor = System.Drawing.SystemColors.Highlight;
@@ -1356,135 +1472,21 @@
             this.button_WOC12.UseVisualStyleBackColor = false;
             this.button_WOC12.Click += new System.EventHandler(this.button_WOC12_Click);
             // 
-            // button_WOC16
-            // 
-            this.button_WOC16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC16.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC16.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC16.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC16.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC16.Location = new System.Drawing.Point(549, 526);
-            this.button_WOC16.Name = "button_WOC16";
-            this.button_WOC16.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC16.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC16.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC16.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC16.TabIndex = 6;
-            this.button_WOC16.Text = "<Back";
-            this.button_WOC16.TextColor = System.Drawing.Color.Black;
-            this.button_WOC16.UseVisualStyleBackColor = false;
-            this.button_WOC16.Click += new System.EventHandler(this.button_WOC16_Click);
-            // 
-            // button_WOC15
-            // 
-            this.button_WOC15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC15.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC15.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC15.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC15.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC15.Location = new System.Drawing.Point(549, 490);
-            this.button_WOC15.Name = "button_WOC15";
-            this.button_WOC15.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC15.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC15.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC15.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC15.TabIndex = 6;
-            this.button_WOC15.Text = "<Back";
-            this.button_WOC15.TextColor = System.Drawing.Color.Black;
-            this.button_WOC15.UseVisualStyleBackColor = false;
-            this.button_WOC15.Click += new System.EventHandler(this.button_WOC15_Click);
-            // 
-            // button_WOC7
-            // 
-            this.button_WOC7.BackColor = System.Drawing.Color.MediumSpringGreen;
-            this.button_WOC7.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC7.ButtonColor = System.Drawing.Color.Fuchsia;
-            this.button_WOC7.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC7.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.button_WOC7.Location = new System.Drawing.Point(50, 553);
-            this.button_WOC7.Name = "button_WOC7";
-            this.button_WOC7.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC7.OnHoverButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC7.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC7.Size = new System.Drawing.Size(154, 47);
-            this.button_WOC7.TabIndex = 13;
-            this.button_WOC7.Text = "<Back";
-            this.button_WOC7.TextColor = System.Drawing.Color.Black;
-            this.button_WOC7.UseVisualStyleBackColor = false;
-            this.button_WOC7.Click += new System.EventHandler(this.button_WOC7_Click_1);
-            // 
-            // button_WOC6
-            // 
-            this.button_WOC6.BackColor = System.Drawing.Color.MediumSpringGreen;
-            this.button_WOC6.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC6.ButtonColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_WOC6.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC6.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.button_WOC6.Location = new System.Drawing.Point(676, 553);
-            this.button_WOC6.Name = "button_WOC6";
-            this.button_WOC6.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC6.OnHoverButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC6.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC6.Size = new System.Drawing.Size(154, 47);
-            this.button_WOC6.TabIndex = 6;
-            this.button_WOC6.Text = "Login";
-            this.button_WOC6.TextColor = System.Drawing.Color.Black;
-            this.button_WOC6.UseVisualStyleBackColor = false;
-            this.button_WOC6.Click += new System.EventHandler(this.button_WOC6_Click_1);
-            // 
-            // button_WOC17
-            // 
-            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
-            this.button_WOC17.Name = "button_WOC17";
-            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC17.TabIndex = 3;
-            this.button_WOC17.Text = "Enter Room";
-            this.button_WOC17.TextColor = System.Drawing.Color.Black;
-            this.button_WOC17.UseVisualStyleBackColor = false;
-            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
-            // 
-            // button_WOC19
-            // 
-            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
-            this.button_WOC19.Name = "button_WOC19";
-            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC19.TabIndex = 5;
-            this.button_WOC19.Text = "Cancel";
-            this.button_WOC19.TextColor = System.Drawing.Color.Black;
-            this.button_WOC19.UseVisualStyleBackColor = false;
-            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1442, 645);
-            this.Controls.Add(this.menuPanel);
-            this.Controls.Add(this.openPanel);
-            this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
             this.Controls.Add(this.enterRoomPanel);
             this.Controls.Add(this.createRoomPanel);
             this.Controls.Add(this.signUpPanel);
+            this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.openPanel);
+            this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
@@ -1567,7 +1569,6 @@
         private System.Windows.Forms.TextBox textBox26;
         private ePOSOne.btnProduct.Button_WOC button_WOC16;
         private System.Windows.Forms.TextBox textBox25;
-        private System.Windows.Forms.TextBox textBox33;
         private System.Windows.Forms.TextBox textBox32;
         private System.Windows.Forms.TextBox textBox31;
         private System.Windows.Forms.TextBox textBox30;
@@ -1586,7 +1587,6 @@
         private System.Windows.Forms.TextBox textBox41;
         private System.Windows.Forms.TextBox textBox40;
         private System.Windows.Forms.TextBox textBox39;
-        private System.Windows.Forms.TextBox textBox47;
         private System.Windows.Forms.TextBox textBox48;
         private System.Windows.Forms.Panel createRoomPanel;
         private System.Windows.Forms.TextBox textBox51;
@@ -1608,6 +1608,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.TextBox textBox54;
+        private System.Windows.Forms.TextBox textBox47;
+        private System.Windows.Forms.TextBox textBox33;
     }
 }
 

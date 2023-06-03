@@ -45,12 +45,11 @@ bool MenuRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> The result of the request</returns>
 RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-	RequestResult res;
+	RequestResult* res = new RequestResult();
 
 	if (!this->isRequestRelevent(requestInfo))
 	{
-		res = RequestResult();
-		createErrorResponse(ERROR_MSG, &res);
+		createErrorResponse(ERROR_MSG, res);
 	}
 	else
 	{
@@ -80,7 +79,7 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 		}
 	}
 
-    return res;
+    return *res;
 }
 
 /// <summary>

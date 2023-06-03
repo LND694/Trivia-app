@@ -25,7 +25,7 @@ namespace Client
             communicator.Connect();
             InitializeComponent();
             this.cm = new Communicator();
-            this.cm.connect();
+            this.cm.Connect();
             //Making all the controls in the Form to be invisible 
             //except for the opening panel(tab)
             for (int i = 0; i < this.Controls.Count; i++)
@@ -206,9 +206,18 @@ namespace Client
             if(highScoreResponse != null)
             {
                 highScores = highScoreResponse.GetStatistics();
-                textBox39.Text = highScores.Dequeue();
-                textBox41.Text = highScores.Dequeue();
-                textBox43.Text = highScores.Dequeue();
+                if(highScores != null && highScores.Count > 0)
+                    textBox44.Text = highScores.Dequeue();
+                if (highScores != null && highScores.Count > 0)
+                    textBox39.Text = highScores.Dequeue();
+                if (highScores != null && highScores.Count > 0)
+                    textBox45.Text = highScores.Dequeue();
+                if (highScores != null && highScores.Count > 0)
+                    textBox41.Text = highScores.Dequeue();
+                if (highScores != null && highScores.Count > 0)
+                    textBox46.Text = highScores.Dequeue();
+                if (highScores != null && highScores.Count > 0)
+                    textBox43.Text = highScores.Dequeue();
             }
 
             MoveTab(statisticsPanel, bestPlayersPanel);
@@ -233,7 +242,7 @@ namespace Client
             {
                 //Getting the statistics and showing them on the screen
                 statistics = getPersonalStatsResponse.GetStatistics();
-                statistics.Dequeue();
+                textBox47.Text = statistics.Dequeue();
                 textBox31.Text = statistics.Dequeue();
                 textBox33.Text = statistics.Dequeue();
                 textBox32.Text = statistics.Dequeue();
@@ -400,6 +409,16 @@ namespace Client
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
+        }
+
+        private void textBox48_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox47_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
