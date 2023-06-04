@@ -10,15 +10,15 @@ class IRequestHandler; //pre definition
 
 typedef struct RequestInfo
 {
-	RequestId id;
-	time_t receivalTime;
+	RequestId id{};
+	time_t receivalTime{};
 	Buffer buffer;
 } RequestInfo;
 
 typedef struct RequestResult
 {
 	Buffer response;
-	IRequestHandler* newHandler;
+	IRequestHandler* newHandler{};
 } RequestResult;
 
 
