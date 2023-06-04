@@ -203,8 +203,8 @@ int SqliteDatabase::addNewUser(const User& user)
 	this->runSqlCommand(command);
 
 	//Initializing the statistic row of the new user
-	command = "INSERT INTO STATISTICS(USER_ID, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES) VALUES ";
-	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0);";
+	command = "INSERT INTO STATISTICS(USER_ID, HIGH_SCORE, AMOUNT_CORRECT_ANSWERS, AVERAGE_ANSWER_TIME, TOTAL_AMOUNT_ANSWERS, AMOUNT_GAMES) VALUES ";
+	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0, 0);";
 	this->runSqlCommand(command);
 
 	command = "INSERT INTO SCORES(USER_ID, SCORE) VALUES ((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "'), 0);";
@@ -353,7 +353,13 @@ int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::callbackFloat(void* data, int argc, char** argv, char** azColName)
 {
-	*(static_cast<float*>(data)) = static_cast<float>(atoi(argv[0]));//support conversion from int to float (atoi returns int)
+	*(static_cast<float*>(data)) = static_cast<float>(std::stof(argv[0]));//support conversion from int to float (atoi returns int)
+	return OK_CODE;
+}
+
+int SqliteDatabase::callbackInt(void* data, int argc, char** argv, char** azColName)
+{
+	*(static_cast<int*>(data)) = static_cast<int>(atoi(argv[0]));//support conversion from int to float (atoi returns int)
 	return OK_CODE;
 }
 
@@ -408,28 +414,32 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 template<class T>
 T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 {
-	T* data = nullptr;
+	T data;
 	char* errMsg = nullptr;
 	int result = 0;
 
 	if (typeid(T).name() == typeid(string).name()) // the command should return a string
 	{
-		result = sqlite3_exec(this->m_db, command.c_str(), callbackString, data, &errMsg);
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackString, &data, &errMsg);
 	}
-	else if (typeid(T).name() == typeid(float).name() || typeid(T).name() == typeid(int).name()) // the command should return a float or int
+	else if (typeid(T).name() == typeid(float).name()) // the command should return a float or int
 	{
-		result = sqlite3_exec(this->m_db, command.c_str(), callbackFloat, data, &errMsg);
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackFloat, &data, &errMsg);
+	}
+	else if (typeid(T).name() == typeid(int).name())
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, &data, &errMsg);
 	}
 
 	if (result != SQLITE_OK)
 	{
 		throw std::exception(errMsg);
 	}
-	if (data != nullptr)
-	{
-		return *data;
-	}
-	return ERROR_CODE;
+	//if (data != nullptr)
+	//{
+	//	return data;
+	//}
+	return data;
 }
 
 /// <summary>
@@ -441,7 +451,7 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
 {
 	string command = "SELECT AVERAGE_ANSWER_TIME FROM STATISTICS WHERE USER_ID == ";
-	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
 
 	return runSqlCommandSingleOutput<float>(command);
 }
@@ -455,9 +465,11 @@ float SqliteDatabase::getPlayerAverageAnswerTime(const string player)
 int SqliteDatabase::getNumOfCorrectAnswers(const string player)
 {
 	string command = "SELECT AMOUNT_CORRECT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
-	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+	int amount = 0;
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
 
-	return runSqlCommandSingleOutput<int>(command);
+	amount = runSqlCommandSingleOutput<int>(command);
+	return amount;
 }
 
 /// <summary>
@@ -469,9 +481,11 @@ int SqliteDatabase::getNumOfCorrectAnswers(const string player)
 int SqliteDatabase::getNumOfTotalAnswers(const string player)
 {
 	string command = "SELECT TOTAL_AMOUNT_ANSWERS FROM STATISTICS WHERE USER_ID == ";
-	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+	int amount = 0;
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
 
-	return runSqlCommandSingleOutput<int>(command);
+	amount = runSqlCommandSingleOutput<int>(command);
+	return amount;
 }
 
 /// <summary>
@@ -483,9 +497,11 @@ int SqliteDatabase::getNumOfTotalAnswers(const string player)
 int SqliteDatabase::getNumOfPlayerGames(const string player)
 {
 	string command = "SELECT AMOUNT_GAMES FROM STATISTICS WHERE USER_ID == ";
-	command += "(SELECT ID FROM USER WHERE USERNAME LIKE '" + player + "');";
+	int amount = 0;
+	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
 
-	return runSqlCommandSingleOutput<int>(command);
+	amount = runSqlCommandSingleOutput<int>(command);
+	return amount;
 }
 
 /// <summary>
@@ -495,7 +511,8 @@ int SqliteDatabase::getNumOfPlayerGames(const string player)
 /// <returns> His last score</returns>
 int SqliteDatabase::getPlayerScore(const string player)
 {
-	string command = "SELECT SCORE FROM SCORES WHERE USER_ID == ";
+	//string command = "SELECT SCORE FROM SCORES WHERE USER_ID == ";
+	string command = "SELECT HIGH_SCORE FROM STATISTICS WHERE USER_ID == ";
 	int score = 0;
 	command += "(SELECT ID FROM USERS WHERE USERNAME LIKE '" + player + "');";
 	if (!doesUserExist(player))
@@ -512,15 +529,27 @@ int SqliteDatabase::getPlayerScore(const string player)
 /// <returns> The highest scores.</returns>
 vector<string>& SqliteDatabase::getHighScores()
 {
-	string command = "SELECT HIGH_SCORE FROM STATISTICS ORDER BY HIGH_SCORE ASC LIMIT " + to_string(AMOUNT_HIGH_SCORES) + ";";
-	list<int>* bestScores = runSqlCommand<int>(command);
+	string command = "SELECT USER_ID FROM STATISTICS ORDER BY HIGH_SCORE DESC LIMIT " + to_string(AMOUNT_HIGH_SCORES) + ";";
+	list<int>* idBestScores = runSqlCommand<int>(command);
+	int currentScore = 0;
+	string currentName = "";
 	vector<string>* theBestScores = new vector<string>();
 
-	//Going over the list of the best scores
-	for (auto i = bestScores->begin(); i != bestScores->end(); i++)
+	//Going over the list of the id of the best scores
+	for (auto i = idBestScores->begin(); i != idBestScores->end(); i++)
 	{
-		theBestScores->push_back(to_string(*i));
+		//Getting the Name of the current best user with its id
+		command = "SELECT USERNAME FROM USERS WHERE ID == " + to_string(*i) + ";";
+		currentName = runSqlCommandSingleOutput<string>(command);
+
+		//Getting the Name of the current best user with its id
+		command = "SELECT HIGH_SCORE FROM STATISTICS WHERE USER_ID == " + to_string(*i) + "; ";
+		currentScore = runSqlCommandSingleOutput<int>(command);
+
+		//Pushing the results to the vector
+		theBestScores->push_back("'" + currentName + "'");
+		theBestScores->push_back(to_string(currentScore));
 	}
-	bestScores->~list();
+	idBestScores->~list();
 	return *theBestScores;
 }
