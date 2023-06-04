@@ -435,10 +435,6 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		throw std::exception(errMsg);
 	}
-	//if (data != nullptr)
-	//{
-	//	return data;
-	//}
 	return data;
 }
 
