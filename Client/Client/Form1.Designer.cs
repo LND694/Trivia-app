@@ -75,6 +75,8 @@
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.button_WOC6 = new ePOSOne.btnProduct.Button_WOC();
             this.personalStatsPanel = new System.Windows.Forms.Panel();
+            this.textBox47 = new System.Windows.Forms.TextBox();
+            this.textBox33 = new System.Windows.Forms.TextBox();
             this.textBox48 = new System.Windows.Forms.TextBox();
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.textBox31 = new System.Windows.Forms.TextBox();
@@ -120,8 +122,6 @@
             this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox62 = new System.Windows.Forms.TextBox();
             this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
-            this.textBox33 = new System.Windows.Forms.TextBox();
-            this.textBox47 = new System.Windows.Forms.TextBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -806,6 +806,33 @@
             this.personalStatsPanel.Size = new System.Drawing.Size(1442, 645);
             this.personalStatsPanel.TabIndex = 7;
             // 
+            // textBox47
+            // 
+            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox47.Location = new System.Drawing.Point(727, 409);
+            this.textBox47.Multiline = true;
+            this.textBox47.Name = "textBox47";
+            this.textBox47.ReadOnly = true;
+            this.textBox47.Size = new System.Drawing.Size(230, 35);
+            this.textBox47.TabIndex = 17;
+            this.textBox47.Text = "0";
+            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox47.TextChanged += new System.EventHandler(this.textBox47_TextChanged_1);
+            // 
+            // textBox33
+            // 
+            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox33.Location = new System.Drawing.Point(1118, 307);
+            this.textBox33.Multiline = true;
+            this.textBox33.Name = "textBox33";
+            this.textBox33.ReadOnly = true;
+            this.textBox33.Size = new System.Drawing.Size(230, 35);
+            this.textBox33.TabIndex = 16;
+            this.textBox33.Text = "0";
+            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox48
             // 
             this.textBox48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
@@ -976,7 +1003,6 @@
             this.textBox46.ReadOnly = true;
             this.textBox46.Size = new System.Drawing.Size(91, 49);
             this.textBox46.TabIndex = 18;
-            this.textBox46.Text = "David";
             this.textBox46.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox45
@@ -989,7 +1015,6 @@
             this.textBox45.ReadOnly = true;
             this.textBox45.Size = new System.Drawing.Size(91, 49);
             this.textBox45.TabIndex = 17;
-            this.textBox45.Text = "Yoav";
             this.textBox45.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox44
@@ -1002,7 +1027,6 @@
             this.textBox44.ReadOnly = true;
             this.textBox44.Size = new System.Drawing.Size(91, 49);
             this.textBox44.TabIndex = 16;
-            this.textBox44.Text = "Boaz";
             this.textBox44.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox43
@@ -1015,7 +1039,6 @@
             this.textBox43.ReadOnly = true;
             this.textBox43.Size = new System.Drawing.Size(91, 49);
             this.textBox43.TabIndex = 15;
-            this.textBox43.Text = "0";
             this.textBox43.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox41
@@ -1028,7 +1051,6 @@
             this.textBox41.ReadOnly = true;
             this.textBox41.Size = new System.Drawing.Size(91, 49);
             this.textBox41.TabIndex = 14;
-            this.textBox41.Text = "0";
             this.textBox41.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox40
@@ -1054,7 +1076,6 @@
             this.textBox39.ReadOnly = true;
             this.textBox39.Size = new System.Drawing.Size(91, 49);
             this.textBox39.TabIndex = 12;
-            this.textBox39.Text = "0";
             this.textBox39.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox38
@@ -1445,40 +1466,12 @@
             this.button_WOC19.UseVisualStyleBackColor = false;
             this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
             // 
-            // textBox33
-            // 
-            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 307);
-            this.textBox33.Multiline = true;
-            this.textBox33.Name = "textBox33";
-            this.textBox33.ReadOnly = true;
-            this.textBox33.Size = new System.Drawing.Size(230, 35);
-            this.textBox33.TabIndex = 16;
-            this.textBox33.Text = "0";
-            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox47
-            // 
-            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox47.Location = new System.Drawing.Point(727, 409);
-            this.textBox47.Multiline = true;
-            this.textBox47.Name = "textBox47";
-            this.textBox47.ReadOnly = true;
-            this.textBox47.Size = new System.Drawing.Size(230, 35);
-            this.textBox47.TabIndex = 17;
-            this.textBox47.Text = "0";
-            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox47.TextChanged += new System.EventHandler(this.textBox47_TextChanged_1);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1442, 645);
-            this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
             this.Controls.Add(this.enterRoomPanel);
@@ -1487,6 +1480,7 @@
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.openPanel);
             this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
