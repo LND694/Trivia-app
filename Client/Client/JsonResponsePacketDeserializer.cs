@@ -11,7 +11,7 @@ namespace Client
     public class JsonResponsePacketDeserializer
     {
         /// <summary>
-        /// The functon checks if the buffer is an ErrorResponse Buffer
+        /// The function checks if the buffer is an ErrorResponse Buffer
         /// </summary>
         /// <param name="buffer"> The buffer to check</param>
         /// <returns> if its code is a ERROR_RESP_CODE</returns>
@@ -21,7 +21,7 @@ namespace Client
         }
 
         /// <summary>
-        /// The function getts the Json data from the buffer.
+        /// The function gets the Json data from the buffer.
         /// </summary>
         /// <param name="buffer"> The buffer with the json's data.</param>
         /// <returns> The json data only</returns>
