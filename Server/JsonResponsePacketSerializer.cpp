@@ -112,7 +112,6 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreRespon
 {
     string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
     string statisticsData = getVectorString(getHighScoreResp.statistics);
-    statisticsData.pop_back();//REMOVE THE , AT THE END
     statisticsData = "'statistics':[" + statisticsData + "]";
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoJsonFormat(responseData));
@@ -122,7 +121,6 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
 {
     string responseData = getField<unsigned int>("status", to_string(getPersonStatsResp.status));
     string statisticsData = getVectorString(getPersonStatsResp.statistics);
-    statisticsData.pop_back();//delete the ',' in every request
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoJsonFormat(responseData));
 }
