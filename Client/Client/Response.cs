@@ -117,17 +117,18 @@ namespace Client
 
     public class GetRoomsResponse : ResponseWithStatus
     {
-        Queue<RoomData> rooms;
+        [JsonProperty("Rooms")]
+        private Queue<RoomData> roomDatas;
 
         public GetRoomsResponse(int status, Queue<RoomData> rooms):
             base(status)
         {
-            this.rooms = rooms;
+            this.roomDatas = rooms;
         }
 
         public Queue<RoomData> GetRoomDatas()
         {
-            return new Queue<RoomData>(this.rooms);
+            return new Queue<RoomData>(this.roomDatas);
         }
     }
 

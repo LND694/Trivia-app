@@ -52,7 +52,7 @@ void Communicator::startHandleRequests()
 		client_socket = accept(this->m_serverSocket, NULL, NULL);
 		if (client_socket != INVALID_SOCKET)
 			cout << "Client accepted !" << endl;
-		// create new thread to handle the new client for client	and detach from it
+		// create new thread to handle the new client for client and detach from it
 		std::thread handle(&Communicator::handleNewClient,this, client_socket);
 		handle.detach();
 	}
@@ -85,7 +85,7 @@ void Communicator::bindAndListen()
 /// <param name="socket">The Socket of the client to handle.</param>
 void Communicator::handleNewClient(SOCKET socket)
 {
-	int len = 0;//the length of the recieved message
+	int len = ERROR_LEN;//the length of the recieved message
 	char buffer[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
@@ -96,7 +96,11 @@ void Communicator::handleNewClient(SOCKET socket)
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	while (this->m_clients.at(socket) != nullptr)
 	{
-		len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
+		//Not letting to handle the request until there is one
+		while (ERROR_LEN == len)
+		{
+			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
+		}
 
 		Buffer charVector(buffer, buffer + MAX_SIZE);
 		charVector[len] = '\0';//add null terminator
@@ -120,8 +124,10 @@ void Communicator::handleNewClient(SOCKET socket)
 		//send the response
 		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
+		delete data;
+		code = "";
 		this->m_clients.at(socket) = res.newHandler;
-		code = "";//reset code
+		len = ERROR_LEN;
 	}
 }
 

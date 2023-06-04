@@ -33,4 +33,7 @@ private:
 	//Fields
 	IDatabase* m_dataBase;
 	vector<LoggedUser> m_loggedUsers;
+
+	//Help functions
+	bool isUserAlreadyLoggedIn(string username);
 };

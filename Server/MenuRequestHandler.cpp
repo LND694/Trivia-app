@@ -150,7 +150,7 @@ RequestResult& MenuRequestHandler::getRooms(const RequestInfo& requestInfo)
 RequestResult& MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo)
 {
 	RequestResult* req = new RequestResult();
-	GetPlayersInRoomRequest getPlayersReqs = JsonRequestPacketDeserializer::desrializeGetPlayersRequest(requestInfo.buffer);
+	GetPlayersInRoomRequest& getPlayersReqs = JsonRequestPacketDeserializer::desrializeGetPlayersRequest(requestInfo.buffer);
 	GetPlayersInRoomResponse getPlayersResp = GetPlayersInRoomResponse();
 
 	//Making the GetPlayersInRoomResponse
@@ -219,7 +219,7 @@ RequestResult& MenuRequestHandler::getHighScore(const RequestInfo& requestInfo)
 RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 {
 	RequestResult* req = new RequestResult();
-	JoinRoomRequest joinRoomReqs = JsonRequestPacketDeserializer::desrializeJoinRoomRequest(requestInfo.buffer);
+	JoinRoomRequest& joinRoomReqs = JsonRequestPacketDeserializer::desrializeJoinRoomRequest(requestInfo.buffer);
 	JoinRoomResponse joinRoomResp = JoinRoomResponse();
 
 	//Joining into the room
@@ -250,8 +250,8 @@ RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 {
 	RequestResult* req = new RequestResult();
-	CreateRoomRequest createRoomReqs = JsonRequestPacketDeserializer::desrializeCreateRoomRequest(requestInfo.buffer);
-	JoinRoomResponse createRoomResp = JoinRoomResponse();
+	CreateRoomRequest& createRoomReqs = JsonRequestPacketDeserializer::desrializeCreateRoomRequest(requestInfo.buffer);
+	CreateRoomResponse createRoomResp = CreateRoomResponse();
 
 	//Creating the room
 	RoomData roomData;
@@ -270,6 +270,6 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	req->response = JsonResponsePacketSerializer::serializeResponse(createRoomResp);
 	req->newHandler = new RoomMemberRequestHandler();
 
-	delete &createRoomReqs;
+	delete& createRoomReqs;
 	return *req;
 }

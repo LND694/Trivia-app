@@ -14,6 +14,24 @@ LoginManager::LoginManager(IDatabase* db) :
 }
 
 /// <summary>
+/// The function checks if a user is already logged in.
+/// </summary>
+/// <param name="username"> The username to check</param>
+/// <returns> if this user is logged or not.</returns>
+bool LoginManager::isUserAlreadyLoggedIn(string username)
+{
+    //Going over the Logged Users
+    for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end(); i++)
+    {
+        if (i->getUsername() == username)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// <summary>
 /// The function getts the instance of the class LoginManager.
 /// </summary>
 /// <param name="db">The database for the object LoginManager.</param>
@@ -85,6 +103,10 @@ LoginRequest& LoginManager::login(const string username, const string password)
     {
         throw std::exception("The user not exists!");
     }
+    else if (isUserAlreadyLoggedIn(username))
+    {
+        throw std::exception("This user is already logged in!");
+    }
 
     result = this->m_dataBase->doesPasswordMatch(username, password);
 
@@ -97,6 +119,7 @@ LoginRequest& LoginManager::login(const string username, const string password)
     {
         throw std::exception("Wrong password, can not login!");
     }
+
 
     this->m_loggedUsers.push_back(LoggedUser(username));
 
