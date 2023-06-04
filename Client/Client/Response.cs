@@ -116,6 +116,7 @@ namespace Client
 
     public class GetRoomsResponse : ResponseWithStatus
     {
+        [JsonProperty("Rooms")]
         private Queue<RoomData> roomDatas;
 
         public GetRoomsResponse(int status, Queue<RoomData> rooms):
@@ -126,7 +127,7 @@ namespace Client
 
         public Queue<RoomData> GetRoomDatas()
         {
-            return roomDatas;
+            return new Queue<RoomData>(roomDatas);
         }
     }
 
