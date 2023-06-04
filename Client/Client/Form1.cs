@@ -263,7 +263,7 @@ namespace Client
         {
             Queue<RoomData> copyRooms = null;
             UpdateListRooms();
-            copyRooms = CopyQueue<RoomData>(this.rooms);
+            copyRooms = new Queue<RoomData>(this.rooms);
 
             //Inserting all the rooms in the combo box
             comboBox2.Text = "";
@@ -306,13 +306,9 @@ namespace Client
         private void UpdateListRooms()
         {
             GetRoomsResponse rooms = null;
-            string response = "";
             try
             {
-                //Getting the rooms from the server
-                this.communicator.SendRequestToServer(JsonRequestPacketSerializer.SerializeRequest<NullableConverter>(null, REQUEST_CODES.GET_ROOMS_REQS_CODE));
-                response = this.communicator.GetResponseFromServer();
-                rooms = JsonResponsePacketDeserializer.DeserializeRoomResponse(response);
+                rooms = SendRequestToServer<NullableConverter, GetRoomsResponse>(null, REQUEST_CODES.GET_ROOMS_REQS_CODE);
             }
             catch (Exception excp)
             {
@@ -321,7 +317,7 @@ namespace Client
 
             if(rooms != null)
             {
-                this.rooms = CopyQueue<RoomData>(rooms.GetRoomDatas());
+                this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
             }
 
         }
@@ -329,7 +325,7 @@ namespace Client
         private int GetIdRoomByName(string name)
         {
             int id = Constants.ROOM_NOT_FOUND_ID;
-            Queue<RoomData> roomDatas = CopyQueue<RoomData>(this.rooms);
+            Queue<RoomData> roomDatas = new Queue<RoomData>(this.rooms);
             RoomData roomData = null;
 
             //Going over the rooms
@@ -418,35 +414,6 @@ namespace Client
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
-        }
-
-        /// <summary>
-        /// The funciton copies a Queue to another Queue,
-        /// while saving the original one.
-        /// </summary>
-        /// <typeparam name="T"> The typee of the argument of the Queue</typeparam>
-        /// <param name="q"> The Queue to copy</param>
-        /// <returns> The copied Queue.</returns>
-        private Queue<T> CopyQueue<T>(Queue<T> q)
-        {
-            T val;
-            Queue<T> q2 = new Queue<T>();
-            Queue<T> q3 = new Queue<T>();
-
-            //Going over the original Queue arguments
-            while(q.Count > 0)
-            {
-                val = q.Dequeue();
-                q2.Enqueue(val);
-                q3.Enqueue(val);
-            }
-
-            //Restoring the original Queue
-            while(q2.Count > 0)
-            {
-                q.Enqueue(q2.Dequeue());
-            }
-            return q3;
         }
     }
 }
