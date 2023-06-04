@@ -74,16 +74,19 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LogoutResponse& lo
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& getRoomsResp)
 {
     string responseData = getField<unsigned int>("status", to_string(getRoomsResp.status)) + SEPERATOR;
-    string roomsData = "";
+    string roomsData = string(1, SEPERATOR_ARGS_BEGIN);
     int count = 1;
 
     //Getting the data from the rooms of the GetRoomsResp
-    for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.begin(); i++)
+    for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.end(); i++)
     {
-        roomsData += getRoomDataString(*i) + SEPERATOR;
+        roomsData += echoJsonFormat(getRoomDataString(*i)) + SEPERATOR;
     }
-    roomsData.pop_back(); //removing the last SEPERATOR
-    responseData += echoJsonFormat(getField<string>("Rooms", roomsData));
+    if (roomsData.length() != 1) // there is not only the opening char for the vector
+    {
+        roomsData.pop_back(); // removing the last SEPERATOR
+    }
+    responseData += getField<vector<RoomData>>("Rooms", roomsData + SEPERATOR_ARGS_END);
     return *makeBuffer(GET_ROOMS_RESP_CODE, echoJsonFormat(responseData));
 }
 
@@ -109,6 +112,8 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreRespon
 {
     string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
     string statisticsData = getVectorString(getHighScoreResp.statistics);
+    statisticsData.pop_back();//REMOVE THE , AT THE END
+    statisticsData = "'statistics':[" + statisticsData + "]";
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoJsonFormat(responseData));
 }
@@ -117,6 +122,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
 {
     string responseData = getField<unsigned int>("status", to_string(getPersonStatsResp.status));
     string statisticsData = getVectorString(getPersonStatsResp.statistics);
+    statisticsData.pop_back();//delete the ',' in every request
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoJsonFormat(responseData));
 }
@@ -174,10 +180,10 @@ string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
     roomDataStr += getField<string>("name", roomData.name) + SEPERATOR;
     roomDataStr += getField<unsigned int>("maxPlayers", to_string(roomData.maxPlayers)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("numOfQuestionsInGame", to_string(roomData.numOfQuestionsInGame)) + SEPERATOR;
-    roomDataStr += getField<unsigned int>("timePerQuestions", to_string(roomData.timePerQuestion)) + SEPERATOR;
+    roomDataStr += getField<unsigned int>("timePerQuestion", to_string(roomData.timePerQuestion)) + SEPERATOR;
     roomDataStr += getField<unsigned int>("isActive", to_string(roomData.isActive));
 
-    return echoJsonFormat(roomDataStr);
+    return roomDataStr;
 }
 
 /// <summary>

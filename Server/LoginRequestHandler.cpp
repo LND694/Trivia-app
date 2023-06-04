@@ -88,7 +88,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
     bool error = false;
     string excpStr = "";
     RequestResult* reqRes = new RequestResult();
-    SignUpResopnse signUpResp = SignUpResopnse();
+    SignUpResponse signUpResp = SignUpResponse();
     ErrorResopnse errResp;
     SignupRequest signUpReq;
     //if the request is not relevent
@@ -170,10 +170,10 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     switch (emailRes)
     {
     case AT_SIGN_NOT_VALID_OR_EXIST:
-        excpStr += "The email should contain the symbol '@' only once.\n";
+        excpStr += "The email should contain the symbol at sign only once.\n";
         break;
     case EMAIL_SUFFIX_NOT_VALID:
-        excpStr += "The email's suffix is not recognized. Are you sure it exists?\n";
+        excpStr += "The sufix of the email is not recognized. Are you sure it exists?\n";
         break;
     }
 
@@ -181,10 +181,10 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     switch (phoneRes)
     {
     case LENGTH_PHONE_NUM_INVALID:
-        excpStr += "The length of the phone should be " + to_string(PHONE_NUM_RIGHT_LEN) + " after the adding the '-' char.\n";
+        excpStr += "The length of the phone should be " + to_string(PHONE_NUM_RIGHT_LEN) + " after the adding the dash char.\n";
         break;
     case INVALID_PREFIX_PHONE_NUM:
-        excpStr += "The phone's prefix is not recognized. Are you sure it exists?\n";
+        excpStr += "The prefix of the phone is not recognized. Are you sure it exists?\n";
         break;
     case WRONG_FORMAT_PHONE_NUM:
         excpStr += "The format of phone number should be like this: {prefix - number}\n";
@@ -195,7 +195,7 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     switch (addrRes)
     {
     case WRONG_FORMAT_ADDRESS:
-        excpStr += "The format of the address should be like this: {Street, Apartment, City). Apt can only has number.\n";
+        excpStr += "The format of the address should be like this: (Street, Apartment, City). Apt can only has number.\n";
         break;
     }
 
@@ -203,7 +203,7 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     switch (dateRes)
     {
     case WRONG_FORMAT_DATE:
-        excpStr += "The format of a born date should be like this: {DD.MM.YYYY}, or with '/' instead of '.'";
+        excpStr += "The format of a born date should be like this: (DD.MM.YYYY), or with slash instead of  a point";
         break;
     case DATE_NOT_EXIST:
         excpStr += "This date does not exist. Are you sure you have born this day?\n";

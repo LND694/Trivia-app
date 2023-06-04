@@ -34,11 +34,11 @@ vector<string>& StatisticsManager::getHighScore()
 vector<string>& StatisticsManager::getUserStatistics(const string username)
 {
     vector<string>* statistics = new vector<string>();
-    statistics->push_back(std::to_string(this->m_database->getPlayerScore(username)));
+    statistics->push_back("'statistics':["+std::to_string(this->m_database->getPlayerScore(username)));
     statistics->push_back(std::to_string(this->m_database->getNumOfCorrectAnswers(username)));
     statistics->push_back(std::to_string(this->m_database->getNumOfTotalAnswers(username)));
     statistics->push_back(std::to_string(this->m_database->getNumOfPlayerGames(username)));
-    statistics->push_back(std::to_string(this->m_database->getPlayerAverageAnswerTime(username)));
+    statistics->push_back(std::to_string(this->m_database->getPlayerAverageAnswerTime(username))+"]");
     return *statistics;
 
 }
