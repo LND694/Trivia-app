@@ -57,6 +57,7 @@ namespace Client
 
     public class ResponseWithStatistics : ResponseWithStatus
     {
+        [JsonProperty("statistics")]
         private Queue<string> statistics;
 
         public ResponseWithStatistics(int status, Queue<string> statistics):

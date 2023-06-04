@@ -99,9 +99,15 @@ int MongoDatabase::addNewUser(const User& user)
 		kvp(ADDRESS_FIELD,user.getAddress()),
 		kvp(BORN_DATE_FIELD,user.getBornDate()),
 		kvp(PHONE_NUM_FIELD,user.getPhoneNum()));
+	auto doc2 = make_document(kvp("average_time", 0.0),
+		kvp("correct_answers", 0),
+		kvp("total_answers", 0),
+		kvp("total_games", 0),
+		kvp("score", 0));
 	try
 	{
-		auto insert_one_result = this->db[USERS_COLLECTION].insert_one(doc.view());
+		this->db[USERS_COLLECTION].insert_one(doc.view());
+		this->db[STATS_COLLECTION].insert_one(doc2.view());
 		return OK_CODE;
 	}
 	catch (...)
@@ -283,16 +289,15 @@ vector<string>& MongoDatabase::getHighScores()
 	pipeline.sort(bsoncxx::builder::stream::document{} << "score" << -1 << bsoncxx::builder::stream::finalize);
 
 	// Limit stage to get only the top 5 scores
-	pipeline.limit(5);
+	pipeline.limit(3);
 
 	// Perform the aggregation
 	auto cursor = coll.aggregate(pipeline);
-
 	for (auto&& doc : cursor)
 	{
-		username = doc["username"].get_string();
-		label =  username + ": " + doc["score"].get_string().value.data();
-		vec->push_back(label);
+		username = doc["username"].get_string().value.data();
+		label = std::to_string(doc["score"].get_int32());
+		vec->push_back('"'+username + '"'+"," + label);
 	}
 	return *vec;
 }

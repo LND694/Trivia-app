@@ -75,9 +75,7 @@
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.button_WOC6 = new ePOSOne.btnProduct.Button_WOC();
             this.personalStatsPanel = new System.Windows.Forms.Panel();
-            this.textBox47 = new System.Windows.Forms.TextBox();
             this.textBox48 = new System.Windows.Forms.TextBox();
-            this.textBox33 = new System.Windows.Forms.TextBox();
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.textBox31 = new System.Windows.Forms.TextBox();
             this.textBox30 = new System.Windows.Forms.TextBox();
@@ -806,19 +804,6 @@
             this.personalStatsPanel.Size = new System.Drawing.Size(1442, 645);
             this.personalStatsPanel.TabIndex = 7;
             // 
-            // textBox47
-            // 
-            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox47.Location = new System.Drawing.Point(785, 404);
-            this.textBox47.Multiline = true;
-            this.textBox47.Name = "textBox47";
-            this.textBox47.ReadOnly = true;
-            this.textBox47.Size = new System.Drawing.Size(230, 35);
-            this.textBox47.TabIndex = 16;
-            this.textBox47.Text = "0";
-            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // textBox48
             // 
             this.textBox48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
@@ -831,19 +816,7 @@
             this.textBox48.TabIndex = 15;
             this.textBox48.Text = "High Score:";
             this.textBox48.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox33
-            // 
-            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 296);
-            this.textBox33.Multiline = true;
-            this.textBox33.Name = "textBox33";
-            this.textBox33.ReadOnly = true;
-            this.textBox33.Size = new System.Drawing.Size(230, 35);
-            this.textBox33.TabIndex = 14;
-            this.textBox33.Text = "0";
-            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox48.TextChanged += new System.EventHandler(this.textBox48_TextChanged);
             // 
             // textBox32
             // 
@@ -1021,7 +994,7 @@
             // 
             this.textBox44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox44.Font = new System.Drawing.Font("Segoe UI Historic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox44.Location = new System.Drawing.Point(659, 235);
+            this.textBox44.Location = new System.Drawing.Point(659, 237);
             this.textBox44.Multiline = true;
             this.textBox44.Name = "textBox44";
             this.textBox44.ReadOnly = true;
@@ -1476,15 +1449,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1442, 645);
-            this.Controls.Add(this.menuPanel);
-            this.Controls.Add(this.openPanel);
-            this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
             this.Controls.Add(this.enterRoomPanel);
             this.Controls.Add(this.createRoomPanel);
             this.Controls.Add(this.signUpPanel);
+            this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.openPanel);
+            this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
@@ -1567,7 +1540,6 @@
         private System.Windows.Forms.TextBox textBox26;
         private ePOSOne.btnProduct.Button_WOC button_WOC16;
         private System.Windows.Forms.TextBox textBox25;
-        private System.Windows.Forms.TextBox textBox33;
         private System.Windows.Forms.TextBox textBox32;
         private System.Windows.Forms.TextBox textBox31;
         private System.Windows.Forms.TextBox textBox30;
@@ -1586,7 +1558,6 @@
         private System.Windows.Forms.TextBox textBox41;
         private System.Windows.Forms.TextBox textBox40;
         private System.Windows.Forms.TextBox textBox39;
-        private System.Windows.Forms.TextBox textBox47;
         private System.Windows.Forms.TextBox textBox48;
         private System.Windows.Forms.Panel createRoomPanel;
         private System.Windows.Forms.TextBox textBox51;
@@ -1608,6 +1579,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.TextBox textBox54;
+        private System.Windows.Forms.TextBox textBox47;
+        private System.Windows.Forms.TextBox textBox33;
     }
 }
 
