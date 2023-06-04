@@ -122,7 +122,6 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
 {
     string responseData = getField<unsigned int>("status", to_string(getPersonStatsResp.status));
     string statisticsData = getVectorString(getPersonStatsResp.statistics);
-    statisticsData.pop_back();//delete the ',' in every request
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoJsonFormat(responseData));
 }

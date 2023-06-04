@@ -434,5 +434,10 @@ namespace Client
         {
 
         }
+
+        private void textBox47_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -120,6 +120,8 @@
             this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox62 = new System.Windows.Forms.TextBox();
             this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox47 = new System.Windows.Forms.TextBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -787,8 +789,8 @@
             // 
             this.personalStatsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.personalStatsPanel.Controls.Add(this.textBox47);
-            this.personalStatsPanel.Controls.Add(this.textBox48);
             this.personalStatsPanel.Controls.Add(this.textBox33);
+            this.personalStatsPanel.Controls.Add(this.textBox48);
             this.personalStatsPanel.Controls.Add(this.textBox32);
             this.personalStatsPanel.Controls.Add(this.textBox31);
             this.personalStatsPanel.Controls.Add(this.textBox30);
@@ -1443,12 +1445,40 @@
             this.button_WOC19.UseVisualStyleBackColor = false;
             this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
             // 
+            // textBox33
+            // 
+            this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox33.Location = new System.Drawing.Point(1118, 307);
+            this.textBox33.Multiline = true;
+            this.textBox33.Name = "textBox33";
+            this.textBox33.ReadOnly = true;
+            this.textBox33.Size = new System.Drawing.Size(230, 35);
+            this.textBox33.TabIndex = 16;
+            this.textBox33.Text = "0";
+            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox47
+            // 
+            this.textBox47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox47.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox47.Location = new System.Drawing.Point(727, 409);
+            this.textBox47.Multiline = true;
+            this.textBox47.Name = "textBox47";
+            this.textBox47.ReadOnly = true;
+            this.textBox47.Size = new System.Drawing.Size(230, 35);
+            this.textBox47.TabIndex = 17;
+            this.textBox47.Text = "0";
+            this.textBox47.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox47.TextChanged += new System.EventHandler(this.textBox47_TextChanged_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1442, 645);
+            this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
             this.Controls.Add(this.enterRoomPanel);
@@ -1457,7 +1487,6 @@
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.openPanel);
             this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
