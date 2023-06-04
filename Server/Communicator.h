@@ -38,7 +38,7 @@ private:
 	//Help functions
 	void bindAndListen();
 	void handleNewClient(SOCKET socket);
-
+	static Buffer* getDataFromBuffer(const Buffer& buf);
 	//Singleton fields
 	static Communicator* m_instance;
 	static Lock m_lock;

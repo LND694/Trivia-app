@@ -19,6 +19,9 @@ public:
 	//Functions
 	static LoginRequest& deserializeLoginRequest(const Buffer& buffer);
 	static SignupRequest& desrializeSignupRequest(const Buffer& buffer);
+	static GetPlayersInRoomRequest& desrializeGetPlayersRequest(const Buffer& buffer);
+	static JoinRoomRequest& desrializeJoinRoomRequest(const Buffer& buffer);
+	static CreateRoomRequest& desrializeCreateRoomRequest(const Buffer& buffer);
 protected:
 	JsonRequestPacketDeserializer() = default;
 	//Singleton fields

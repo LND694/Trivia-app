@@ -11,7 +11,7 @@ Server::Server(IDatabase* db):
 	m_database(db)
 {
 	//this->m_handlerFactory = RequestHandlerFactory::getInstance()
-	this->m_handlerFactory = RequestHandlerFactory::getInstance(db, LoginManager::getInstance(db));
+	this->m_handlerFactory = RequestHandlerFactory::getInstance(db, LoginManager::getInstance(db), new RoomManager(), new StatisticsManager(db));
 	this->m_communicator = Communicator::getInstance(m_handlerFactory);
 }
 
@@ -49,7 +49,7 @@ void Server::run()
 
 	comThread.detach();
 
-	std::cout << "Write '"<< EXIT_MSG << "' to power off the server" << std::endl;
+	std::cout << "Write '"<< EXIT_MSG << "' to power off the server " << std::endl;
 	//Waiting to input until asking for exit
 	while (input != EXIT_MSG)
 	{

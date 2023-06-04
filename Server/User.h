@@ -1,10 +1,7 @@
 #pragma once
 #include <iostream>
-#include <string>
-#include <regex>
 #include "Request.h"
 
-using std::string;
 
 #define ID_FIELD "ID"
 #define USERNAME_FIELD "USERNAME"

@@ -14,13 +14,31 @@ LoginManager::LoginManager(IDatabase* db) :
 }
 
 /// <summary>
+/// The function checks if a user is already logged in.
+/// </summary>
+/// <param name="username"> The username to check</param>
+/// <returns> if this user is logged or not.</returns>
+bool LoginManager::isUserAlreadyLoggedIn(string username)
+{
+    //Going over the Logged Users
+    for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end(); i++)
+    {
+        if (i->getUsername() == username)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// <summary>
 /// The function getts the instance of the class LoginManager.
 /// </summary>
 /// <param name="db">The database for the object LoginManager.</param>
 /// <returns> the address of the instance</returns>
 LoginManager* LoginManager::getInstance(IDatabase* db)
 {
-    return nullptr;	lock_guard<Lock> lockGuard(m_lock);
+    lock_guard<Lock> lockGuard(m_lock);
     if (m_instance == nullptr)
     {
         m_instance = new LoginManager(db);
@@ -85,6 +103,10 @@ LoginRequest& LoginManager::login(const string username, const string password)
     {
         throw std::exception("The user not exists!");
     }
+    else if (isUserAlreadyLoggedIn(username))
+    {
+        throw std::exception("This user is already logged in!");
+    }
 
     result = this->m_dataBase->doesPasswordMatch(username, password);
 
@@ -97,6 +119,7 @@ LoginRequest& LoginManager::login(const string username, const string password)
     {
         throw std::exception("Wrong password, can not login!");
     }
+
 
     this->m_loggedUsers.push_back(LoggedUser(username));
 
@@ -115,15 +138,5 @@ LoginRequest& LoginManager::login(const string username, const string password)
 /// <param name="username">The username of the user to disconnect.</param>
 void LoginManager::logOut(const string username)
 {
-    bool userWasRemoved = false;
-
-    //Going over the logged users
-    for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end() && !userWasRemoved; i++)
-    {
-        if (i->getUsername() == username) // the user to disconnect was found
-        {
-            this->m_loggedUsers.erase(i);
-            userWasRemoved = true;
-        }
-    }
+    std::erase_if(this->m_loggedUsers, [username](LoggedUser& currentUsername){return username == currentUsername.getUsername(); });
 }

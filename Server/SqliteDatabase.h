@@ -2,13 +2,10 @@
 #include "IDatabase.h"
 #include "User.h"
 #include "sqlite3.h"
-#include <list>
 
 
-using std::list;
-
-
-
+constexpr int AMOUNT_TABLES = 4;
+constexpr int AMOUNT_HIGH_SCORES = 3;
 const string DB_FILE_NAME = "triviaDB.sqlite";
 const string COMMANDS_CREATING_DB[] = {"CREATE TABLE IF NOT EXISTS USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
 USERNAME TEXT NOT NULL, \
@@ -16,7 +13,29 @@ PASSWORD TEXT NOT NULL, \
 EMAIL TEXT NOT NULL, \
 ADDRESS TEXT NOT NULL, \
 PHONE_NUM TEXT NOT NULL, \
-BORN_DATE TEXT NOT NULL);"};
+BORN_DATE TEXT NOT NULL);",
+
+"CREATE TABLE IF NOT EXISTS QUESTIONS(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \
+QUESTION TEXT NOT NULL, \
+CATEGORY TEXT NOT NULL, \
+DIFFICULTY TEXT NOT NULL, \
+CORRECT_ANSWER TEXT NOT NULL, \
+ANSWER1 TEXT NOT NULL, \
+ANSWER2 TEXT NOT NULL, \
+ANSWER3 TEXT NOT NULL);" ,
+
+"CREATE TABLE IF NOT EXISTS STATISTICS(USER_ID INTEGER NOT NULL, \
+HIGH_SCORE INTEGER, \
+AMOUNT_CORRECT_ANSWERS INTEGER, \
+AVERAGE_ANSWER_TIME FLOAT, \
+TOTAL_AMOUNT_ANSWERS INTEGER, \
+AMOUNT_GAMES INTEGER, \
+FOREIGN KEY (USER_ID) REFERENCES USERS(ID));",
+
+"CREATE TABLE IF NOT EXISTS SCORES(USER_ID INTEGER NOT NULL, \
+SCORE INTEGER, \
+FOREIGN KEY (USER_ID) REFERENCES USERS(ID));"
+};
 
 class SqliteDatabase : public IDatabase
 {
@@ -37,6 +56,17 @@ public:
 	int doesPasswordMatch(const string username, const string password) override;
 	int addNewUser(const User& user) override;
 
+	//Question function
+	list<Question>& getQuestions(const int amountQuestions) override;
+
+	//Statistics functions
+	float getPlayerAverageAnswerTime(const string player) override;
+	int getNumOfCorrectAnswers(const string player) override;
+	int getNumOfTotalAnswers(const string player) override;
+	int getNumOfPlayerGames(const string player) override;
+	int getPlayerScore(const string player) override;
+	vector<string>& getHighScores() override;
+
 protected:
 	//C'tor
 	SqliteDatabase();
@@ -51,7 +81,14 @@ private:
 
 	//Help functions
 	void runSqlCommand(const string command);
+	static int callbackIntegers(void* data, int argc, char** argv, char** azColName);
 	static int callbackUsers(void* data, int argc, char** argv, char** azColName);
+	static int callbackQuestions(void* data, int argc, char** argv, char** azColName);
+	static int callbackFloat(void* data, int argc, char** argv, char** azColName);
+	static int callbackString(void* data, int argc, char** argv, char** azColName);
 	template <class T>
 	list<T>* runSqlCommand(const string command);
+	template <class T>
+	T runSqlCommandSingleOutput(const string command);
+	
 };

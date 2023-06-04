@@ -9,6 +9,11 @@ MongoDatabase::MongoDatabase()
 	{
 		throw std::exception("Cannot open the database");
 	}
+	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);//insert 10 question everytime
+}
+
+MongoDatabase::~MongoDatabase()
+{
 }
 
 /// <summary>
@@ -17,14 +22,24 @@ MongoDatabase::MongoDatabase()
 /// <returns> if the database was opened ssucessfully or not</returns>
 bool MongoDatabase::open()
 {
-	this->uri = mongocxx::uri(DEAFULT_URL);
 	try
 	{
-		this->client = mongocxx::client{ uri };//connect to the server
+		this->client = mongocxx::client{ mongocxx::uri{} };//connect to the server
+		auto dbs = this->client.list_database_names();
+		
 		this->db = this->client[DB_NAME];
+		//create collections if not exists
 		if (!this->db.has_collection(USERS_COLLECTION))
 		{
 			this->db.create_collection(USERS_COLLECTION);
+		}
+		if (!this->db.has_collection(STATS_COLLECTION))
+		{
+			this->db.create_collection(STATS_COLLECTION);
+		}
+		if (!this->db.has_collection(QUESTIONS_COLLECTION))
+		{
+			this->db.create_collection(QUESTIONS_COLLECTION);
 		}
 		return true;
 	}
@@ -46,7 +61,7 @@ bool MongoDatabase::close()//the database is closed automatically
 /// <summary>
 /// check if a user exists
 /// </summary>
-/// <param name="username">the username to check for</param>
+/// <param username="username">the username to check for</param>
 /// <returns> true or false</returns>
 int MongoDatabase::doesUserExist(const string username)
 {
@@ -84,9 +99,15 @@ int MongoDatabase::addNewUser(const User& user)
 		kvp(ADDRESS_FIELD,user.getAddress()),
 		kvp(BORN_DATE_FIELD,user.getBornDate()),
 		kvp(PHONE_NUM_FIELD,user.getPhoneNum()));
+	auto doc2 = make_document(kvp("average_time", 0.0),
+		kvp("correct_answers", 0),
+		kvp("total_answers", 0),
+		kvp("total_games", 0),
+		kvp("score", 0));
 	try
 	{
-		auto insert_one_result = this->db[USERS_COLLECTION].insert_one(doc.view());
+		this->db[USERS_COLLECTION].insert_one(doc.view());
+		this->db[STATS_COLLECTION].insert_one(doc2.view());
 		return OK_CODE;
 	}
 	catch (...)
@@ -94,3 +115,228 @@ int MongoDatabase::addNewUser(const User& user)
 		return ERROR_CODE;
 	}
 }
+
+/// <summary>
+/// gets all the questions from the database
+/// </summary>
+/// <param username="amountQuestions"> the amount of questions to get</param>
+/// <returns> list of questions</returns>
+list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
+{
+	list<Question>* questions = new list<Question>();
+	string question;
+	string category;
+	string correctAnswer;
+	string difficulty;
+	string response;
+	vector<string> incorrectAnswers;
+	// Find all documents in the collection
+	auto cursor = this->db[QUESTIONS_COLLECTION].find({});
+
+	for (auto&& doc : cursor)
+	{
+		category = doc["category"].get_string();
+		question = doc["question"].get_string();
+		correctAnswer = doc["correct_answer"].get_string();
+		difficulty = doc["difficulty"].get_string();
+		for (auto&& incorrectAnswer : doc["incorrect_answers"].get_array().value) {
+			incorrectAnswers.push_back(incorrectAnswer.get_string().value.data());//get_string() is not working
+		}
+		questions->push_back(Question(question, incorrectAnswers, correctAnswer, category, difficulty));
+		incorrectAnswers.clear();//reset incorrect answers
+	}
+	return *questions;
+}
+
+/// <summary>
+/// gets player vaerage answer time
+/// </summary>
+/// <param username="player"> the username of the player to get</param>
+/// <returns> the average answer time</returns>
+float MongoDatabase::getPlayerAverageAnswerTime(const string player)
+{
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << player 
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+	// Find the document matching the filter
+	auto result = coll.find_one(filter.view());
+
+	// Extract the average time from the resulting document
+	if (result) {
+		auto docView = result->view();
+		auto avgTime = docView["average_time"].get_double();
+
+		return static_cast<float>(avgTime);
+	}
+	throw std::exception("No document found for the given username");
+	
+}
+/// <summary>
+/// get the amount of correct answers of a player
+/// </summary>
+/// <param username="player"> the username of the player</param>
+/// <returns> the amount of correct answers</returns>
+int MongoDatabase::getNumOfCorrectAnswers(const string player)
+{
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << player
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+	// Find the document matching the filter
+	auto result = coll.find_one(filter.view());
+
+	// Extract the amount of correct answers from the resulting document
+	if (result) {
+		auto docView = result->view();
+		auto correctNum = docView["correct_answers"].get_int32();
+		return static_cast<int>(correctNum);
+	}
+	throw std::exception("No document found for the given username");
+}
+
+/// <summary>
+/// gets the total amount of answers of the player
+/// </summary>
+/// <param username="player"> the username of the player</param>
+/// <returns> the total amount of answers</returns>
+int MongoDatabase::getNumOfTotalAnswers(const string player)
+{
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << player
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+	// Find the document matching the filter
+	auto result = coll.find_one(filter.view());
+
+	// Extract the amount of total answers from the resulting document
+	if (result) {
+		auto docView = result->view();
+		auto answersNum = docView["total_answers"].get_int32();
+		return static_cast<int>(answersNum);
+	}
+	throw std::exception("No document found for the given username");
+}
+
+
+/// <summary>
+/// gets the amount of games the player played
+/// </summary>
+/// <param username="player"> the username of the player</param>
+/// <returns> amount of games played</returns>
+int MongoDatabase::getNumOfPlayerGames(const string player)
+{
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << player
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+	// Find the document matching the filter
+	auto result = coll.find_one(filter.view());
+
+	// Extract the amount of total games from the resulting document
+	if (result) {
+		auto docView = result->view();
+		auto answersNum = docView["total_games"].get_int32();
+		return static_cast<int>(answersNum);
+	}
+	throw std::exception("No document found for the given username");
+}
+/// <summary>
+/// gets the score of a player
+/// </summary>
+/// <param username="player"> the username of the player</param>
+/// <returns> score of a player</returns>
+int MongoDatabase::getPlayerScore(const string player)
+{
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << player
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+	// Find the document matching the filter
+	auto result = coll.find_one(filter.view());
+
+	// Extract the score from the resulting document
+	if (result) {
+		auto docView = result->view();
+		auto score = docView["score"].get_int32();
+		return static_cast<int>(score);
+	}
+	throw std::exception("No document found for the given username");
+}
+
+/// <summary>
+/// gets the best 5 scores from the db
+/// </summary>
+/// <returns> vector of scores</returns>
+vector<string>& MongoDatabase::getHighScores()
+{
+	vector<string>* vec = new vector<string>();
+	string username;
+	string label;//the username of the user with the score
+	// Access the STATS_COLLECTION collection
+	auto coll = db[STATS_COLLECTION];
+
+	// Aggregate pipeline
+	mongocxx::pipeline pipeline{};
+
+
+	// Sort stage to sort the scores in descending order
+	pipeline.sort(bsoncxx::builder::stream::document{} << "score" << -1 << bsoncxx::builder::stream::finalize);
+
+	// Limit stage to get only the top 5 scores
+	pipeline.limit(3);
+
+	// Perform the aggregation
+	auto cursor = coll.aggregate(pipeline);
+	for (auto&& doc : cursor)
+	{
+		username = doc["username"].get_string().value.data();
+		label = std::to_string(doc["score"].get_int32());
+		vec->push_back('"'+username + '"'+"," + label);
+	}
+	return *vec;
+}
+
+/// <summary>
+/// insert questions to the mongo database
+/// </summary>
+/// <param username="numOfQuestions"> the number of questions to insert</param>
+void MongoDatabase::insertQuestions(const int numOfQuestions)
+{
+	vector<Question> questions = fetchQuestions(numOfQuestions);//get questions from opentdb api
+
+	if (!this->db.has_collection(QUESTIONS_COLLECTION))
+	{
+		this->db.create_collection(QUESTIONS_COLLECTION);
+	}
+	auto coll = this->db[QUESTIONS_COLLECTION];
+	// Delete all prev documents in the collection
+	coll.delete_many({});
+	// Insert the questions into MongoDB
+	for (const auto& question : questions) {
+		// Create a BSON document with an array
+		auto document = bsoncxx::builder::stream::document{};
+		auto arrayBuilder = document << "category" << question.getCategory()
+			<< "question" << question.getQuestion()
+			<< "correct_answer" << question.getRightAnswer()
+			<< "difficulty" << question.getDifficulty()
+			<< "incorrect_answers" << bsoncxx::builder::stream::open_array;
+
+		for (const auto& incorrectAnswer : question.getAnswers()) {
+			arrayBuilder << incorrectAnswer;
+		}
+
+		arrayBuilder << bsoncxx::builder::stream::close_array;
+
+		// Insert the document into the collection
+		coll.insert_one(document.view());
+	}
+}
+
+
+
