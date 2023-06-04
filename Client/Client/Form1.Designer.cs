@@ -824,7 +824,7 @@
             // 
             this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 307);
+            this.textBox33.Location = new System.Drawing.Point(1118, 298);
             this.textBox33.Multiline = true;
             this.textBox33.Name = "textBox33";
             this.textBox33.ReadOnly = true;
@@ -1472,6 +1472,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1442, 645);
+            this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
             this.Controls.Add(this.enterRoomPanel);
@@ -1480,7 +1481,6 @@
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.openPanel);
             this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.personalStatsPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
