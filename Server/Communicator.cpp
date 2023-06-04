@@ -85,7 +85,7 @@ void Communicator::bindAndListen()
 /// <param name="socket">The Socket of the client to handle.</param>
 void Communicator::handleNewClient(SOCKET socket)
 {
-	int len = 0;//the length of the recieved message
+	int len = ERROR_LEN;//the length of the recieved message
 	char buffer[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
@@ -96,7 +96,11 @@ void Communicator::handleNewClient(SOCKET socket)
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	while (this->m_clients.at(socket) != nullptr)
 	{
-		len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
+		//Not letting to handle the request until there is one
+		while (ERROR_LEN == len)
+		{
+			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
+		}
 
 		Buffer charVector(buffer, buffer + MAX_SIZE);
 		charVector[len] = '\0';//add null terminator
@@ -123,6 +127,7 @@ void Communicator::handleNewClient(SOCKET socket)
 		delete data;
 		code = "";
 		this->m_clients.at(socket) = res.newHandler;
+		len = ERROR_LEN;
 	}
 }
 
@@ -142,7 +147,7 @@ Buffer* Communicator::getDataFromBuffer(const Buffer& buf)
 	{
 		currentChar = buf[i];
 		//if the character is not a letter or a scope
-		if (currentChar != SPACE && currentChar != NEW_LINE && currentChar != END_STR_SYMBOL);
+		if (currentChar != SPACE && currentChar != NEW_LINE && currentChar != END_STR_SYMBOL)
 		{
 			data->push_back(currentChar);
 		}
