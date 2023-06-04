@@ -125,6 +125,41 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRe
     return *makeBuffer(GET_PERS_STATS_RESP_CODE, echoJsonFormat(responseData));
 }
 
+Buffer& JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse& closeRoomResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(closeRoomResp.status));
+    return *makeBuffer(CLOSE_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse& startGameResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(startGameResp.status));
+    return *makeBuffer(START_GAME_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse& leaveRoomResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(leaveRoomResp.status));
+    return *makeBuffer(LEAVE_ROOM_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse& getRoomStateResp)
+{
+    string condition = getRoomStateResp.hasGameBegun ? "true" : "false";
+    string responseData = getField<unsigned int>("status", to_string(getRoomStateResp.status));
+    responseData += SEPERATOR + getField<bool>("hasGameBegun", condition);
+    responseData += ",'players':[";
+    for (const auto& i : getRoomStateResp.players)
+    {
+        responseData += echoStringJsonFormat(i) + SEPERATOR;
+    }
+    responseData.pop_back();
+    responseData += "]";
+    responseData += SEPERATOR + getField<unsigned int>("AnswerCount", to_string(getRoomStateResp.AnswerCount));
+    responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
+    return *makeBuffer(GET_ROOM_STATE_RESP_CODE, echoJsonFormat(responseData));
+}
+
 
 /// <summary>
 /// The function add to the number '0' to
@@ -207,6 +242,11 @@ void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
 string JsonResponsePacketSerializer::echoJsonFormat(const string str)
 {
     return "{" + str + "}";
+}
+
+string JsonResponsePacketSerializer::echoStringJsonFormat(const string str)
+{
+    return '"' + str + '"';
 }
 
 /// <summary>
