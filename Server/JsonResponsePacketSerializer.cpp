@@ -112,7 +112,6 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreRespon
 {
     string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
     string statisticsData = getVectorString(getHighScoreResp.statistics);
-    statisticsData.pop_back();//REMOVE THE , AT THE END
     statisticsData = "'statistics':[" + statisticsData + "]";
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoJsonFormat(responseData));
