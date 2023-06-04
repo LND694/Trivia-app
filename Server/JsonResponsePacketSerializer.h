@@ -8,7 +8,8 @@
 #define ZERO_CHAR '0'
 #define SEPERATOR ","
 
-constexpr char SEPERATOR_ARGS = '|';
+constexpr char SEPERATOR_ARGS_BEGIN = '[';
+constexpr char SEPERATOR_ARGS_END = ']';
 
 class JsonResponsePacketSerializer : public Singleton
 {
