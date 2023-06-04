@@ -127,7 +127,7 @@ namespace Client
 
         public Queue<RoomData> GetRoomDatas()
         {
-            return new Queue<RoomData>(roomDatas);
+            return new Queue<RoomData>(this.roomDatas);
         }
     }
 

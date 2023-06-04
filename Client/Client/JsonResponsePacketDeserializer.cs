@@ -24,7 +24,7 @@ namespace Client
         /// The function getts the Json data from the buffer.
         /// </summary>
         /// <param name="buffer"> The buffer with the json's data.</param>
-        /// <returns> THe json data only</returns>
+        /// <returns> The json data only</returns>
         private static string GetDataFromBuffer(string buffer)
         {
             string data =  "";
