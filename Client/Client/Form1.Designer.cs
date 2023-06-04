@@ -824,7 +824,7 @@
             // 
             this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 298);
+            this.textBox33.Location = new System.Drawing.Point(1118, 310);
             this.textBox33.Multiline = true;
             this.textBox33.Name = "textBox33";
             this.textBox33.ReadOnly = true;
