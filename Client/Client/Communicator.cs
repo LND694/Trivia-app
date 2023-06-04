@@ -43,16 +43,21 @@ namespace Client
         }
 
         /// <summary>
-        /// send a serialized request to the server
+        /// The function sends some data to the server.
         /// </summary>
+        /// <param name="data"> The data to send</param>
         public void SendRequestToServer(string data)
         {
             socket.Send(Encoding.ASCII.GetBytes(data));
         }
 
+        /// <summary>
+        /// The function getts the response from the Server.
+        /// </summary>
+        /// <returns> The last message from the server.</returns>
         public string GetResponseFromServer()
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[Constants.BUFFER_SIZE];
             socket.Receive(buffer);
             return System.Text.Encoding.Default.GetString(buffer);
         }

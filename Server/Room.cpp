@@ -17,6 +17,16 @@ Room::Room(const RoomData& data, const LoggedUser& user)
 /// <param name="user"> the user to add</param>
 void Room::addUser(const LoggedUser& user)
 {
+	//Checking the current amount of the players in the room
+	if (!this->m_metadata.isActive)
+	{
+		throw std::exception("This room is not activated");
+	}
+	if (this->m_users.size() + 1 > this->m_metadata.maxPlayers)
+	{
+		throw std::exception("There is no more place in this room");
+	}
+
 	this->m_users.push_back(user);
 }
 
