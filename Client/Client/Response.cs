@@ -177,7 +177,56 @@ namespace Client
         }
     }
 
+    public class CloseRoomResponse : ResponseWithStatus
+    {
+        public CloseRoomResponse(int status) : base(status)
+        {
 
+        }
+    }
+
+
+    public class StartGameResponse : ResponseWithStatus
+    {
+        public StartGameResponse(int status) : base(status)
+        {
+
+        }
+    }
+    public class LeaveRoomResponse : ResponseWithStatus
+    {
+        public LeaveRoomResponse(int status) : base(status)
+        {
+
+        }
+    }
+
+    public class GetRoomStateResponse : ResponseWithStatus
+    {
+        [JsonProperty("hasGameBegun")]
+
+        private bool hasGameBegun;
+
+
+        [JsonProperty("players")]
+
+        private Queue<string> players;
+
+        [JsonProperty("AnswerCount")]
+
+        private int AnswerCount;
+
+        [JsonProperty("answerTimeOut")]
+
+        private int answerTimeOut;
+        public GetRoomStateResponse(int status, bool hasGameBegun, Queue<string> players, int answerCount, int answerTimeOut) : base(status)
+        {
+            this.hasGameBegun = hasGameBegun;
+            this.players = players;
+            this.AnswerCount = answerCount;
+            this.answerTimeOut = answerTimeOut;
+        }
+    }
 
     public class ErrorResopnse : Response
     {

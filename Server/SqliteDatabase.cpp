@@ -363,11 +363,7 @@ int SqliteDatabase::callbackInt(void* data, int argc, char** argv, char** azColN
 	return OK_CODE;
 }
 
-int SqliteDatabase::callbackInt(void* data, int argc, char** argv, char** azColName)
-{
-	*(static_cast<int*>(data)) = static_cast<int>(atoi(argv[0]));
-	return OK_CODE;
-}
+
 
 int SqliteDatabase::callbackString(void* data, int argc, char** argv, char** azColName)
 {
@@ -438,7 +434,7 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	}
 	else if (typeid(T).name() == typeid(int).name())
 	{
-		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, data, &errMsg);
+		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, &data, &errMsg);
 	}
 
 	if (result != SQLITE_OK)
