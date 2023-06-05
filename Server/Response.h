@@ -100,6 +100,6 @@ typedef struct GetRoomStateResponse : ResponseWithStatus
 {
 	bool hasGameBegun;
 	vector<string> players;
-	unsigned int AnswerCount;
+	unsigned int questionCount;
 	unsigned int answerTimeOut;
 }GetRoomStateResponse;
