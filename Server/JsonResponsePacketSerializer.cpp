@@ -153,7 +153,10 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
     {
         responseData += echoStringJsonFormat(i) + SEPERATOR;
     }
-    responseData.pop_back();
+    if (getRoomStateResp.players.size() > 0)
+    {
+        responseData.pop_back();
+    }
     responseData += "]";
     responseData += SEPERATOR + getField<unsigned int>("AnswerCount", to_string(getRoomStateResp.AnswerCount));
     responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
