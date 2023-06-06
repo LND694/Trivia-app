@@ -2,6 +2,9 @@
 #include "IRequestHandler.h"
 #include "RoomManager.h"
 #include "RequestHandlerFactory.h"
+
+class RequestHandlerFactory;
+
 class RoomMemberRequestHandler : public IRequestHandler
 {
 protected:
