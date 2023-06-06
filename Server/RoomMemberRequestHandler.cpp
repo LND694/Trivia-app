@@ -88,6 +88,11 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
     return *reqRes;
 }
 
+/// <summary>
+/// creates ERROR result for the client
+/// </summary>
+/// <param name="errMsg"> the error message to dispaly</param>
+/// <param name="reqRes"> the request result to return</param>
 void RoomMemberRequestHandler::createErrorResponse(string errMsg, RequestResult* reqRes)
 {
     ErrorResopnse errResp;
