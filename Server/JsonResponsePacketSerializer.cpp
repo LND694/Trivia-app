@@ -158,7 +158,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
         responseData.pop_back();
     }
     responseData += "]";
-    responseData += SEPERATOR + getField<unsigned int>("AnswerCount", to_string(getRoomStateResp.AnswerCount));
+    responseData += SEPERATOR + getField<unsigned int>("AnswerCount", to_string(getRoomStateResp.questionCount));
     responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
     return *makeBuffer(GET_ROOM_STATE_RESP_CODE, echoJsonFormat(responseData));
 }
