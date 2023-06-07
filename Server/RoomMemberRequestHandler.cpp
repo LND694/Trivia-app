@@ -55,7 +55,8 @@ RequestResult& RoomMemberRequestHandler::leaveRoom(const RequestInfo& requestInf
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
         reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
     }
-    else {
+    else 
+    {
         createErrorResponse(ERROR_MSG, reqRes);
     }
     return *reqRes;
