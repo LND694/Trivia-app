@@ -237,7 +237,7 @@ RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 	
 	//Making the RequestResult
 	req->response = JsonResponsePacketSerializer::serializeResponse(joinRoomResp);
-	req->newHandler = new RoomMemberRequestHandler(this->m_roomManager.getRoom(joinRoomReqs.roomId), this->m_user, this->m_roomManager, this->m_handlerFactory);
+	req->newHandler = this->m_handlerFactory->createRoomMemberRequestHandler(this->m_user, this->m_roomManager.getRoom(joinRoomReqs.roomId));
 
 	delete& joinRoomReqs;
 	return *req;
@@ -269,7 +269,7 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 
 	//Making the RequestResult
 	req->response = JsonResponsePacketSerializer::serializeResponse(createRoomResp);
-	req->newHandler = new RoomAdminRequestHandler(Room(roomData, this->m_user), this->m_user, this->m_roomManager, this->m_handlerFactory);
+	req->newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(this->m_user, Room(roomData, this->m_user));
 
 	delete& createRoomReqs;
 	return *req;
