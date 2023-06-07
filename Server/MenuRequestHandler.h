@@ -1,10 +1,9 @@
 #pragma once
+
 #include "IRequestHandler.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
-#include "RoomAdminRequestHandler.h"
-#include "RoomMemberRequestHandler.h"
 
 class RequestHandlerFactory;
 

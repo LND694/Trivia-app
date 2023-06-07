@@ -8,7 +8,7 @@
 /// <param name="m_user"> the user itself</param>
 /// <param name="m_roomManager"> room manager</param>
 /// <param name="m_handlerFactory"> handler factory </param>
-RoomMemberRequestHandler::RoomMemberRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory& m_handlerFactory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory)
     : m_room(m_room), m_user(m_user), m_roomManager(m_roomManager), m_handlerFactory(m_handlerFactory)
 {
 }
@@ -53,7 +53,7 @@ RequestResult& RoomMemberRequestHandler::leaveRoom(const RequestInfo& requestInf
         this->m_room.removeUser(this->m_user);
         leaveResp.status = OK_CODE;
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
-        reqRes->newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_user);//return the user to the menu
+        reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
     }
     else {
         createErrorResponse(ERROR_MSG, reqRes);

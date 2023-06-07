@@ -93,13 +93,13 @@
     <ClInclude Include="StatisticsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameRequestHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="RoomAdminRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RoomMemberRequestHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,10 +170,10 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RoomMemberRequestHandler.cpp">
+    <ClCompile Include="GameRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameRequestHandler.cpp">
+    <ClCompile Include="RoomMemberRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
