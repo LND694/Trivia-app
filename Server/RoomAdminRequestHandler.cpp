@@ -20,7 +20,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(const Room m_room, const Logged
 /// <returns>a bool value- if it is relevent or not.</returns>
 bool RoomAdminRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 {
-    return LEAVE_ROOM_REQS_CODE == requestInfo.id || GET_ROOM_STATE_REQS_CODE == requestInfo.id;
+    return CLOSE_ROOM_REQS_CODE == requestInfo.id || GET_ROOM_STATE_REQS_CODE == requestInfo.id || START_GAME_REQS_CODE == requestInfo.id;
 }
 
 /// <summary>
