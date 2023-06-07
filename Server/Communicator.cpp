@@ -94,40 +94,48 @@ void Communicator::handleNewClient(SOCKET socket)
 	string code;
 	Buffer* data;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
-	while (this->m_clients.at(socket) != nullptr)
+	try {
+
+		while (this->m_clients.at(socket) != nullptr)
+		{
+
+			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
+			if (len == 0)
+			{
+				throw std::exception("The client disconnected");
+			}
+
+			Buffer charVector(buffer, buffer + MAX_SIZE);
+			charVector[len] = '\0';//add null terminator
+
+			data = getDataFromBuffer(charVector);
+			//Extracting the code from the request's buffer
+			for (int i = 0; i < SIZE_CODE_FIELD; i++)
+			{
+				code += data->at(i);
+			}
+
+			//turn the buffer into request
+			info.buffer = *data;
+			info.receivalTime = time(nullptr);//get the current time
+			info.id = static_cast<RequestId>(atoi(code.c_str()));
+
+			//get the response
+			res = this->m_clients.at(socket)->handleRequest(info);
+			cout << res.response.data() << endl;
+
+			//send the response
+			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
+
+			delete data;
+			code = "";
+			this->m_clients.at(socket) = res.newHandler;
+			len = ERROR_LEN;
+		}
+	}
+	catch (std::exception& e)
 	{
-		//Not letting to handle the request until there is one
-		while (ERROR_LEN == len)
-		{
-			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
-		}
-
-		Buffer charVector(buffer, buffer + MAX_SIZE);
-		charVector[len] = '\0';//add null terminator
-
-		data = getDataFromBuffer(charVector);
-		//Extracting the code from the request's buffer
-		for (int i = 0; i < SIZE_CODE_FIELD; i++)
-		{
-			code += data->at(i);
-		}
-
-		//turn the buffer into request
-		info.buffer = *data;
-		info.receivalTime = time(nullptr);//get the current time
-		info.id = static_cast<RequestId>(atoi(code.c_str()));
-
-		//get the response
-		res = this->m_clients.at(socket)->handleRequest(info);
-		cout << res.response.data() << endl;
-
-		//send the response
-		send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
-
-		delete data;
-		code = "";
-		this->m_clients.at(socket) = res.newHandler;
-		len = ERROR_LEN;
+		cout << e.what() << endl;
 	}
 }
 
