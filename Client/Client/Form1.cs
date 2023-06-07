@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 
 namespace Client
@@ -23,6 +24,7 @@ namespace Client
         private GetRoomStateResponse roomData;
         public Form1()
         {
+            Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
             this.communicator = new Communicator();
             communicator.Connect();
             InitializeComponent();
@@ -36,6 +38,45 @@ namespace Client
                 this.Controls[i].Visible = false;
             }
             this.openPanel.Visible = true;
+
+            autoUpdateThread.Start();
+        }
+
+        private void AutoUpdate()
+        {
+            while(true)
+            {
+                if (this.bestPlayersPanel.Visible)
+                {
+                    if (UpdateHighScores())
+                    {
+                        PresentHighScores();
+                    }
+                }
+                else if (this.enterRoomPanel.Visible)
+                {
+                    if (UpdateListRooms())
+                    {
+                        PresentListRooms();
+                    }
+                }
+                else if (this.roomAdminPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(this.textBox72.Text);
+                    }
+                }
+                else if (this.roomMemberPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateMember(this.textBox57.Text);
+                    }
+                }
+                System.Threading.Thread.Sleep(3000);
+            }
+
         }
 
         private void button_WOC3_Click(object sender, EventArgs e)
@@ -247,7 +288,7 @@ namespace Client
         {
             if(UpdateListRooms())
             {
-                PresnetListRooms();
+                PresentListRooms();
                 MoveTab(menuPanel, enterRoomPanel); 
             }
 
@@ -298,12 +339,17 @@ namespace Client
             return true;
         }
 
-        private void PresnetListRooms()
+        private void PresentListRooms()
         {
             Queue<RoomData> copyRooms = new Queue<RoomData>(this.rooms);
 
+            if (comboBox2.Items.Count > 0)
+            {
+                comboBox2.Items.Clear();
+            }
+
             //Inserting all the rooms in the combo box
-            comboBox2.Text = "";
+
             while (copyRooms.Count > 0)
             {
                 comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
@@ -363,18 +409,30 @@ namespace Client
             return true;
         }
 
-        private void PresentRoomStateMember()
+        private void PresentRoomStateMember(string roomName)
         {
+            this.textBox57.Text = roomName;
             this.textBox63.Text = "" + this.roomData.GetQuestionCount();
             this.textBox64.Text = "" + this.roomData.GetAnswerTimeOut();
+            this.textBox75.Text = "" + this.roomData.GetPlayers().Count;
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
 
+        }
+
+        private void PresentRoomStateAdmin(string roomName)
+        {
+            this.textBox72.Text = roomName;
+            this.textBox69.Text = "" + this.roomData.GetQuestionCount();
+            this.textBox67.Text = "" + this.roomData.GetAnswerTimeOut();
+            this.textBox73.Text = "" + this.roomData.GetPlayers().Count;
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
         }
 
         private void AddTextsToListBox(Queue<string> texts, ListBox list)
         {
             Queue<string> copyTexts = new Queue<string>(texts);
 
+            list.Items.Clear();
             while(copyTexts.Count > 0)
             {
                 list.Items.Add(copyTexts.Dequeue() + Constants.NEW_LINE);
@@ -437,7 +495,7 @@ namespace Client
                     {
                         if(UpdateRoomState())
                         {
-                            PresentRoomStateMember();
+                            PresentRoomStateMember(comboBox2.Text);
                             MoveTab(this.enterRoomPanel, this.roomMemberPanel);
                         }
                     }
@@ -472,7 +530,11 @@ namespace Client
                 }
                 else
                 {
-                    MessageBox.Show("Room was created");
+                    if(UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(roomName);
+                        MoveTab(this.createRoomPanel, this.roomAdminPanel);
+                    }
                 }
 
             }
@@ -485,7 +547,60 @@ namespace Client
 
         private void button_WOC21_Click(object sender, EventArgs e)
         {
-            MoveTab(roomMemberPanel, menuPanel);
+            LeaveRoomResponse leaveRoomResponse = null;
+
+            try
+            {
+                leaveRoomResponse = SendRequestToServer<NullableConverter, LeaveRoomResponse>(null, REQUEST_CODES.LEAVE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Leaving room");
+            }
+
+            if(leaveRoomResponse != null && Constants.OK_STATUS_CODE == leaveRoomResponse.GetStatus())
+            {
+                MoveTab(roomMemberPanel, menuPanel);
+            }
+        }
+
+        private void button_WOC22_Click(object sender, EventArgs e)
+        {
+            CloseRoomResponse closeRoomResponse = null;
+
+            try
+            {
+                closeRoomResponse = SendRequestToServer<NullableConverter, CloseRoomResponse>(null, REQUEST_CODES.CLOSE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Closing room");
+            }
+
+            if (closeRoomResponse != null && Constants.OK_STATUS_CODE == closeRoomResponse.GetStatus())
+            {
+                MoveTab(roomAdminPanel, menuPanel);
+            }
+        }
+
+        private void button_WOC23_Click(object sender, EventArgs e)
+        {
+            StartGameResponse startGameResponse = null;
+
+            try
+            {
+                startGameResponse = SendRequestToServer<NullableConverter, StartGameResponse>(null, REQUEST_CODES.START_GAME_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Starting Game");
+            }
+
+            if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
+            {
+                MessageBox.Show("Game begun by you!");
+            }
         }
     }
 }
+

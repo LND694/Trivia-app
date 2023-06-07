@@ -22,8 +22,8 @@ namespace Client
         public const int CREATE_ROOM_REQS_CODE = 107;
         public const int GET_HIGH_SCORE_REQS_CODE = 108;
         public const int GET_PERS_STATS_REQS_CODE = 109;
-        public const int CLOSE_ROOM_RESP_CODE = 110;
-        public const int START_GAME_RESP_CODE = 111;
+        public const int CLOSE_ROOM_REQS_CODE = 110;
+        public const int START_GAME_REQS_CODE = 111;
         public const int GET_ROOM_STATE_REQS_CODE = 112;
         public const int LEAVE_ROOM_REQS_CODE = 113;
         public const int ERROR_REQS_CODE = 255;
