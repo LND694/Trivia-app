@@ -51,7 +51,7 @@ RequestResult& RoomMemberRequestHandler::leaveRoom(const RequestInfo& requestInf
     {
 
         this->m_room.removeUser(this->m_user);
-        leaveResp.status = OK_CODE;
+        leaveResp.status = OK_STATUS_CODE;
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
         reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
     }
@@ -79,7 +79,7 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
         stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
         stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
         stateResp.players = this->m_room.getAllUsers();
-        stateResp.status = OK_CODE;
+        stateResp.status = OK_STATUS_CODE;
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
         reqRes->newHandler = this;
     }
