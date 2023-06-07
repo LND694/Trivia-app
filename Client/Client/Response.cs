@@ -212,9 +212,9 @@ namespace Client
 
         private Queue<string> players;
 
-        [JsonProperty("AnswerCount")]
+        [JsonProperty("questionCount")]
 
-        private int AnswerCount;
+        private int questionCount;
 
         [JsonProperty("answerTimeOut")]
 
@@ -223,7 +223,7 @@ namespace Client
         {
             this.hasGameBegun = hasGameBegun;
             this.players = players;
-            this.AnswerCount = answerCount;
+            this.questionCount = answerCount;
             this.answerTimeOut = answerTimeOut;
         }
     }
