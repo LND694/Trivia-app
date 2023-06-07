@@ -258,7 +258,7 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	RoomData roomData;
 	roomData.id = static_cast<int>(this->m_roomManager.getRooms().size() + 1);
 	roomData.name = createRoomReqs.roomName;
-	roomData.isActive = true;
+	roomData.isActive = false;
 	roomData.maxPlayers = createRoomReqs.maxUsers;
 	roomData.numOfQuestionsInGame = createRoomReqs.questionCount;
 	roomData.timePerQuestion = createRoomReqs.answerTimeout;
