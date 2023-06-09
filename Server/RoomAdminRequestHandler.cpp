@@ -67,7 +67,7 @@ RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo
     //Closing the room
     this->m_roomManager.deleteRoom(idRoom);
 
-    closeResp.status = OK_CODE;
+    closeResp.status = OK_STATUS_CODE;
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(closeResp);
     reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
 
@@ -85,7 +85,8 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo
     RequestResult* reqRes = new RequestResult();//the result to return
 
     //"Starting" the game
-    startGameResp.status = OK_CODE;
+    this->m_roomManager.getRoom(this->m_room.getRoomData().id).getRoomData().isActive = true;
+    startGameResp.status = OK_STATUS_CODE;
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(startGameResp);
     reqRes->newHandler = new GameRequestHandler();
 

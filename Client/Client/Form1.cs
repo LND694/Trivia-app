@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 
 namespace Client
@@ -17,16 +18,24 @@ namespace Client
     public partial class Form1 : Form
     {
         //The fields of the Form.
-        Communicator cm = null;
-        Queue<RoomData> rooms;
-        Communicator communicator;
+        private Communicator communicator;
+        private Queue<RoomData> rooms;
+        private Queue<string> highScores;
+        private GetRoomStateResponse roomData;
+        private Mutex roomDataLock;
+        private Mutex roomsLock;
+        private Mutex highScoresLock;
         public Form1()
         {
+            Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
+            InitializeComponent();
             this.communicator = new Communicator();
             communicator.Connect();
-            InitializeComponent();
-            this.cm = new Communicator();
-            this.cm.Connect();
+
+            this.roomDataLock = new Mutex(false);
+            this.roomsLock = new Mutex(false);
+            this.highScoresLock = new Mutex(false);
+
 
             //Making all the controls in the Form to be invisible 
             //except for the opening panel(tab)
@@ -35,6 +44,56 @@ namespace Client
                 this.Controls[i].Visible = false;
             }
             this.openPanel.Visible = true;
+
+            //Activating the AutoUpdate thread
+            autoUpdateThread.IsBackground = true;
+            autoUpdateThread.Start();
+        }
+
+        /// <summary>
+        /// The function updates automatically
+        /// the data of the current panel.
+        /// </summary>
+        private void AutoUpdate()
+        {
+            while(!this.IsDisposed)
+            {
+                if (this.bestPlayersPanel.Visible)
+                {
+                    if (UpdateHighScores())
+                    {
+                        PresentHighScores();
+                    }
+                }
+                else if (this.enterRoomPanel.Visible)
+                {
+                    if (UpdateListRooms())
+                    {
+                        PresentListRooms();
+                    }
+                }
+                else if (this.roomAdminPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(this.textBox72.Text);
+                    }
+                }
+                else if (this.roomMemberPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateMember(this.textBox57.Text);
+                    }
+                    else
+                    {
+                        button_WOC21_Click(null, null); // leave room
+                        ShowErrorMessage("The host left the room", "Leaving room");
+                    }
+                }
+                System.Threading.Thread.Sleep(3000);
+            }
+
         }
 
         private void button_WOC3_Click(object sender, EventArgs e)
@@ -192,37 +251,11 @@ namespace Client
 
         private void button_WOC14_Click(object sender, EventArgs e)
         {
-            const string TITLE_ERROR = "Error Getting High Scores";
-            GetHighScoreResponse highScoreResponse = null;
-            Queue<string> highScores = null;
-
-            try
+            if(UpdateHighScores())
             {
-                highScoreResponse = SendRequestToServer<NullableConverter, GetHighScoreResponse>(null, REQUEST_CODES.GET_HIGH_SCORE_REQS_CODE);
+                PresentHighScores();
+                MoveTab(statisticsPanel, bestPlayersPanel);
             }
-            catch(Exception excp)
-            {
-                ShowErrorMessage(excp.Message, TITLE_ERROR);
-            }
-
-            if(highScoreResponse != null)
-            {
-                highScores = highScoreResponse.GetStatistics();
-                if(highScores != null && highScores.Count > 0)
-                    textBox44.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox39.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox45.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox41.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox46.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox43.Text = highScores.Dequeue();
-            }
-
-            MoveTab(statisticsPanel, bestPlayersPanel);
         }
 
         private void button_WOC12_Click(object sender, EventArgs e)
@@ -270,17 +303,12 @@ namespace Client
 
         private void button_WOC8_Click(object sender, EventArgs e)
         {
-            Queue<RoomData> copyRooms = null;
-            UpdateListRooms();
-            copyRooms = new Queue<RoomData>(this.rooms);
-
-            //Inserting all the rooms in the combo box
-            comboBox2.Text = "";
-            while(copyRooms.Count > 0)
+            if(UpdateListRooms())
             {
-                comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
+                PresentListRooms();
+                MoveTab(menuPanel, enterRoomPanel); 
             }
-            MoveTab(menuPanel, enterRoomPanel);
+
         }
 
         /// <summary>
@@ -312,7 +340,7 @@ namespace Client
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void UpdateListRooms()
+        private bool UpdateListRooms()
         {
             GetRoomsResponse rooms = null;
             try
@@ -321,21 +349,184 @@ namespace Client
             }
             catch (Exception excp)
             {
-                ShowErrorMessage(excp.Message, "Error");
+                ShowErrorMessage(excp.Message, "Error Getting Rooms!");
+                return false;
+            }
+            this.roomsLock.WaitOne();
+            this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
+            this.roomsLock.ReleaseMutex();
+            return true;
+        }
+
+        private void PresentListRooms()
+        {
+            Queue<RoomData> copyRooms = null;
+            Queue<string> roomsNames = new Queue<string>();
+
+            this.roomsLock.WaitOne();
+            copyRooms = new Queue<RoomData>(this.rooms);
+            this.roomsLock.ReleaseMutex();
+
+            //Getting the names of the rooms
+            while(copyRooms.Count > 0)
+            {
+                roomsNames.Enqueue(copyRooms.Dequeue().GetName());
             }
 
-            if(rooms != null)
+            //Inserting all the rooms in the combo box
+            if (comboBox2.InvokeRequired)
             {
-                this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
+                comboBox2.Invoke((MethodInvoker)delegate
+                {
+                    if (comboBox2.Items.Count > 0)
+                    {
+                        comboBox2.Items.Clear();
+                    }
+                    while (roomsNames.Count > 0)
+                    {
+                        comboBox2.Items.Add(roomsNames.Dequeue() + Constants.NEW_LINE);
+                    }
+                });
             }
+            else
+            {
+                if (comboBox2.Items.Count > 0)
+                {
+                    comboBox2.Items.Clear();
+                }
+                while (roomsNames.Count > 0)
+                {
+                    comboBox2.Items.Add(roomsNames.Dequeue() + Constants.NEW_LINE);
+                }
+            }
+
+
 
         }
 
+        private bool UpdateHighScores()
+        {
+            const string TITLE_ERROR = "Error Getting High Scores";
+            GetHighScoreResponse highScoreResponse = null;
+
+            try
+            {
+                highScoreResponse = SendRequestToServer<NullableConverter, GetHighScoreResponse>(null, REQUEST_CODES.GET_HIGH_SCORE_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, TITLE_ERROR);
+                return false;
+            }
+            this.highScoresLock.WaitOne();
+            this.highScores = highScoreResponse.GetStatistics();
+            this.highScoresLock.ReleaseMutex();
+            return true;
+        }
+
+        private void PresentHighScores()
+        {
+            Queue<string> theHighScores = null;
+
+            this.highScoresLock.WaitOne();
+            theHighScores = new Queue<string>(this.highScores);
+            this.highScoresLock.ReleaseMutex();
+
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox44.Text = theHighScores.Dequeue();
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox39.Text = theHighScores.Dequeue();
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox45.Text = theHighScores.Dequeue();
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox41.Text = theHighScores.Dequeue();
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox46.Text = theHighScores.Dequeue();
+            if (theHighScores != null && theHighScores.Count > 0)
+                textBox43.Text = theHighScores.Dequeue();
+        }
+
+        private bool UpdateRoomState()
+        {
+            GetRoomStateResponse getRoomState = null;
+            
+            try
+            {
+                getRoomState = SendRequestToServer<NullableConverter, GetRoomStateResponse>(null, REQUEST_CODES.GET_ROOM_STATE_REQS_CODE);
+            }
+            catch
+            {
+                ShowErrorMessage("Can not get the state of the room", "Error Getting Room State");
+                return false;
+            }
+            this.roomDataLock.WaitOne();
+            this.roomData = getRoomState;
+            this.roomDataLock.ReleaseMutex();
+            return true;
+        }
+
+        private void PresentRoomStateMember(string roomName)
+        {
+            this.textBox57.Text = roomName;
+            this.roomDataLock.WaitOne();
+            UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
+            UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
+            this.roomDataLock.ReleaseMutex();
+        }
+
+        private void PresentRoomStateAdmin(string roomName)
+        {
+            this.textBox72.Text = roomName;
+            this.roomDataLock.WaitOne();
+            UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
+            UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
+            UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
+            this.roomDataLock.ReleaseMutex();
+        }
+
+        private void AddTextsToListBox(Queue<string> texts, ListBox list)
+        {
+            Queue<string> copyTexts = new Queue<string>(texts);
+
+
+            if (list.InvokeRequired)
+            {
+                list.Invoke((MethodInvoker)delegate
+                {
+                    if (list.Items.Count > 0)
+                    {
+                        list.Items.Clear();
+                    }
+                    while (copyTexts.Count > 0)
+                    {
+                        list.Items.Add(copyTexts.Dequeue() + Constants.NEW_LINE);
+                    }
+                });
+            }
+            else
+            {
+                if (list.Items.Count > 0)
+                {
+                    list.Items.Clear();
+                }
+                while (copyTexts.Count > 0)
+                {
+                    list.Items.Add(copyTexts.Dequeue() + Constants.NEW_LINE);
+                }
+            }
+        }
         private int GetIdRoomByName(string name)
         {
             int id = Constants.ROOM_NOT_FOUND_ID;
-            Queue<RoomData> roomDatas = new Queue<RoomData>(this.rooms);
+            Queue<RoomData> roomDatas = null;
             RoomData roomData = null;
+
+            this.roomsLock.WaitOne();
+            roomDatas = new Queue<RoomData>(this.rooms);
+            this.roomsLock.ReleaseMutex();
 
             //Going over the rooms
             while (roomDatas.Count > 0)
@@ -354,7 +545,12 @@ namespace Client
             const string TITLE_ERROR = "Error Entering Room";
             JoinRoomRequest joinRoomRequest = null;
             JoinRoomResponse joinRoomResponse = null;
-            int roomId = GetIdRoomByName(comboBox2.Text.Substring(0, comboBox2.Text.Length - 1));
+            int roomId = Constants.ROOM_NOT_FOUND_ID;
+
+            if(this.textBox78.Text.Length > 0)
+            {
+                roomId = GetIdRoomByName(textBox78.Text.Substring(0, textBox78.Text.Length - 1));
+            }
 
             if(Constants.ROOM_NOT_FOUND_ID == roomId)
             {
@@ -381,7 +577,11 @@ namespace Client
                     }
                     else
                     {
-                        MessageBox.Show("Good enterance"); //going to the room's page
+                        if(UpdateRoomState())
+                        {
+                            PresentRoomStateMember(textBox78.Text);
+                            MoveTab(this.enterRoomPanel, this.roomMemberPanel);
+                        }
                     }
                 }
             }
@@ -414,7 +614,11 @@ namespace Client
                 }
                 else
                 {
-                    MessageBox.Show("Room was created");
+                    if(UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(roomName);
+                        MoveTab(this.createRoomPanel, this.roomAdminPanel);
+                    }
                 }
 
             }
@@ -425,19 +629,84 @@ namespace Client
             textBox52.Text = trackBar1.Value.ToString();
         }
 
-        private void textBox48_TextChanged(object sender, EventArgs e)
+        private void button_WOC21_Click(object sender, EventArgs e)
         {
+            LeaveRoomResponse leaveRoomResponse = null;
 
+            try
+            {
+                leaveRoomResponse = SendRequestToServer<NullableConverter, LeaveRoomResponse>(null, REQUEST_CODES.LEAVE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Leaving room");
+            }
+
+            if(leaveRoomResponse != null && Constants.OK_STATUS_CODE == leaveRoomResponse.GetStatus())
+            {
+                MoveTab(roomMemberPanel, menuPanel);
+            }
         }
 
-        private void textBox47_TextChanged(object sender, EventArgs e)
+        private void button_WOC22_Click(object sender, EventArgs e)
         {
+            CloseRoomResponse closeRoomResponse = null;
 
+            try
+            {
+                closeRoomResponse = SendRequestToServer<NullableConverter, CloseRoomResponse>(null, REQUEST_CODES.CLOSE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Closing room");
+            }
+
+            if (closeRoomResponse != null && Constants.OK_STATUS_CODE == closeRoomResponse.GetStatus())
+            {
+                MoveTab(roomAdminPanel, menuPanel);
+            }
         }
 
-        private void textBox47_TextChanged_1(object sender, EventArgs e)
+        private void button_WOC23_Click(object sender, EventArgs e)
         {
+            StartGameResponse startGameResponse = null;
 
+            try
+            {
+                startGameResponse = SendRequestToServer<NullableConverter, StartGameResponse>(null, REQUEST_CODES.START_GAME_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Starting Game");
+            }
+
+            if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
+            {
+                MessageBox.Show("Game begun by you!");
+            }
+        }
+
+        private void UpdateTextBox(TextBox textBox, string text)
+        {
+            if (textBox.InvokeRequired)
+            {
+                textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+            }
+            else
+            {
+                textBox.Text = text;
+            }
+        }
+
+        private void comboBox2_TextUpdate(object sender, EventArgs e)
+        {
+            this.textBox78.Text = this.comboBox2.Text;
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.textBox78.Text = this.comboBox2.Text;
         }
     }
 }
+

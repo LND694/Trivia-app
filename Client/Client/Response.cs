@@ -204,27 +204,41 @@ namespace Client
     public class GetRoomStateResponse : ResponseWithStatus
     {
         [JsonProperty("hasGameBegun")]
-
         private bool hasGameBegun;
 
 
         [JsonProperty("players")]
-
         private Queue<string> players;
 
         [JsonProperty("questionCount")]
-
         private int questionCount;
 
         [JsonProperty("answerTimeOut")]
-
         private int answerTimeOut;
+
         public GetRoomStateResponse(int status, bool hasGameBegun, Queue<string> players, int answerCount, int answerTimeOut) : base(status)
         {
             this.hasGameBegun = hasGameBegun;
             this.players = players;
             this.questionCount = answerCount;
             this.answerTimeOut = answerTimeOut;
+        }
+
+        public bool GetHasGameBegun()
+        {
+            return this.hasGameBegun;
+        }
+        public Queue<string> GetPlayers()
+        {
+            return new Queue<string>(this.players);
+        }
+        public int GetQuestionCount()
+        {
+            return this.questionCount;
+        }
+        public int GetAnswerTimeOut()
+        {
+            return this.answerTimeOut;
         }
     }
 

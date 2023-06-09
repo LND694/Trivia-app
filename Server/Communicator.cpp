@@ -8,7 +8,7 @@ Lock Communicator::m_lock;
 /// C'tor of class Communicator
 /// </summary>
 /// <param name="handlerFactory">The factory of the handlers of the requests.</param>
-Communicator::Communicator(RequestHandlerFactory* handlerFactory):
+Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -53,7 +53,7 @@ void Communicator::startHandleRequests()
 		if (client_socket != INVALID_SOCKET)
 			cout << "Client accepted !" << endl;
 		// create new thread to handle the new client for client and detach from it
-		std::thread handle(&Communicator::handleNewClient,this, client_socket);
+		std::thread handle(&Communicator::handleNewClient, this, client_socket);
 		handle.detach();
 	}
 }
