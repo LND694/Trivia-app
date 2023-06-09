@@ -50,6 +50,10 @@ namespace Client
             autoUpdateThread.Start();
         }
 
+        /// <summary>
+        /// The function updates automatically
+        /// the data of the current panel.
+        /// </summary>
         private void AutoUpdate()
         {
             while(!this.IsDisposed)
@@ -357,15 +361,19 @@ namespace Client
         private void PresentListRooms()
         {
             Queue<RoomData> copyRooms = null;
+            Queue<string> roomsNames = new Queue<string>();
 
             this.roomsLock.WaitOne();
             copyRooms = new Queue<RoomData>(this.rooms);
             this.roomsLock.ReleaseMutex();
 
-
+            //Getting the names of the rooms
+            while(copyRooms.Count > 0)
+            {
+                roomsNames.Enqueue(copyRooms.Dequeue().GetName());
+            }
 
             //Inserting all the rooms in the combo box
-
             if (comboBox2.InvokeRequired)
             {
                 comboBox2.Invoke((MethodInvoker)delegate
@@ -374,9 +382,9 @@ namespace Client
                     {
                         comboBox2.Items.Clear();
                     }
-                    while (copyRooms.Count > 0)
+                    while (roomsNames.Count > 0)
                     {
-                        comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
+                        comboBox2.Items.Add(roomsNames.Dequeue() + Constants.NEW_LINE);
                     }
                 });
             }
@@ -386,11 +394,13 @@ namespace Client
                 {
                     comboBox2.Items.Clear();
                 }
-                while (copyRooms.Count > 0)
+                while (roomsNames.Count > 0)
                 {
-                    comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
+                    comboBox2.Items.Add(roomsNames.Dequeue() + Constants.NEW_LINE);
                 }
             }
+
+
 
         }
 
@@ -462,9 +472,6 @@ namespace Client
             UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
             UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
             UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
-            //this.textBox63.Text = "" + this.roomData.GetQuestionCount();
-            //this.textBox64.Text = "" + this.roomData.GetAnswerTimeOut();
-            //this.textBox75.Text = "" + this.roomData.GetPlayers().Count;
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
             this.roomDataLock.ReleaseMutex();
         }
@@ -476,9 +483,6 @@ namespace Client
             UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
             UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
             UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
-            //this.textBox69.Text = "" + this.roomData.GetQuestionCount();
-            //this.textBox67.Text = "" + this.roomData.GetAnswerTimeOut();
-            //this.textBox73.Text = "" + this.roomData.GetPlayers().Count;
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
             this.roomDataLock.ReleaseMutex();
         }
@@ -543,9 +547,9 @@ namespace Client
             JoinRoomResponse joinRoomResponse = null;
             int roomId = Constants.ROOM_NOT_FOUND_ID;
 
-            if(this.comboBox2.Text.Length > 0)
+            if(this.textBox78.Text.Length > 0)
             {
-                roomId = GetIdRoomByName(comboBox2.Text.Substring(0, comboBox2.Text.Length - 1));
+                roomId = GetIdRoomByName(textBox78.Text.Substring(0, textBox78.Text.Length - 1));
             }
 
             if(Constants.ROOM_NOT_FOUND_ID == roomId)
@@ -575,7 +579,7 @@ namespace Client
                     {
                         if(UpdateRoomState())
                         {
-                            PresentRoomStateMember(comboBox2.Text);
+                            PresentRoomStateMember(textBox78.Text);
                             MoveTab(this.enterRoomPanel, this.roomMemberPanel);
                         }
                     }
@@ -692,6 +696,16 @@ namespace Client
             {
                 textBox.Text = text;
             }
+        }
+
+        private void comboBox2_TextUpdate(object sender, EventArgs e)
+        {
+            this.textBox78.Text = this.comboBox2.Text;
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.textBox78.Text = this.comboBox2.Text;
         }
     }
 }
