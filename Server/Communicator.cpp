@@ -93,7 +93,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	SignupRequest signUpReq;
 	string code;
 	Buffer* data;
-	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler() });//init a new pair of the given socket and a login request since it is a new user
+	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try {
 
 		while (this->m_clients.at(socket) != nullptr)
