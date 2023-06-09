@@ -94,17 +94,16 @@ void Communicator::handleNewClient(SOCKET socket)
 	string code;
 	Buffer* data;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
-	try
-	{
+	try {
+
 		while (this->m_clients.at(socket) != nullptr)
 		{
-			//Not letting to handle the request until there is one
-			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 forthe null terminator
+
+			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
 			if (len == 0)
 			{
 				throw std::exception("The client disconnected");
 			}
-
 
 			Buffer charVector(buffer, buffer + MAX_SIZE);
 			charVector[len] = '\0';//add null terminator
@@ -132,17 +131,12 @@ void Communicator::handleNewClient(SOCKET socket)
 			code = "";
 			this->m_clients.at(socket) = res.newHandler;
 			len = ERROR_LEN;
-
-			//Reseting the buffer
-			for (int i = 0; i < MAX_SIZE; i++)
-			{
-				buffer[i] = END_STR_SYMBOL;
-			}
 		}
 	}
 	catch (std::exception& e)
 	{
 		cout << e.what() << endl;
+
 	}
 
 }
