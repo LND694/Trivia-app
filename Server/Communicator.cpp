@@ -131,6 +131,12 @@ void Communicator::handleNewClient(SOCKET socket)
 			code = "";
 			this->m_clients.at(socket) = res.newHandler;
 			len = ERROR_LEN;
+
+			//Reseting the buffer
+			for (int i = 0; i < MAX_SIZE; i++)
+			{
+				buffer[i] = END_STR_SYMBOL;
+			}
 		}
 	}
 	catch (std::exception& e)
