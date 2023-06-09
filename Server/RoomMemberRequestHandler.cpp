@@ -49,8 +49,16 @@ RequestResult& RoomMemberRequestHandler::leaveRoom(const RequestInfo& requestInf
     RequestResult* reqRes = new RequestResult();//the result to return
     if (isRequestRelevent(requestInfo))
     {
-        this->m_roomManager.getRoom(this->m_room.getRoomData().id).removeUser(this->m_user);
-        this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
+        try
+        {
+            this->m_roomManager.getRoom(this->m_room.getRoomData().id).removeUser(this->m_user);
+            this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
+        }
+        catch (...)
+        {
+
+        }
+
         leaveResp.status = OK_STATUS_CODE;
         reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
         reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
@@ -75,16 +83,24 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
     GetRoomStateResponse stateResp = GetRoomStateResponse();
     if (isRequestRelevent(requestInfo))
     {
-        this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
-        stateResp.hasGameBegun = this->m_room.getRoomData().isActive;
-        stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
-        stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
-        stateResp.players = this->m_room.getAllUsers();
-        stateResp.status = OK_STATUS_CODE;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
-        reqRes->newHandler = this;
+        try
+        {
+            this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
+            stateResp.hasGameBegun = this->m_room.getRoomData().isActive;
+            stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
+            stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
+            stateResp.players = this->m_room.getAllUsers();
+            stateResp.status = OK_STATUS_CODE;
+            reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
+            reqRes->newHandler = this;
+        }
+        catch (const std::exception& excp)
+        {
+            createErrorResponse("Room not exists", reqRes);
+        }
     }
-    else {
+    else
+    {
         createErrorResponse(ERROR_MSG, reqRes);
     }
     return *reqRes;
