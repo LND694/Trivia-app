@@ -108,8 +108,23 @@ namespace Client
         /// <param name="nextTab"> The next tab to move to</param>
         private void MoveTab(Panel preTab, Panel nextTab)
         {
-            preTab.Visible = false;
-            nextTab.Visible = true;
+            if (preTab.InvokeRequired)
+            {
+                preTab.Invoke((MethodInvoker)(() => preTab.Visible = false));
+            }
+            else
+            {
+                preTab.Visible = false;
+            }
+
+            if (nextTab.InvokeRequired)
+            {
+                nextTab.Invoke((MethodInvoker)(() => nextTab.Visible = true));
+            }
+            else
+            {
+                nextTab.Visible = true;
+            }
         }
 
         private void button_WOC4_Click(object sender, EventArgs e)
