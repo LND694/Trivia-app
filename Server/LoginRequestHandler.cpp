@@ -101,6 +101,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
         signUpReq = JsonRequestPacketDeserializer::desrializeSignupRequest(requestInfo.buffer);//get the sign up details to login manager
         try
         {
+            //Checking the properties of the new user
             excpStr = LoginRequestHandler::checkIfInputValid(signUpReq);
             if (!excpStr.empty()) // there is an invalid input
             {
@@ -173,7 +174,7 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
         excpStr += "The email should contain the symbol at sign only once.\n";
         break;
     case EMAIL_SUFFIX_NOT_VALID:
-        excpStr += "The sufix of the email is not recognized. Are you sure it exists?\n";
+        excpStr += "The suffix of the email is not recognized. Are you sure it exists?\n";
         break;
     }
 
@@ -181,7 +182,7 @@ string LoginRequestHandler::checkIfInputValid(const SignupRequest& signupReq)
     switch (phoneRes)
     {
     case LENGTH_PHONE_NUM_INVALID:
-        excpStr += "The length of the phone should be " + to_string(PHONE_NUM_RIGHT_LEN) + " after the adding the dash char.\n";
+        excpStr += "The length of the phone should be " + to_string(PHONE_NUM_RIGHT_LEN -1) + ".\n";
         break;
     case INVALID_PREFIX_PHONE_NUM:
         excpStr += "The prefix of the phone is not recognized. Are you sure it exists?\n";

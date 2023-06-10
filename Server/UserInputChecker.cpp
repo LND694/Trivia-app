@@ -272,13 +272,28 @@ bool UserInputChecker::isDateLegal(const string date)
     regex regex("(\\d{2}).(\\d{2}).(\\d{4})");
     smatch matches;
     int day = 0, month = 0, year = 0;
+    bool answer = false;
+    time_t now = time(nullptr);
+    tm currentDate = tm();
+    tm* theDate = new tm();
+    
+    //Getting the date from the string
     regex_search(date, matches, regex);
 
     day = atoi(matches[1].str().c_str());
     month = atoi(matches[2].str().c_str());
     year = atoi(matches[3].str().c_str());
 
-    return day >= 1 && day <= MAX_DAY_VALUE && month <= MAX_MONTH_VALUE && month >= 1 && year <= LAST_YEAR;
+    theDate->tm_year = year - STARTING_YEAR;
+    theDate->tm_mon = month - 1;
+    theDate->tm_mday = day;
+
+    localtime_s(&currentDate, &now);
+
+    answer = std::mktime(&currentDate) >= std::mktime(theDate);
+
+    delete theDate;
+    return answer;
 }
 
 /// <summary>

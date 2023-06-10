@@ -6,11 +6,10 @@ int main(void)
 {
 	IDatabase* db = nullptr;
 	Server* server = nullptr;
-	//mongocxx::instance instance{}; // This should be done only once.
+	mongocxx::instance instance{}; // This should be done only once.
 	try
 	{
-		db = SqliteDatabase::getInstance();
-		//db = new MongoDatabase();
+		db = new MongoDatabase();
 		WSAInitializer wasinit;//init before init the socket because the sokcet depends on it
 		server = Server::getInstance(db);
 		server->run();

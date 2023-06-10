@@ -1,4 +1,5 @@
 #include "RequestHandlerFactory.h"
+#include "RoomAdminRequestHandler.h"
 
 RequestHandlerFactory* RequestHandlerFactory::m_instance = nullptr;
 Lock RequestHandlerFactory::m_lock;
@@ -50,6 +51,28 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser user)
 {
 	return new MenuRequestHandler(user, *this->m_roomManager, *this->m_statisticsManager, this);
+}
+
+/// <summary>
+/// The function creates a RoomMemberRequestHandler.
+/// </summary>
+/// <param name="user"> The member which wants to enter to the room</param>
+/// <param name="room"> The room which the member enters to.</param>
+/// <returns> The handler for the member.</returns>
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser user, const Room room)
+{
+	return new RoomMemberRequestHandler(room, user, *this->m_roomManager, this);
+}
+
+/// <summary>
+/// The function creates a RoomAdminRequestHandler.
+/// </summary>
+/// <param name="user"> The admin which wants to create the room</param>
+/// <param name="room"> The room which the admin created.</param>
+/// <returns> The handler for the admin.</returns>
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser user, const Room room)
+{
+	return new RoomAdminRequestHandler(room, user, *this->m_roomManager, this);
 }
 
 /// <summary>

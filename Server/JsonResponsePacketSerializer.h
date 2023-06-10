@@ -29,7 +29,10 @@ public:
 	static Buffer& serializeResponse(const CreateRoomResponse& createRoomResp);
 	static Buffer& serializeResponse(const GetHighScoreResponse& getHighScoreResp);
 	static Buffer& serializeResponse(const GetPersonalStatsResponse& getPersonStatsResp);
-
+	static Buffer& serializeResponse(const CloseRoomResponse& closeRoomResp);
+	static Buffer serializeResponse(const StartGameResponse& startGameResp);
+	static Buffer serializeResponse(const LeaveRoomResponse& leaveRoomResp);
+	static Buffer serializeResponse(const GetRoomStateResponse& getRoomStateResp);
 protected:
 	JsonResponsePacketSerializer() = default;
 	//Singleton fields
@@ -39,6 +42,7 @@ private:
 	//Help functions
 	static string getPaddedNumber(const int num, const int digits);
 	static string echoJsonFormat(const string str);
+	static string echoStringJsonFormat(const string str);
 	static Buffer* makeBuffer(const RESPONSE_CODES code, string responseData);
 	static void addStringToBuffer(Buffer* buf, string str);
 

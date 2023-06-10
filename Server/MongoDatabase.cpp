@@ -12,6 +12,9 @@ MongoDatabase::MongoDatabase()
 	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);//insert 10 question everytime
 }
 
+/// <summary>
+/// D'tor of class MongoDatabase.
+/// </summary>
 MongoDatabase::~MongoDatabase()
 {
 }
@@ -103,7 +106,8 @@ int MongoDatabase::addNewUser(const User& user)
 		kvp("correct_answers", 0),
 		kvp("total_answers", 0),
 		kvp("total_games", 0),
-		kvp("score", 0));
+		kvp("score", 0),
+		kvp("username",user.getUsername()));
 	try
 	{
 		this->db[USERS_COLLECTION].insert_one(doc.view());

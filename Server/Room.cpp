@@ -18,11 +18,11 @@ Room::Room(const RoomData& data, const LoggedUser& user)
 void Room::addUser(const LoggedUser& user)
 {
 	//Checking the current amount of the players in the room
-	if (!this->m_metadata.isActive)
+	if (this->m_metadata.isActive)
 	{
 		throw std::exception("This room is not activated");
 	}
-	if (this->m_users.size() + 1 > this->m_metadata.maxPlayers)
+	if (this->m_users.size() == this->m_metadata.maxPlayers)
 	{
 		throw std::exception("There is no more place in this room");
 	}

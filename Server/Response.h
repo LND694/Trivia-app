@@ -78,3 +78,28 @@ typedef struct ErrorResopnse : Response
 {
 	string message;
 } ErrorResponse;
+
+
+
+typedef struct CloseRoomResponse : ResponseWithStatus
+{
+
+}CloseRoomResponse;
+
+typedef struct StartGameResponse : ResponseWithStatus
+{
+
+}StartGameResponse;
+
+typedef struct LeaveRoomResponse : ResponseWithStatus
+{
+
+}LeaveRoomResponse;
+
+typedef struct GetRoomStateResponse : ResponseWithStatus
+{
+	bool hasGameBegun;
+	vector<string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeOut;
+}GetRoomStateResponse;
