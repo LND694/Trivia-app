@@ -85,12 +85,14 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
     {
         try
         {
+            //Creating the GetRoomStateResponse
             this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
             stateResp.hasGameBegun = this->m_room.getRoomData().isActive;
             stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
             stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
             stateResp.players = this->m_room.getAllUsers();
             stateResp.status = OK_STATUS_CODE;
+
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
             reqRes->newHandler = this;
         }

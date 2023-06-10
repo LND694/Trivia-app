@@ -149,6 +149,8 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
     string responseData = getField<unsigned int>("status", to_string(getRoomStateResp.status));
     responseData += SEPERATOR + getField<bool>("hasGameBegun", condition);
     responseData += ",'players':[";
+
+    //Adding the names of the players in the room
     for (const auto& i : getRoomStateResp.players)
     {
         responseData += echoStringJsonFormat(i) + SEPERATOR;
@@ -157,6 +159,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
     {
         responseData.pop_back();
     }
+
     responseData += "]";
     responseData += SEPERATOR + getField<unsigned int>("questionCount", to_string(getRoomStateResp.questionCount));
     responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
@@ -247,6 +250,11 @@ string JsonResponsePacketSerializer::echoJsonFormat(const string str)
     return "{" + str + "}";
 }
 
+/// <summary>
+/// The function echos a Json String format.
+/// </summary>
+/// <param name="str"> The string without the format.</param>
+/// <returns> The string with the format.</returns>
 string JsonResponsePacketSerializer::echoStringJsonFormat(const string str)
 {
     return '"' + str + '"';

@@ -84,9 +84,10 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo
     StartGameResponse startGameResp = StartGameResponse();
     RequestResult* reqRes = new RequestResult();//the result to return
 
-    //"Starting" the game
+    //Starting the game
     this->m_roomManager.getRoom(this->m_room.getRoomData().id).getRoomData().isActive = true;
     startGameResp.status = OK_STATUS_CODE;
+
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(startGameResp);
     reqRes->newHandler = new GameRequestHandler();
 

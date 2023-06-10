@@ -12,6 +12,9 @@ MongoDatabase::MongoDatabase()
 	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);//insert 10 question everytime
 }
 
+/// <summary>
+/// D'tor of class MongoDatabase.
+/// </summary>
 MongoDatabase::~MongoDatabase()
 {
 }

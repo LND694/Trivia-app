@@ -17,6 +17,7 @@ public:
 	RequestResult& handleRequest(const RequestInfo& requestInfo);
 
 private:
+	//Help functions
 	RequestResult& closeRoom(const RequestInfo& requestInfo);
 	RequestResult& startGame(const RequestInfo& requestInfo);
 };
