@@ -1115,7 +1115,6 @@
             this.comboBox2.Size = new System.Drawing.Size(214, 21);
             this.comboBox2.TabIndex = 8;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            this.comboBox2.TextUpdate += new System.EventHandler(this.comboBox2_TextUpdate);
             // 
             // textBox61
             // 
