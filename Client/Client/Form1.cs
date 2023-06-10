@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 
 namespace Client
@@ -17,16 +18,25 @@ namespace Client
     public partial class Form1 : Form
     {
         //The fields of the Form.
-        Communicator cm = null;
-        Queue<RoomData> rooms;
-        Communicator communicator;
+        private Communicator communicator;
+        private Queue<RoomData> rooms;
+        private Queue<string> highScores;
+        private GetRoomStateResponse roomData;
+        private Mutex roomDataLock;
+        private Mutex roomsLock;
+        private Mutex highScoresLock;
         public Form1()
         {
+            Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
+            InitializeComponent();
             this.communicator = new Communicator();
             communicator.Connect();
-            InitializeComponent();
-            this.cm = new Communicator();
-            this.cm.Connect();
+
+            //Initializing the Locks(Mutexes)
+            this.roomDataLock = new Mutex(false);
+            this.roomsLock = new Mutex(false);
+            this.highScoresLock = new Mutex(false);
+
 
             //Making all the controls in the Form to be invisible 
             //except for the opening panel(tab)
@@ -35,8 +45,64 @@ namespace Client
                 this.Controls[i].Visible = false;
             }
             this.openPanel.Visible = true;
+
+            //Activating the AutoUpdate thread
+            autoUpdateThread.IsBackground = true;
+            autoUpdateThread.Start();
         }
 
+        /// <summary>
+        /// The function updates automatically
+        /// the data of the current panel.
+        /// </summary>
+        private void AutoUpdate()
+        {
+            while(!this.IsDisposed)
+            {
+                if (this.bestPlayersPanel.Visible)
+                {
+                    if (UpdateHighScores())
+                    {
+                        PresentHighScores();
+                    }
+                }
+                else if (this.enterRoomPanel.Visible)
+                {
+                    if (UpdateListRooms())
+                    {
+                        PresentListRooms();
+                    }
+                }
+                else if (this.roomAdminPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(this.textBox72.Text);
+                    }
+                }
+                else if (this.roomMemberPanel.Visible)
+                {
+                    if (UpdateRoomState())
+                    {
+                        PresentRoomStateMember(this.textBox57.Text);
+                    }
+                    else
+                    {
+                        button_WOC21_Click(null, null); // leave room
+                        ShowErrorMessage("The host left the room", "Leaving room");
+                    }
+                }
+                System.Threading.Thread.Sleep(3000);
+            }
+
+        }
+
+        /// <summary>
+        /// Back to the Open panel from the 
+        /// Sign up panel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC3_Click(object sender, EventArgs e)
         {
             MoveTab(this.signUpPanel, this.openPanel);
@@ -49,10 +115,31 @@ namespace Client
         /// <param name="nextTab"> The next tab to move to</param>
         private void MoveTab(Panel preTab, Panel nextTab)
         {
-            preTab.Visible = false;
-            nextTab.Visible = true;
+            if (preTab.InvokeRequired)
+            {
+                preTab.Invoke((MethodInvoker)(() => preTab.Visible = false));
+            }
+            else
+            {
+                preTab.Visible = false;
+            }
+
+            if (nextTab.InvokeRequired)
+            {
+                nextTab.Invoke((MethodInvoker)(() => nextTab.Visible = true));
+            }
+            else
+            {
+                nextTab.Visible = true;
+            }
         }
 
+        /// <summary>
+        /// Signing the new user and if the new user
+        /// is legal- moving to the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC4_Click(object sender, EventArgs e)
         {
             string username = this.textBox4.Text, password = this.textBox5.Text, email = this.textBox7.Text;
@@ -64,6 +151,7 @@ namespace Client
             SignUpResponse signupResp = null;
             SignupRequest signupReq = null;
 
+            //The day of the date does not have 2 digits
             if (date.Length < Constants.DATE_LENGTH)
             {
                 date = Constants.ZERO_CHAR + date;
@@ -94,6 +182,12 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// Log out button. If the log out was successful-it will move to
+        /// the Open panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC11_Click_1(object sender, EventArgs e)
         {
             const string TITLE_ERROR = "Log Out Error";
@@ -107,7 +201,8 @@ namespace Client
             {
                 ShowErrorMessage(excp.Message, TITLE_ERROR);
             }
-            if(logoutResponse!= null)
+
+            if(logoutResponse!= null) //there was no exception
             {
                 if(logoutResponse.GetStatus() != Constants.OK_STATUS_CODE)
                 {
@@ -121,36 +216,74 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// Moving to the Sign up panel
+        /// from the Open panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC1_Click_1(object sender, EventArgs e)
         {
             MoveTab(openPanel, signUpPanel);
         }
 
+        /// <summary>
+        /// Exiting the GUI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC5_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Moving from the Open panel 
+        /// to the Login panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC2_Click_1(object sender, EventArgs e)
         {
             MoveTab(openPanel, loginPanel);
         }
 
+        /// <summary>
+        /// Moving from the Statistics panel to the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC13_Click(object sender, EventArgs e)
         {
             MoveTab(statisticsPanel, menuPanel);
         }
 
+        /// <summary>
+        /// Moving from the Menu panel to the Statistics panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC10_Click_1(object sender, EventArgs e)
         {
             MoveTab(menuPanel, statisticsPanel);
         }
 
+        /// <summary>
+        /// Moving from the Login panel back to the Open panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC7_Click_1(object sender, EventArgs e)
         {
             MoveTab(loginPanel, openPanel);
         }
 
+        /// <summary>
+        /// Login in the user. If successful- moving to the 
+        /// Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC6_Click_1(object sender, EventArgs e)
         {
             string username = this.textBox20.Text, password = this.textBox18.Text;
@@ -166,7 +299,7 @@ namespace Client
                 ShowErrorMessage(excp.Message, "Error");
             }
 
-            if(logResp != null)
+            if(logResp != null) // there was no exception
             {
                 if (logResp.GetStatus() != Constants.OK_STATUS_CODE)
                 {
@@ -180,51 +313,51 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// Moving from the Personal stats panel back to the
+        /// Statistics panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC16_Click(object sender, EventArgs e)
         {
             MoveTab(personalStatsPanel, statisticsPanel);
         }
 
+        /// <summary>
+        /// Moving from the High scores panel back to the
+        /// Statistics panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC15_Click(object sender, EventArgs e)
         {
             MoveTab(bestPlayersPanel, statisticsPanel);
         }
 
+        /// <summary>
+        /// Updating the high scores and if successful- moving 
+        /// from the Statistics panel to the
+        /// High scores panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC14_Click(object sender, EventArgs e)
         {
-            const string TITLE_ERROR = "Error Getting High Scores";
-            GetHighScoreResponse highScoreResponse = null;
-            Queue<string> highScores = null;
-
-            try
+            if(UpdateHighScores())
             {
-                highScoreResponse = SendRequestToServer<NullableConverter, GetHighScoreResponse>(null, REQUEST_CODES.GET_HIGH_SCORE_REQS_CODE);
+                PresentHighScores();
+                MoveTab(statisticsPanel, bestPlayersPanel);
             }
-            catch(Exception excp)
-            {
-                ShowErrorMessage(excp.Message, TITLE_ERROR);
-            }
-
-            if(highScoreResponse != null)
-            {
-                highScores = highScoreResponse.GetStatistics();
-                if(highScores != null && highScores.Count > 0)
-                    textBox44.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox39.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox45.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox41.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox46.Text = highScores.Dequeue();
-                if (highScores != null && highScores.Count > 0)
-                    textBox43.Text = highScores.Dequeue();
-            }
-
-            MoveTab(statisticsPanel, bestPlayersPanel);
         }
 
+        /// <summary>
+        /// Getting the personal statistics of the user and
+        /// if successful moving to the Personal statistics
+        /// panel from the Statistics panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC12_Click(object sender, EventArgs e)
         {
             const string TITLE_ERROR = "Error Getting Statistics";
@@ -240,7 +373,7 @@ namespace Client
                 ShowErrorMessage(excp.Message, TITLE_ERROR);
             }
 
-            if (getPersonalStatsResponse != null)
+            if (getPersonalStatsResponse != null) // there was no exception
             {
                 //Getting the statistics and showing them on the screen
                 statistics = getPersonalStatsResponse.GetStatistics();
@@ -253,34 +386,53 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Moving from the Creating room panel back
+        /// to the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC20_Click(object sender, EventArgs e)
         {
             MoveTab(createRoomPanel, menuPanel);
         }
 
+        /// <summary>
+        /// Moving from the Entering room panel back
+        /// to the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC19_Click(object sender, EventArgs e)
         {
             MoveTab(enterRoomPanel, menuPanel);
         }
 
+        /// <summary>
+        /// Moving from the Menu panel 
+        /// to the Creating room panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC9_Click(object sender, EventArgs e)
         {
             MoveTab(menuPanel, createRoomPanel);
         }
 
+        /// <summary>
+        /// Updating the list of the rooms and if successful-
+        /// moving from the Menu panel to the Entering room panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC8_Click(object sender, EventArgs e)
         {
-            Queue<RoomData> copyRooms = null;
-            UpdateListRooms();
-            copyRooms = new Queue<RoomData>(this.rooms);
-
-            //Inserting all the rooms in the combo box
-            comboBox2.Text = "";
-            while(copyRooms.Count > 0)
+            if(UpdateListRooms())
             {
-                comboBox2.Items.Add(copyRooms.Dequeue().GetName() + Constants.NEW_LINE);
+                PresentListRooms();
+                MoveTab(menuPanel, enterRoomPanel); 
             }
-            MoveTab(menuPanel, enterRoomPanel);
+
         }
 
         /// <summary>
@@ -295,6 +447,7 @@ namespace Client
         {
             //Making the request enable to pass to the Server
             string reqMsg = JsonRequestPacketSerializer.SerializeRequest<T>(request, codeReq);
+
             //Sending the msg to server and getting an answer
             this.communicator.SendRequestToServer(reqMsg);
             U var = JsonResponsePacketDeserializer.DeserializeResponse<U>(this.communicator.GetResponseFromServer());
@@ -312,7 +465,11 @@ namespace Client
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void UpdateListRooms()
+        /// <summary>
+        /// Updating the list of the open rooms.
+        /// </summary>
+        /// <returns> If the updating was succesful or not.</returns>
+        private bool UpdateListRooms()
         {
             GetRoomsResponse rooms = null;
             try
@@ -321,21 +478,244 @@ namespace Client
             }
             catch (Exception excp)
             {
-                ShowErrorMessage(excp.Message, "Error");
+                ShowErrorMessage(excp.Message, "Error Getting Rooms!");
+                return false;
             }
+            //Waiting to have permission to update the list of the rooms
+            this.roomsLock.WaitOne();
+            this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
+            this.roomsLock.ReleaseMutex();
 
-            if(rooms != null)
-            {
-                this.rooms = new Queue<RoomData>(rooms.GetRoomDatas());
-            }
-
+            return true;
         }
 
+        /// <summary>
+        /// Presenting the list of the rrom in
+        /// the Entering room panel.
+        /// </summary>
+        private void PresentListRooms()
+        {
+            Queue<RoomData> copyRooms = null;
+            Queue<string> roomsNames = new Queue<string>();
+
+            //Waiting to get permission from the lock to
+            //access to the list of rooms.
+            this.roomsLock.WaitOne();
+            copyRooms = new Queue<RoomData>(this.rooms);
+            this.roomsLock.ReleaseMutex();
+
+            //Getting the names of the rooms
+            while(copyRooms.Count > 0)
+            {
+                roomsNames.Enqueue(copyRooms.Dequeue().GetName());
+            }
+
+            //Inserting all the rooms in the combo box
+            if (comboBox2.InvokeRequired)
+            {
+                comboBox2.Invoke((MethodInvoker)delegate
+                {
+                    UpdatingComboBox2(roomsNames);
+                });
+            }
+            else
+            {
+                UpdatingComboBox2(roomsNames);
+            }
+        }
+
+        /// <summary>
+        /// The function inserts new values to ComboBox2.
+        /// </summary>
+        /// <param name="newItems"> The new items to insert to the combo box.</param>
+        private void UpdatingComboBox2(Queue<string> newItems)
+        {
+            if (comboBox2.Items.Count > 0)
+            {
+                comboBox2.Items.Clear();
+            }
+            while (newItems.Count > 0)
+            {
+                comboBox2.Items.Add(newItems.Dequeue() + Constants.NEW_LINE);
+            }
+        }
+
+        /// <summary>
+        /// The function updates the high scores.
+        /// </summary>
+        /// <returns> If the updating was successful or not.</returns>
+        private bool UpdateHighScores()
+        {
+            const string TITLE_ERROR = "Error Getting High Scores";
+            GetHighScoreResponse highScoreResponse = null;
+
+            try
+            {
+                highScoreResponse = SendRequestToServer<NullableConverter, GetHighScoreResponse>(null, REQUEST_CODES.GET_HIGH_SCORE_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, TITLE_ERROR);
+                return false;
+            }
+
+            //Waiting to get persmission to update the high scores.
+            this.highScoresLock.WaitOne();
+            this.highScores = highScoreResponse.GetStatistics();
+            this.highScoresLock.ReleaseMutex();
+
+            return true;
+        }
+
+        /// <summary>
+        /// The function presents the high scores in the High scores panel.
+        /// </summary>
+        private void PresentHighScores()
+        {
+            Queue<string> theHighScores = null;
+
+            ///Waiting to get permission to get the high scores.
+            this.highScoresLock.WaitOne();
+            theHighScores = new Queue<string>(this.highScores);
+            this.highScoresLock.ReleaseMutex();
+
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox44.Text = theHighScores.Dequeue();
+            }
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox39.Text = theHighScores.Dequeue();
+            }
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox45.Text = theHighScores.Dequeue();
+            }
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox41.Text = theHighScores.Dequeue();
+            }
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox46.Text = theHighScores.Dequeue();
+            }
+            if (theHighScores != null && theHighScores.Count > 0)
+            {
+                textBox43.Text = theHighScores.Dequeue();
+            }
+        }
+
+        /// <summary>
+        /// The function updates the state of the current room.
+        /// </summary>
+        /// <returns>if the updating was successful or not.</returns>
+        private bool UpdateRoomState()
+        {
+            GetRoomStateResponse getRoomState = null;
+            
+            try
+            {
+                getRoomState = SendRequestToServer<NullableConverter, GetRoomStateResponse>(null, REQUEST_CODES.GET_ROOM_STATE_REQS_CODE);
+            }
+            catch
+            {
+                ShowErrorMessage("Can not get the state of the room", "Error Getting Room State");
+                return false;
+            }
+
+            //Waiting to get permission to update the data of the room.
+            this.roomDataLock.WaitOne();
+            this.roomData = getRoomState;
+            this.roomDataLock.ReleaseMutex();
+
+            return true;
+        }
+        
+        /// <summary>
+        /// The function presents the current room state to the room member.
+        /// </summary>
+        /// <param name="roomName"> The name of the room the present.</param>
+        private void PresentRoomStateMember(string roomName)
+        {
+            this.textBox57.Text = roomName;
+            this.roomDataLock.WaitOne();
+            UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
+            UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
+            this.roomDataLock.ReleaseMutex();
+        }
+
+        /// <summary>
+        /// The function presents the current room state to the room admin.
+        /// </summary>
+        /// <param name="roomName"> The name of the room the present.</param>
+        private void PresentRoomStateAdmin(string roomName)
+        {
+            this.textBox72.Text = roomName;
+            this.roomDataLock.WaitOne();
+            UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
+            UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
+            UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
+            this.roomDataLock.ReleaseMutex();
+        }
+
+        /// <summary>
+        /// The function adds to a ListBox new texts.
+        /// </summary>
+        /// <param name="texts"> The texts to insert.</param>
+        /// <param name="list"> The ListBox to insert to.</param>
+        private void AddTextsToListBox(Queue<string> texts, ListBox list)
+        {
+            Queue<string> copyTexts = new Queue<string>(texts);
+
+
+            if (list.InvokeRequired)
+            {
+                list.Invoke((MethodInvoker)delegate
+                {
+                    InsertTextsToListBox(list, texts);
+                });
+            }
+            else
+            {
+                InsertTextsToListBox(list, texts);
+            }
+        }
+
+        /// <summary>
+        /// The function access to a ListBox and inserts to it new texts.
+        /// </summary>
+        /// <param name="texts"> The texts to insert.</param>
+        /// <param name="list"> The ListBox to insert to.</param>
+        private void InsertTextsToListBox(ListBox list, Queue<string> texts)
+        {
+            if (list.Items.Count > 0)
+            {
+                list.Items.Clear();
+            }
+            while (texts.Count > 0)
+            {
+                list.Items.Add(texts.Dequeue() + Constants.NEW_LINE);
+            }
+        }
+
+        /// <summary>
+        /// The function getts the id of a room by its name.
+        /// </summary>
+        /// <param name="name"> The name of the room.</param>
+        /// <returns> The id of the room.</returns>
         private int GetIdRoomByName(string name)
         {
             int id = Constants.ROOM_NOT_FOUND_ID;
-            Queue<RoomData> roomDatas = new Queue<RoomData>(this.rooms);
+            Queue<RoomData> roomDatas = null;
             RoomData roomData = null;
+
+            //Waiting to get permission to copy the data of the rooms.
+            this.roomsLock.WaitOne();
+            roomDatas = new Queue<RoomData>(this.rooms);
+            this.roomsLock.ReleaseMutex();
 
             //Going over the rooms
             while (roomDatas.Count > 0)
@@ -349,16 +729,30 @@ namespace Client
             return id;
         }
 
+        /// <summary>
+        /// Entering into a room and if successful and getting its state-
+        /// moving to the Room member panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC17_Click(object sender, EventArgs e)
         {
             const string TITLE_ERROR = "Error Entering Room";
             JoinRoomRequest joinRoomRequest = null;
             JoinRoomResponse joinRoomResponse = null;
-            int roomId = GetIdRoomByName(comboBox2.Text.Substring(0, comboBox2.Text.Length - 1));
+            int roomId = Constants.ROOM_NOT_FOUND_ID;
 
+            //Getting the id of the selected room
+            if(this.textBox78.Text.Length > 0)
+            {
+                roomId = GetIdRoomByName(textBox78.Text.Substring(0, textBox78.Text.Length - 1));
+            }
+
+            //if there is no selected room
             if(Constants.ROOM_NOT_FOUND_ID == roomId)
             {
                 ShowErrorMessage("There is no room with this name", TITLE_ERROR);
+                this.textBox78.Text = "";
             }
             else
             {
@@ -373,7 +767,7 @@ namespace Client
                     ShowErrorMessage(excp.Message, TITLE_ERROR);
                 }
 
-                if(joinRoomResponse != null)
+                if(joinRoomResponse != null) //there was no exception
                 {
                     if(Constants.OK_STATUS_CODE != joinRoomResponse.GetStatus())
                     {
@@ -381,12 +775,22 @@ namespace Client
                     }
                     else
                     {
-                        MessageBox.Show("Good enterance"); //going to the room's page
+                        if(UpdateRoomState())
+                        {
+                            PresentRoomStateMember(textBox78.Text);
+                            MoveTab(this.enterRoomPanel, this.roomMemberPanel);
+                        }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Creatiing a room and if successful and getting its state-
+        /// moving to the Room admin panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC18_Click(object sender, EventArgs e)
         {
             const string TITLE_ERROR = "Error Creating Room";
@@ -406,7 +810,7 @@ namespace Client
                 ShowErrorMessage(excp.Message, TITLE_ERROR);
             }
 
-            if (createRoomResponse != null)
+            if (createRoomResponse != null) //there was no exception
             {
                 if (createRoomResponse.GetStatus() != Constants.OK_STATUS_CODE)
                 {
@@ -414,30 +818,127 @@ namespace Client
                 }
                 else
                 {
-                    MessageBox.Show("Room was created");
+                    if(UpdateRoomState())
+                    {
+                        PresentRoomStateAdmin(roomName);
+                        MoveTab(this.createRoomPanel, this.roomAdminPanel);
+                    }
                 }
 
             }
         }
 
+        /// <summary>
+        /// Showing the value of the track bar in the 
+        /// Creating room panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox52.Text = trackBar1.Value.ToString();
         }
 
-        private void textBox48_TextChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Leaving the room and if successful moving to
+        /// the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_WOC21_Click(object sender, EventArgs e)
         {
+            LeaveRoomResponse leaveRoomResponse = null;
 
+            try
+            {
+                leaveRoomResponse = SendRequestToServer<NullableConverter, LeaveRoomResponse>(null, REQUEST_CODES.LEAVE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Leaving room");
+            }
+
+            if(leaveRoomResponse != null && Constants.OK_STATUS_CODE == leaveRoomResponse.GetStatus())
+            {
+                MoveTab(roomMemberPanel, menuPanel);
+            }
         }
 
-        private void textBox47_TextChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Closing the room and if successful moving 
+        /// to the Menu panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_WOC22_Click(object sender, EventArgs e)
         {
+            CloseRoomResponse closeRoomResponse = null;
 
+            try
+            {
+                closeRoomResponse = SendRequestToServer<NullableConverter, CloseRoomResponse>(null, REQUEST_CODES.CLOSE_ROOM_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Closing room");
+            }
+
+            if (closeRoomResponse != null && Constants.OK_STATUS_CODE == closeRoomResponse.GetStatus())
+            {
+                MoveTab(roomAdminPanel, menuPanel);
+            }
         }
 
-        private void textBox47_TextChanged_1(object sender, EventArgs e)
+        /// <summary>
+        /// Starting the game and if successful showing a Message Box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_WOC23_Click(object sender, EventArgs e)
         {
+            StartGameResponse startGameResponse = null;
 
+            try
+            {
+                startGameResponse = SendRequestToServer<NullableConverter, StartGameResponse>(null, REQUEST_CODES.START_GAME_REQS_CODE);
+            }
+            catch (Exception excp)
+            {
+                ShowErrorMessage(excp.Message, "Error Starting Game");
+            }
+
+            if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
+            {
+                MessageBox.Show("Game begun by you!");
+            }
+        }
+
+        /// <summary>
+        /// Updating a textBox with a new text.
+        /// </summary>
+        /// <param name="textBox"> The text box to update.</param>
+        /// <param name="text"> The new text of the Text Box.</param>
+        private void UpdateTextBox(TextBox textBox, string text)
+        {
+            if (textBox.InvokeRequired)
+            {
+                textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+            }
+            else
+            {
+                textBox.Text = text;
+            }
+        }
+
+        /// <summary>
+        /// Showing the selected room with a Text Box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.textBox78.Text = this.comboBox2.Text;
         }
     }
 }
+

@@ -18,12 +18,17 @@ typedef struct RoomData
 class Room
 {
 public:
+	//C'tor
 	Room(const RoomData& data, const LoggedUser& user);
+
+	//Functions
 	void addUser(const LoggedUser& user);
 	void removeUser(LoggedUser& user);
 	vector<string>& getAllUsers();
 	RoomData& getRoomData();
+
 private:
+	//Fields
 	RoomData m_metadata;
 	vector<LoggedUser> m_users;
 };

@@ -1,4 +1,5 @@
 #include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
 
 /// <summary>
 /// C'tor of class MenuRequestHandler
@@ -222,21 +223,23 @@ RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 	JoinRoomRequest& joinRoomReqs = JsonRequestPacketDeserializer::desrializeJoinRoomRequest(requestInfo.buffer);
 	JoinRoomResponse joinRoomResp = JoinRoomResponse();
 
-	//Joining into the room
-	if (!this->m_roomManager.getRoomState(joinRoomReqs.roomId)) // the room is not active
+	try
 	{
-		createErrorResponse("This room is not active", req);	
+		this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
+	}
+	catch (const std::exception& excp)
+	{
+		createErrorResponse(excp.what(), req);
 		delete& joinRoomReqs;
 		return *req;
 	}
-	this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
-
+	
 	//Making the JoinRoomResponse
 	joinRoomResp.status = OK_STATUS_CODE;
-
+	
 	//Making the RequestResult
 	req->response = JsonResponsePacketSerializer::serializeResponse(joinRoomResp);
-	req->newHandler = new RoomMemberRequestHandler();
+	req->newHandler = this->m_handlerFactory->createRoomMemberRequestHandler(this->m_user, this->m_roomManager.getRoom(joinRoomReqs.roomId));
 
 	delete& joinRoomReqs;
 	return *req;
@@ -257,7 +260,7 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	RoomData roomData;
 	roomData.id = static_cast<int>(this->m_roomManager.getRooms().size() + 1);
 	roomData.name = createRoomReqs.roomName;
-	roomData.isActive = true;
+	roomData.isActive = false;
 	roomData.maxPlayers = createRoomReqs.maxUsers;
 	roomData.numOfQuestionsInGame = createRoomReqs.questionCount;
 	roomData.timePerQuestion = createRoomReqs.answerTimeout;
@@ -268,7 +271,7 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 
 	//Making the RequestResult
 	req->response = JsonResponsePacketSerializer::serializeResponse(createRoomResp);
-	req->newHandler = new RoomMemberRequestHandler();
+	req->newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(this->m_user, Room(roomData, this->m_user));
 
 	delete& createRoomReqs;
 	return *req;

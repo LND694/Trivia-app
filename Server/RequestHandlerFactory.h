@@ -7,6 +7,9 @@
 
 class LoginRequestHandler;
 class MenuRequestHandler;
+class RoomMemberRequestHandler;
+class RoomAdminRequestHandler;
+
 
 class RequestHandlerFactory : Singleton
 {
@@ -18,6 +21,8 @@ public:
 	//Functions
 	LoginRequestHandler* createLoginRequestHandler();
 	MenuRequestHandler* createMenuRequestHandler(const LoggedUser user);
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser user, const Room room);
+	RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser user, const Room room);
 	LoginManager* getLoginManager();
 	RoomManager& getRoomManager();
 	StatisticsManager& getStatisticsManager();

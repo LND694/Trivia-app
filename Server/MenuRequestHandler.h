@@ -1,19 +1,20 @@
 #pragma once
+
 #include "IRequestHandler.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
-#include "RoomAdminRequestHandler.h"
-#include "RoomMemberRequestHandler.h"
 
 class RequestHandlerFactory;
 
 class MenuRequestHandler : public IRequestHandler
 {
 public:
+	//C'tor&D'tor
 	MenuRequestHandler(const LoggedUser& loggedUser, RoomManager& roomManager,
 		StatisticsManager& statisticsManager, RequestHandlerFactory* handlerFactory);
 	~MenuRequestHandler();
+
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
 	RequestResult& handleRequest(const RequestInfo& requestInfo) override;

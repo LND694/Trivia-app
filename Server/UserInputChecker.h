@@ -1,7 +1,11 @@
 #pragma once
 
 #include <regex>
+#include <ctime>
 
+
+using std::time_t;
+using std::tm;
 
 using std::string;
 using std::vector;
@@ -16,9 +20,7 @@ using std::regex_search;
 #define AT_SIGN '@' 
 constexpr int PASSWORD_RIGHT_LEN = 8;
 constexpr int PHONE_NUM_RIGHT_LEN = 11;
-constexpr int MAX_DAY_VALUE = 31;
-constexpr int MAX_MONTH_VALUE = 12;
-constexpr int LAST_YEAR = 2022;
+constexpr int STARTING_YEAR = 1900;
 const string SPECIAL_CHARS_PASSWORD = "!@#$%^&*";
 
 enum CHECK_PASSWORD_RESULTS {
