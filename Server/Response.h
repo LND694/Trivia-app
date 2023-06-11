@@ -1,5 +1,9 @@
 #pragma once
+#include <map>
 #include "Room.h"
+#include "PlayerResults.h"
+
+using std::map;
 
 constexpr int OK_STATUS_CODE = 1;
 const string ERROR_MSG = "ERROR";
@@ -103,3 +107,24 @@ typedef struct GetRoomStateResponse : ResponseWithStatus
 	unsigned int questionCount;
 	unsigned int answerTimeOut;
 }GetRoomStateResponse;
+
+typedef struct LeaveGameResponse : ResponseWithStatus
+{
+
+} LeaveGameResponse;
+
+typedef struct GetQuestionResponse : ResponseWithStatus
+{
+	string question;
+	map<unsigned int, string> answers;
+}GetQuestionResponse;
+
+typedef struct SubmitAnswerResponse : ResponseWithStatus
+{
+	unsigned int correctAnswerId;
+}SubmitAnswerResponse;
+
+typedef struct GetGameResultsResponse : ResponseWithStatus
+{
+	vector<PlayerResults> results;
+}GetGameResultsResponse;
