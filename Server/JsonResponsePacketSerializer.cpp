@@ -176,7 +176,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResp
     {
         results += echoJsonFormat(getPlayerResultsString(*i)) + SEPERATOR;
     }
-    if (getGameResResp.results.size() > 0)
+    if (results.length() > 0)
     {
         results.pop_back();
     }
@@ -205,7 +205,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
     {
         answersData += getMapField(i->first, i->second) + SEPERATOR;
     }
-    if (getQuestionResp.answers.size() > 0)
+    if (answersData.length() > 0)
     {
         answersData.pop_back();
     }
