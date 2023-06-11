@@ -96,4 +96,14 @@ CreateRoomRequest& JsonRequestPacketDeserializer::desrializeCreateRoomRequest(co
     return *req;
 }
 
+SubmitAnswerRequest& JsonRequestPacketDeserializer::derializeSubmitAnswerRequest(const Buffer& buffer)
+{
+    SubmitAnswerRequest* req = new SubmitAnswerRequest();
+    string dataToParse(buffer.begin(), buffer.end());
+    dataToParse.erase(0, SIZE_LENGTH_DATA_FIELD + SIZE_CODE_FIELD);
+    auto js = json::parse(dataToParse); //parse into json object
+    req->answerId = js[ANSWER_ID];
+    return *req;
+}
+
 

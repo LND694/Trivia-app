@@ -10,4 +10,4 @@ typedef struct PlayerResults
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
-};
+}PlayerResults;
