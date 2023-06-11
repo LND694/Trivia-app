@@ -26,6 +26,10 @@ namespace Client
         public const int START_GAME_REQS_CODE = 111;
         public const int GET_ROOM_STATE_REQS_CODE = 112;
         public const int LEAVE_ROOM_REQS_CODE = 113;
+        public const int LEAVE_GAME_REQS_CODE = 114;
+        public const int GET_QUESTION_REQS_CODE = 115;
+        public const int SUBMIT_ANSWER_REQS_CODE = 116;
+        public const int GET_GAME_RESULT_REQS_CODE = 117;
         public const int ERROR_REQS_CODE = 255;
     }
     public class LoginRequest : Request
