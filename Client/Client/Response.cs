@@ -22,6 +22,14 @@ namespace Client
         public const int CREATE_ROOM_RESP_CODE = 207;
         public const int GET_HIGH_SCORE_RESP_CODE = 208;
         public const int GET_PERS_STATS_RESP_CODE = 209;
+        public const int CLOSE_RESP_CODE = 210;
+        public const int START_GAME_RESP_CODE = 211;
+        public const int LEAVE_ROOM_RESP_CODE = 212;
+        public const int GET_ROOM_STATE_RESP_CODE = 213;
+        public const int LEAVE_GAME_RESP_CODE = 214;
+        public const int GET_QUESTION_RESP_CODE = 215;
+        public const int SUBMIT_ANSWER_RESP_CODE = 216;
+        public const int GET_GAME_RES_RESP_CODE = 217;
         public const int ERROR_RESP_CODE = 255;
     }
 
@@ -239,6 +247,75 @@ namespace Client
         public int GetAnswerTimeOut()
         {
             return this.answerTimeOut;
+        }
+    }
+
+    public class GetGameResultsResponse : ResponseWithStatus
+    {
+        [JsonProperty("results")]
+        private Queue<PlayerResults> results;
+
+        public GetGameResultsResponse(int status, Queue<PlayerResults> results):
+            base(status)
+        {
+            this.results = new Queue<PlayerResults>(results);
+        }
+
+        public Queue<PlayerResults> GetPlayerResults()
+        {
+            return new Queue<PlayerResults>(this.results);
+        }
+    }
+
+    public class LeaveGameResponse : ResponseWithStatus
+    {
+        public LeaveGameResponse(int status) :
+            base(status)
+        {
+
+        }
+    }
+
+    public class SubmitAnswerResponse : ResponseWithStatus
+    {
+        [JsonProperty("correctAnswerId")]
+        private int correctAnswerId;
+
+        public SubmitAnswerResponse(int status, int correctAnswerId) :
+            base(status)
+        {
+            this.correctAnswerId = correctAnswerId;
+        }
+
+        public int GetCorrectAnswerId()
+        {
+            return this.correctAnswerId;
+        }
+    }
+
+    public class GetQuestionResponse : ResponseWithStatus
+    {
+        [JsonProperty("question")]
+        private string question;
+
+        [JsonProperty("answers")]
+        private Dictionary<int, string> answers;
+
+        public GetQuestionResponse(int status, string question, Dictionary<int, string> answers):
+            base(status)
+        {
+            this.question = question;
+            this.answers = new Dictionary<int, string>(answers);
+        }
+
+        public string GetQuestion()
+        {
+            return this.question;
+        }
+
+        public Dictionary<int, string> GetAnswers()
+        {
+            return new Dictionary<int, string>(this.answers);
         }
     }
 
