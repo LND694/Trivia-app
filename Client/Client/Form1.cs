@@ -61,6 +61,7 @@ namespace Client
         /// </summary>
         private void AutoUpdate()
         {
+            int timePerQuestion = 0;
             while(!this.IsDisposed)
             {
                 if (this.bestPlayersPanel.Visible)
@@ -88,14 +89,18 @@ namespace Client
                 {
                     if (UpdateRoomState())
                     {
+                        PresentRoomStateMember(this.textBox57.Text);
                         if(this.roomData.GetHasGameBegun())
                         {
+                            timePerQuestion = int.Parse(textBox64.Text);
+                            this.seconds = timePerQuestion;
                             MoveTab(this.roomMemberPanel, this.gamePanel);
                             this.timer1.Start();
-                        }
-                        else
-                        {
-                            PresentRoomStateMember(this.textBox57.Text);
+
+                            while(this.gamePanel.Visible)
+                            {
+                                this.timer1_Tick_1(null, null);
+                            }
                         }
                     }
                     else
@@ -103,6 +108,7 @@ namespace Client
                         button_WOC21_Click(null, null); // leave room
                         ShowErrorMessage("The host left the room", "Leaving room");
                     }
+
                 }
                 
                 System.Threading.Thread.Sleep(3000);
@@ -652,10 +658,27 @@ namespace Client
         {
             this.textBox57.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
-            UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
+            this.questionsLeft = this.roomData.GetQuestionCount();
+            UpdateControlText(textBox63, "" + this.roomData.GetQuestionCount());
+            UpdateControlText(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox75, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
+
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
+            // Assuming you have a ListBox named "myListBox"
+
+            // Iterate through the ListBox items
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                // Retrieve the current item
+                string currentItem = this.listBox3.Items[i].ToString();
+
+                // Append zero to the current item
+                string updatedItem = currentItem + " 0";
+
+                // Update the ListBox with the modified item
+                this.listBox3.Items[i] = updatedItem;
+            }
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -667,11 +690,11 @@ namespace Client
         {
             this.textBox72.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
+            UpdateControlText(textBox69, "" + this.roomData.GetQuestionCount());
             this.questionsLeft = this.roomData.GetQuestionCount();
-            textBox80.Text = "questions left: " + questionsLeft;
-            UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
+            //textBox80.Text = "questions left: " + questionsLeft;
+            UpdateControlText(textBox67, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
             // Assuming you have a ListBox named "myListBox"
@@ -816,7 +839,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Creatiing a room and if successful and getting its state-
+        /// Creating a room and if successful and getting its state-
         /// moving to the Room admin panel.
         /// </summary>
         /// <param name="sender"></param>
@@ -946,20 +969,33 @@ namespace Client
             }
         }
 
+
+        //private void UpdateControlText(TextBox textBox, string text)
+        //{
+        //    if (textBox.InvokeRequired)
+        //    {
+        //        textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+        //    }
+        //    else
+        //    {
+        //        textBox.Text = text;
+        //    }
+        //}
+
         /// <summary>
-        /// Updating a textBox with a new text.
+        /// Updating a control with a new text.
         /// </summary>
-        /// <param name="textBox"> The text box to update.</param>
+        /// <param name="control"> The control to update.</param>
         /// <param name="text"> The new text of the Text Box.</param>
-        private void UpdateTextBox(TextBox textBox, string text)
+        private void UpdateControlText(Control control, string text)
         {
-            if (textBox.InvokeRequired)
+            if (control.InvokeRequired)
             {
-                textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+                control.Invoke((MethodInvoker)(() => control.Text = text));
             }
             else
             {
-                textBox.Text = text;
+                control.Text = text;
             }
         }
 
@@ -973,28 +1009,9 @@ namespace Client
             this.textBox78.Text = this.comboBox2.Text;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-            textBox80.Text = "questions left: " + questionsLeft;
+            UpdateControlText(textBox80, "questions left: " + questionsLeft);
             GetQuestionResponse resp = null;
             GetGameResultsResponse response = null;
             Dictionary<int, string> answers = null;
@@ -1002,14 +1019,14 @@ namespace Client
             {
 
                 resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                textBox81.Text = resp.GetQuestion();
+                UpdateControlText(textBox81, resp.GetQuestion());
                 answers = resp.GetAnswers();
-                button1.Text = answers[0];
-                button2.Text = answers[1];
-                button3.Text = answers[2];
-                button4.Text = answers[3];
+                UpdateControlText(button1, answers[0]);
+                UpdateControlText(button2, answers[1]);
+                UpdateControlText(button3, answers[2]);
+                UpdateControlText(button4, answers[4]);
             }
-            label1.Text = seconds--.ToString();
+            UpdateControlText(this.label1, seconds--.ToString());
             if (seconds == 0)
             {
                 if(this.isRight)
@@ -1026,6 +1043,12 @@ namespace Client
                 this.timer1.Stop();
                 Queue<string> results = new Queue<string>();
                 response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                //Waiting for the game to be over
+                while(Constants.OK_STATUS_CODE != response.GetStatus())
+                {
+                    Thread.Sleep(2000);
+                    response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                }
                 foreach (var i in response.GetPlayerResults())
                 {
                     results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());
@@ -1080,7 +1103,7 @@ namespace Client
             if(!this.wasClicked)
             {
                 this.wasClicked = true;
-                SendAnswer(3);
+                SendAnswer(2);
             }
         }
 
@@ -1089,7 +1112,7 @@ namespace Client
             if (!this.wasClicked)
             {
                 this.wasClicked = true;
-                SendAnswer(1);
+                SendAnswer(0);
             }
         }
 
@@ -1098,7 +1121,7 @@ namespace Client
             if (!this.wasClicked)
             {
                 this.wasClicked = true;
-                SendAnswer(2);
+                SendAnswer(1);
             }
         }
 
@@ -1107,7 +1130,7 @@ namespace Client
             if (!this.wasClicked)
             {
                 this.wasClicked = true;
-                SendAnswer(4);
+                SendAnswer(3);
             }
         }
 
