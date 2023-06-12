@@ -152,7 +152,6 @@
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
-            this.textBox82 = new System.Windows.Forms.TextBox();
             this.textBox81 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -164,9 +163,9 @@
             this.textBox79 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.results = new System.Windows.Forms.Panel();
-            this.listBox4 = new System.Windows.Forms.ListBox();
-            this.textBox83 = new System.Windows.Forms.TextBox();
             this.button_WOC24 = new ePOSOne.btnProduct.Button_WOC();
+            this.textBox83 = new System.Windows.Forms.TextBox();
+            this.listBox4 = new System.Windows.Forms.ListBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -1901,7 +1900,6 @@
             // 
             this.gamePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.gamePanel.Controls.Add(this.button5);
-            this.gamePanel.Controls.Add(this.textBox82);
             this.gamePanel.Controls.Add(this.textBox81);
             this.gamePanel.Controls.Add(this.button4);
             this.gamePanel.Controls.Add(this.button3);
@@ -1925,19 +1923,9 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(174, 50);
             this.button5.TabIndex = 26;
-            this.button5.Text = "button5";
+            this.button5.Text = "Leave game";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // textBox82
-            // 
-            this.textBox82.Font = new System.Drawing.Font("MV Boli", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox82.Location = new System.Drawing.Point(1000, 79);
-            this.textBox82.Multiline = true;
-            this.textBox82.Name = "textBox82";
-            this.textBox82.Size = new System.Drawing.Size(241, 94);
-            this.textBox82.TabIndex = 25;
-            this.textBox82.Text = "The room created by";
             // 
             // textBox81
             // 
@@ -2051,29 +2039,6 @@
             this.results.Size = new System.Drawing.Size(1283, 645);
             this.results.TabIndex = 26;
             // 
-            // listBox4
-            // 
-            this.listBox4.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBox4.FormattingEnabled = true;
-            this.listBox4.ItemHeight = 28;
-            this.listBox4.Location = new System.Drawing.Point(484, 119);
-            this.listBox4.Name = "listBox4";
-            this.listBox4.Size = new System.Drawing.Size(338, 340);
-            this.listBox4.TabIndex = 19;
-            // 
-            // textBox83
-            // 
-            this.textBox83.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBox83.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox83.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox83.Location = new System.Drawing.Point(484, 34);
-            this.textBox83.Multiline = true;
-            this.textBox83.Name = "textBox83";
-            this.textBox83.Size = new System.Drawing.Size(338, 60);
-            this.textBox83.TabIndex = 20;
-            this.textBox83.Text = "Final Results";
-            this.textBox83.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // button_WOC24
             // 
             this.button_WOC24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -2093,14 +2058,37 @@
             this.button_WOC24.UseVisualStyleBackColor = false;
             this.button_WOC24.Click += new System.EventHandler(this.button_WOC24_Click);
             // 
+            // textBox83
+            // 
+            this.textBox83.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox83.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox83.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox83.Location = new System.Drawing.Point(484, 34);
+            this.textBox83.Multiline = true;
+            this.textBox83.Name = "textBox83";
+            this.textBox83.Size = new System.Drawing.Size(338, 60);
+            this.textBox83.TabIndex = 20;
+            this.textBox83.Text = "Final Results";
+            this.textBox83.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // listBox4
+            // 
+            this.listBox4.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.ItemHeight = 28;
+            this.listBox4.Location = new System.Drawing.Point(484, 119);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(338, 340);
+            this.listBox4.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
-            this.Controls.Add(this.results);
             this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.results);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.loginPanel);
@@ -2281,7 +2269,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox82;
         private System.Windows.Forms.TextBox textBox81;
         private System.Windows.Forms.Panel results;
         private System.Windows.Forms.ListBox listBox4;

@@ -88,7 +88,15 @@ namespace Client
                 {
                     if (UpdateRoomState())
                     {
-                        PresentRoomStateMember(this.textBox57.Text);
+                        if(this.roomData.GetHasGameBegun())
+                        {
+                            MoveTab(this.roomMemberPanel, this.gamePanel);
+                            this.timer1.Start();
+                        }
+                        else
+                        {
+                            PresentRoomStateMember(this.textBox57.Text);
+                        }
                     }
                     else
                     {
@@ -933,10 +941,9 @@ namespace Client
 
             if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
             {
-                MessageBox.Show("Game begun by you!");
+                MoveTab(roomAdminPanel, gamePanel);
+                timer1.Start();
             }
-            MoveTab(roomAdminPanel, gamePanel);
-            timer1.Start();
         }
 
         /// <summary>
@@ -969,11 +976,6 @@ namespace Client
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-           
         }
 
         private void label1_Click(object sender, EventArgs e)
