@@ -1,5 +1,8 @@
 #include "GameRequestHandler.h"
 
+mutex lockQuestions;
+mutex lockGameDatas;
+
 /// <summary>
 /// C'tor of class GameRequestHandler.
 /// </summary>
@@ -75,6 +78,7 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     unsigned int id = 0;
 
     //Checking if there is a chance that the user finished to answer all the questions he needs
+    lock_guard<mutex> gameDataGuard(lockGameDatas);
     GameData& playerGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
 
     resp.answers = map<unsigned int, string>();
@@ -85,7 +89,9 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     if (!this->m_game.isUserFinished(this->m_loggedUser))
     {
         //Making the response 
+        unique_lock<mutex> questLock(lockQuestions);
         Question& question = this->m_game.getQuestionForUser(this->m_loggedUser);
+        questLock.unlock();
         vector<string>& theAnswers = question.getAnswers();
 
         resp.status = OK_STATUS_CODE;
@@ -128,6 +134,8 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
     SubmitAnswerRequest& reqs = JsonRequestPacketDeserializer::desrializeSubmitAnswerRequest(reqInfo.buffer);
 
     //Submitting the answer and updating the current data of the user
+
+    lock_guard<mutex> guardGameData(lockGameDatas);
     GameData& currentData = this->m_game.getGameDataOfUser(this->m_loggedUser);
     currentData.averageAnswerTime = ScoreClaculator::calculateAverageTime(currentData.correctAnswerCount + currentData.wrongAnswerCount,
         currentData.averageAnswerTime, 1, static_cast<float>(reqInfo.receivalTime));
@@ -169,6 +177,7 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 
     resp.results = vector<PlayerResults>();
     
+    lock_guard<mutex> currentLock(lockGameDatas);
     //Checking if the game is over or not
     if (this->m_game.isGameOver()) // game is over
     {

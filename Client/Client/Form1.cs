@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Client
@@ -678,7 +679,15 @@ namespace Client
                 if (playerEntry.StartsWith(this.textBox20.Text))
                 {
                     // Update the ListBox with the modified item
-                    this.listBox3.Items[i] += " 0";
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        control.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
+                    
                 }
             }
             this.roomDataLock.ReleaseMutex();
@@ -702,14 +711,20 @@ namespace Client
             // Assuming you have a ListBox named "myListBox"
 
             // Iterate through the ListBox items
-            // Iterate through the ListBox items
             for (int i = 0; i < this.listBox3.Items.Count; i++)
             {
                 string playerEntry = this.listBox3.Items[i].ToString();
                 if (playerEntry.StartsWith(this.textBox20.Text))
                 {
                     // Update the ListBox with the modified item
-                    this.listBox3.Items[i] += " 0";
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        control.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
                 }
             }
             this.roomDataLock.ReleaseMutex();

@@ -5,6 +5,9 @@
 
 class RequestHandlerFactory;
 
+using std::lock_guard;
+using std::unique_lock;
+
 class GameRequestHandler : public IRequestHandler
 {
 public:
