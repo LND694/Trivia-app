@@ -221,7 +221,7 @@ int SqliteDatabase::addNewUser(const User& user)
 /// <returns> The list of the questions.</returns>
 list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 {
-	string command = "SELECT * FROM QUESTIONS LIMIT " + to_string(amountQuestions) + ";";
+	string command = "SELECT * FROM QUESTIONS ORDER BY RAND() LIMIT " + to_string(amountQuestions) + ";";
 	list<Question>* questions =  this->runSqlCommand<Question>(command);
 
 	//Going over the questions and randmizing the order of their answers
