@@ -236,10 +236,10 @@ RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
     this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
 
     //Setting the rest of his data like he did not answered all the rest of the questions
-    while(userGameData.correctAnswerCount + userGameData.wrongAnswerCount < this->m_game.getAmountQuestionsInGame())
+    while(static_cast<int>(userGameData.correctAnswerCount + userGameData.wrongAnswerCount) < this->m_game.getAmountQuestionsInGame())
     {
         userGameData.averageAnswerTime = ScoreClaculator::calculateAverageTime(userGameData.correctAnswerCount + userGameData.wrongAnswerCount,
-            userGameData.averageAnswerTime, 1, timePerQuestion);
+            userGameData.averageAnswerTime, 1, static_cast<float>(timePerQuestion));
         userGameData.wrongAnswerCount++;
     }
 

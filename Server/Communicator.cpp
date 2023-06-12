@@ -89,9 +89,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	char buffer[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
-	LoginRequest logReq;
-	SignupRequest signUpReq;
-	string code;
+	string username = "";
 	Buffer* data;
 	time_t sendingTime{};
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
@@ -113,26 +111,26 @@ void Communicator::handleNewClient(SOCKET socket)
 			charVector[len] = '\0';//add null terminator
 
 			data = getDataFromBuffer(charVector);
-			//Extracting the code from the request's buffer
-			for (int i = 0; i < SIZE_CODE_FIELD; i++)
-			{
-				code += data->at(i);
-			}
 
 			//turn the buffer into request
 			info.buffer = *data;
-			info.id = static_cast<RequestId>(atoi(code.c_str()));
+			info.id = static_cast<RequestId>(getCode(*data));
 
 			//get the response
 			res = this->m_clients.at(socket)->handleRequest(info);
 			cout << res.response.data() << endl;
+
+			if (LOGIN_RESP_CODE == getCode(res.response)) //if there was a login
+			{
+				//saving the username
+				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
+			}
 
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
 			//Reseting variables
 			delete data;
-			code = "";
 			this->m_clients.at(socket) = res.newHandler;
 			len = 0;
 
@@ -146,6 +144,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	catch (const std::exception& e)
 	{
 		cout << e.what() << endl;
+		this->m_handlerFactory->getLoginManager()->logOut(username);
 	}
 }
 
@@ -171,4 +170,19 @@ Buffer* Communicator::getDataFromBuffer(const Buffer& buf)
 		}
 	}
 	return data;
+}
+
+/// <summary>
+/// The function getts the code from the Buffer.
+/// </summary>
+/// <param name="buffer"> The buffer with the code.</param>
+/// <returns> The code in the head of the buffer.</returns>
+int Communicator::getCode(const Buffer& buffer)
+{
+	string code = "";
+	for (int i = 0; i < SIZE_CODE_FIELD; i++)
+	{
+		code += buffer[i];
+	}
+	return atoi(code.c_str());
 }
