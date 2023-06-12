@@ -26,6 +26,7 @@ public:
 	void removeUser(LoggedUser& user);
 	vector<string>& getAllUsers() const;
 	RoomData& getRoomData() const;
+	void activeRoom();
 
 private:
 	//Fields

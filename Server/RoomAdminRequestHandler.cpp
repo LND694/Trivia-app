@@ -85,7 +85,7 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo
     RequestResult* reqRes = new RequestResult();//the result to return
 
     //Starting the game
-    this->m_roomManager.getRoom(this->m_room.getRoomData().id).getRoomData().isActive = true;
+    this->m_roomManager.getRoom(this->m_room.getRoomData().id).activeRoom();
     startGameResp.status = OK_STATUS_CODE;
 
     //Making the request result

@@ -63,3 +63,11 @@ RoomData& Room::getRoomData() const
 	roomData->timePerQuestion = this->m_metadata.timePerQuestion;
 	return *roomData;
 }
+
+/// <summary>
+/// The function activates the room.
+/// </summary>
+void Room::activeRoom()
+{
+	this->m_metadata.isActive = 1;
+}
