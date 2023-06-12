@@ -15,22 +15,26 @@ class RequestHandlerFactory : Singleton
 {
 public:
 	static RequestHandlerFactory* getInstance(IDatabase* db, LoginManager* logMan, 
-		RoomManager* roomMan, StatisticsManager* statisticsMan);
+		RoomManager* roomMan, StatisticsManager* statisticsMan, GameManager* gameMan);
 	RequestHandlerFactory(RequestHandlerFactory& other) = delete;
 	void operator=(const RequestHandlerFactory& other) = delete;
-	//Functions
+	//Functions to create handlers
 	LoginRequestHandler* createLoginRequestHandler();
 	MenuRequestHandler* createMenuRequestHandler(const LoggedUser user);
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser user, const Room room);
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser user, const Room room);
+	GameRequestHandler* createGameRequestHandler(const LoggedUser user, const RoomId roomId);
+
+	//Functions to get managers
 	LoginManager* getLoginManager();
 	RoomManager& getRoomManager();
 	StatisticsManager& getStatisticsManager();
+	GameManager& getGameManager();
 
 protected:
 	//C'tor
 	RequestHandlerFactory(IDatabase* db, LoginManager* logMan,
-		RoomManager* roomMan, StatisticsManager* statisticsMan);
+		RoomManager* roomMan, StatisticsManager* statisticsMan, GameManager* gameMan);
 
 	//Singleton fields
 	static RequestHandlerFactory* m_instance;
@@ -41,5 +45,6 @@ private:
 	LoginManager* m_loginManager;
 	RoomManager* m_roomManager;
 	StatisticsManager* m_statisticsManager;
+	GameManager* m_gameManager;
 };
 

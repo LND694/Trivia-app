@@ -22,7 +22,7 @@ Game::Game(const GameId gameId, const Room& room, GameManager& gameManager):
 		this->m_players.insert({ LoggedUser(*i), GameData() });
 	}
 
-	this->m_questions = this->m_gameManager.getQuestionsFromDB(room.getAllUsers().size() * room.getRoomData().numOfQuestionsInGame);
+	this->m_questions = this->m_gameManager.getQuestionsFromDB(room.getRoomData().numOfQuestionsInGame);
 
 	players.~vector();
 }
@@ -34,7 +34,6 @@ Question& Game::getQuestionForUser(const LoggedUser& user) const
 	std::uniform_int_distribution<int> dist(0, this->m_questions.size() - 1);
 	int randomIndex = dist(rng);
 	Question* question = new Question(this->m_questions[randomIndex]);
-	std::remove_if(this->m_questions.begin(), this->m_questions.end(), [&question](Question current) {return *question == current; });
 
 	return *question;
 }
