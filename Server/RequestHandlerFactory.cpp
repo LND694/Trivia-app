@@ -11,10 +11,12 @@ Lock RequestHandlerFactory::m_lock;
 /// <param name="logMan"> The manager of the logins</param>
 /// <param name="roomMan"> The manager of the rooms</param>
 /// <param name="statisticsMan"> The manager of the statistics</param>
+/// <param name="gameMan"> The manager of the games</param>
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db, LoginManager* logMan,
-	RoomManager* roomMan, StatisticsManager* statisticsMan) :
-    m_dataBase(db), m_loginManager(logMan), m_roomManager(roomMan), m_statisticsManager(statisticsMan)
+	RoomManager* roomMan, StatisticsManager* statisticsMan, GameManager* gameMan) :
+    m_dataBase(db), m_loginManager(logMan), m_roomManager(roomMan), m_statisticsManager(statisticsMan), m_gameManager(gameMan)
 {
+
 }
 
 /// <summary>
@@ -22,14 +24,17 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db, LoginManager* logMan
 /// </summary>
 /// <param name="db"> The database for the RequestHandlerFactory.</param>
 /// <param name="logMan"> The login manager for the RequestHandlerFactory.</param>
-/// <returns> THe instance of the RequestHandlerFactory class.</returns>
+/// <param name="roomMan"> The room manager for the RequestHandlerFactory.</param>
+/// <param name="statisticsMan"> The statistics manager for the RequestHandlerFactory.</param>
+/// <param name="gameMan"> The game manager for the RequestHandlerFactory.</param>
+/// <returns> The instance of the RequestHandlerFactory class.</returns>
 RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db, LoginManager* logMan,
-	RoomManager* roomMan, StatisticsManager* statisticsMan)
+	RoomManager* roomMan, StatisticsManager* statisticsMan, GameManager* gameMan)
 {
 	lock_guard<Lock> lockGuard(m_lock);
 	if (m_instance == nullptr)
 	{
-		m_instance = new RequestHandlerFactory(db, logMan, roomMan, statisticsMan);
+		m_instance = new RequestHandlerFactory(db, logMan, roomMan, statisticsMan, gameMan);
 	}
 	return m_instance;
 }
@@ -76,6 +81,18 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(co
 }
 
 /// <summary>
+/// The function creates a GameRequestHandler.
+/// </summary>
+/// <param name="user"> The user in the game</param>
+/// <param name="roomId"> The id of the room.</param>
+/// <returns></returns>
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(const LoggedUser user, const RoomId roomId)
+{
+	Game* game = new Game(roomId, this->m_roomManager->getRoom(roomId), this->getGameManager());
+	return new GameRequestHandler(*game, user, this->getGameManager(), this);
+}
+
+/// <summary>
 /// The function getts the login manager of the factory.
 /// </summary>
 /// <returns>a reference to LoginManager variable- the login manager.</returns>
@@ -100,4 +117,9 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return *this->m_statisticsManager;
+}
+
+GameManager& RequestHandlerFactory::getGameManager()
+{
+	return *this->m_gameManager;
 }
