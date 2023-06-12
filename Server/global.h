@@ -71,6 +71,7 @@ enum REQUEST_CODES {
 };
 
 typedef vector<unsigned char> Buffer;
+typedef unsigned int GameId;
 typedef REQUEST_CODES RequestId;
 typedef mutex Lock;
 

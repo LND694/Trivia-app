@@ -34,6 +34,24 @@ Question::Question():
 }
 
 /// <summary>
+/// Copy c'tor of class Question
+/// </summary>
+/// <param name="other"></param>
+Question::Question(const Question& other)
+{
+	this->m_question = other.m_question;
+	this->m_category = other.m_category;
+	this->m_difficulty = other.m_difficulty;
+	this->m_rightAnswer = other.m_rightAnswer;
+
+	//Copying the possibole answers
+	for (auto i = other.m_answers.begin(); i != other.m_answers.end(); i++)
+	{
+		this->m_answers.push_back(*i);
+	}
+}
+
+/// <summary>
 /// D'tor of class Question.
 /// </summary>
 Question::~Question()
@@ -70,4 +88,28 @@ string Question::getCategory() const
 string Question::getDifficulty() const
 {
 	return this->m_difficulty;
+}
+
+/// <summary>
+/// The function gets the id of the correct answer.
+/// </summary>
+/// <returns> The id</returns>
+unsigned int Question::getCorrectAnswerId() const
+{
+	unsigned int id = 0;
+
+	for (auto i = this->m_answers.begin(); i != this->m_answers.end(); i++)
+	{
+		if (*i == this->m_rightAnswer)
+		{
+			return id;
+		}
+		id++;
+	}
+	return id;
+}
+
+bool Question::operator==(const Question& other) const
+{
+	return this->m_question == other.m_question;
 }

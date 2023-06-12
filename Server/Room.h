@@ -24,8 +24,8 @@ public:
 	//Functions
 	void addUser(const LoggedUser& user);
 	void removeUser(LoggedUser& user);
-	vector<string>& getAllUsers();
-	RoomData& getRoomData();
+	vector<string>& getAllUsers() const;
+	RoomData& getRoomData() const;
 
 private:
 	//Fields

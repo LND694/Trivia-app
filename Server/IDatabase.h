@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include "User.h"
+#include "Game.h"
 #include "Question.h"
 #include "sqlite3.h"
 #include "global.h"
@@ -51,6 +52,8 @@ public:
 	virtual int getNumOfPlayerGames(const string player) = 0;
 	virtual int getPlayerScore(const string player) = 0;
 	virtual vector<string>& getHighScores() = 0;
+	virtual int submitGameStatistics(const GameData& gameData) = 0;
+
 protected:
 	vector<Question>& fetchQuestions(const int numOfQuestions);
 private:
