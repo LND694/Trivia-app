@@ -201,6 +201,7 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
                 this->m_gameManager.submitStatistics(currentGameData, *i);
             }
             this->m_gameManager.deleteGame(this->m_game.getGameId());
+            this->m_requestHandlerFactory->getRoomManager().deleteRoom(this->m_game.getGameId());
         }
 
         reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);

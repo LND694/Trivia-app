@@ -142,9 +142,9 @@
             this.listBox4 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.results = new System.Windows.Forms.Panel();
+            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC23 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC24 = new ePOSOne.btnProduct.Button_WOC();
@@ -1633,6 +1633,25 @@
             this.results.Size = new System.Drawing.Size(1283, 645);
             this.results.TabIndex = 26;
             // 
+            // button_WOC21
+            // 
+            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
+            this.button_WOC21.Name = "button_WOC21";
+            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
+            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC21.TabIndex = 7;
+            this.button_WOC21.Text = "Leave Room";
+            this.button_WOC21.TextColor = System.Drawing.Color.Black;
+            this.button_WOC21.UseVisualStyleBackColor = false;
+            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
+            // 
             // button_WOC18
             // 
             this.button_WOC18.BackColor = System.Drawing.SystemColors.Highlight;
@@ -1670,25 +1689,6 @@
             this.button_WOC20.TextColor = System.Drawing.Color.Black;
             this.button_WOC20.UseVisualStyleBackColor = false;
             this.button_WOC20.Click += new System.EventHandler(this.button_WOC20_Click);
-            // 
-            // button_WOC21
-            // 
-            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
-            this.button_WOC21.Name = "button_WOC21";
-            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
-            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC21.TabIndex = 7;
-            this.button_WOC21.Text = "Leave Room";
-            this.button_WOC21.TextColor = System.Drawing.Color.Black;
-            this.button_WOC21.UseVisualStyleBackColor = false;
-            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
             // 
             // button_WOC23
             // 
