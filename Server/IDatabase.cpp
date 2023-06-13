@@ -32,14 +32,14 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     if (apiResponse["response_code"].get<int>() == 0) {
         for (const auto& result : apiResponse["results"])
         {
-            category = result["category"].get<std::string>();
-            question = result["question"].get<std::string>();
+            category = result["category"].get<string>();
+            question = result["question"].get<string>();
             question = eraseSubString(question, SUBSTR1);//erase common "&quot;"
             question = eraseSubString(question, SUBSTR2);//erase common "&#039;"
-            correctAnswer = result["correct_answer"].get<std::string>();
-            difficulty = result["difficulty"].get<std::string>();
+            correctAnswer = result["correct_answer"].get<string>();
+            difficulty = result["difficulty"].get<string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
-                answers.push_back(incorrectAnswer.get<std::string>());
+                answers.push_back(incorrectAnswer.get<string>());
             }
             answers.push_back(correctAnswer);
 
