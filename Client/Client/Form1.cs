@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Timers;
 
 
 namespace Client
@@ -94,13 +95,16 @@ namespace Client
                         {
                             timePerQuestion = int.Parse(textBox64.Text);
                             this.seconds = timePerQuestion;
+                            UpdateControlText(textBox79, textBox57.Text);
                             MoveTab(this.roomMemberPanel, this.gamePanel);
-                            this.timer1.Start();
+                            this.Invoke((MethodInvoker)delegate {
+                                timer1.Start();
+                            });
 
-                            while(this.gamePanel.Visible)
-                            {
-                                this.timer1_Tick_1(null, null);
-                            }
+                            //while (this.gamePanel.Visible)
+                            //{
+                            //    this.timer1_Tick_1(null, null);
+                            //}
                         }
                     }
                     else
@@ -966,19 +970,6 @@ namespace Client
             }
         }
 
-
-        //private void UpdateControlText(TextBox textBox, string text)
-        //{
-        //    if (textBox.InvokeRequired)
-        //    {
-        //        textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
-        //    }
-        //    else
-        //    {
-        //        textBox.Text = text;
-        //    }
-        //}
-
         /// <summary>
         /// Updating a control with a new text.
         /// </summary>
@@ -1015,13 +1006,25 @@ namespace Client
             if(seconds == this.roomData.GetAnswerTimeOut())
             {
 
-                resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                UpdateControlText(textBox81, resp.GetQuestion());
-                answers = resp.GetAnswers();
-                UpdateControlText(button1, answers[0]);
-                UpdateControlText(button2, answers[1]);
-                UpdateControlText(button3, answers[2]);
-                UpdateControlText(button4, answers[4]);
+                try
+                {
+                    resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                    if(resp.GetStatus() != Constants.OK_STATUS_CODE)
+                    {
+                        throw new Exception("You finished all your questions");
+                    }
+                    UpdateControlText(textBox81, resp.GetQuestion());
+                    answers = resp.GetAnswers();
+                    UpdateControlText(button1, answers[0]);
+                    UpdateControlText(button2, answers[1]);
+                    UpdateControlText(button3, answers[2]);
+                    UpdateControlText(button4, answers[3]);
+                }
+                catch(Exception excp)
+                {
+                    ShowErrorMessage(excp.Message, "Error Getting question");
+                }
+
             }
             UpdateControlText(this.label1, seconds--.ToString());
             if (seconds == 0)
@@ -1035,7 +1038,7 @@ namespace Client
                 seconds = this.roomData.GetAnswerTimeOut();
                 this.wasClicked = false;
             }
-            if(questionsLeft == 0)
+            if(questionsLeft == 0) //there are no more questions left
             {
                 this.timer1.Stop();
                 Queue<string> results = new Queue<string>();
@@ -1043,7 +1046,7 @@ namespace Client
                 //Waiting for the game to be over
                 while(Constants.OK_STATUS_CODE != response.GetStatus())
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(5000);
                     response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
                 }
                 foreach (var i in response.GetPlayerResults())
@@ -1095,6 +1098,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Chose option 2
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
             if(!this.wasClicked)
@@ -1104,6 +1112,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Chose option 0
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click_1(object sender, EventArgs e)
         {
             if (!this.wasClicked)
@@ -1122,6 +1135,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Chose option 3
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
             if (!this.wasClicked)
@@ -1131,6 +1149,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Leaving the room
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button5_Click(object sender, EventArgs e)
         {
             string playerName = this.textBox20.Text;
@@ -1152,7 +1175,7 @@ namespace Client
                     string playerEntry = this.listBox3.Items[i].ToString();
                     if (playerEntry.StartsWith(playerName))
                     {
-                        playerEntry = "";
+                        this.listBox3.Items[i] = "";
                         break;
                     }
                 }
@@ -1165,6 +1188,11 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// Moving from the Results tab to the menu tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_WOC24_Click(object sender, EventArgs e)
         {
             MoveTab(this.results, this.menuPanel);
