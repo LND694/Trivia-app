@@ -48,13 +48,20 @@ Game::~Game()
 /// <returns> The question for the user.</returns>
 Question& Game::getQuestionForUser(const LoggedUser& user) const
 {
-	//Ranomizing an index for the vector of the Questions.
-	random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> dist(0, static_cast<int>(this->m_questions.size()) - 1);
-	int randomIndex = dist(rng);
-	Question* question = new Question(this->m_questions[randomIndex]);
+	Question* question = nullptr;
+	int counter = 0, index = -1;
 
+	//Going over the vector of the questions
+	for (const auto& i : this->m_questions)
+	{
+		if (this->m_players.at(user).currentQuestion == i)
+		{
+			index = counter;
+		}
+		counter++;
+	}
+
+	question = new Question(this->m_questions[index + 1]);
 	return *question;
 }
 

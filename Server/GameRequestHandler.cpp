@@ -72,8 +72,6 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     GetQuestionResponse resp = GetQuestionResponse();
-    Question& question = this->m_game.getQuestionForUser(this->m_loggedUser);
-    vector<string>& theAnswers = question.getAnswers();
     unsigned int id = 0;
 
     //Checking if there is a chance that the user finished to answer all the questions he needs
@@ -87,6 +85,9 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     if (!this->m_game.isUserFinished(this->m_loggedUser))
     {
         //Making the response 
+        Question& question = this->m_game.getQuestionForUser(this->m_loggedUser);
+        vector<string>& theAnswers = question.getAnswers();
+
         resp.status = OK_STATUS_CODE;
         resp.question = question.getQuestion();
         playerGameData.currentQuestion = question;
@@ -97,6 +98,9 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
             resp.answers.insert({ id, *i });
             id++;
         }
+
+        delete& question;
+        delete& theAnswers;
     }
     else
     {
@@ -107,8 +111,7 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
     reqRes->newHandler = this;
 
-    delete& question;
-    delete& theAnswers;
+
 
     return *reqRes;
 }
