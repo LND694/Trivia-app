@@ -88,8 +88,9 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(co
 /// <returns></returns>
 GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(const LoggedUser user, const RoomId roomId)
 {
-	Game* game = new Game(roomId, this->m_roomManager->getRoom(roomId), this->getGameManager());
-	return new GameRequestHandler(*game, user, this->getGameManager(), this);
+	Game& game = this->m_gameManager->createGame(this->m_roomManager->getRoom(roomId));
+
+	return new GameRequestHandler(game, user, this->getGameManager(), this);
 }
 
 /// <summary>
@@ -113,12 +114,16 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 /// <summary>
 /// The function getts the statistics manager of the factory.
 /// </summary>
-/// <returns>a reference to StatisticsManager variable- the login manager.</returns>
+/// <returns>a reference to StatisticsManager variable- the statistics manager.</returns>
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return *this->m_statisticsManager;
 }
 
+/// <summary>
+/// The function getts the game manager of the factory.
+/// </summary>
+/// <returns>a reference to GameManager variable- the game manager.</returns>
 GameManager& RequestHandlerFactory::getGameManager()
 {
 	return *this->m_gameManager;
