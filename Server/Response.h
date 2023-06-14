@@ -6,6 +6,7 @@
 using std::map;
 
 constexpr int OK_STATUS_CODE = 1;
+constexpr int ERROR_STATUS_CODE = 0;
 const string ERROR_MSG = "ERROR";
 
 //Base class
