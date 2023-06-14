@@ -30,9 +30,6 @@ private:
 	GameId m_gameId;
 	GameManager& m_gameManager;
 
-	//Help function
-	void submitGameStatsToDB(const GameData& gameData);
-
 public:
 	//C'tor
 	Game(const GameId gameId, const Room& room, GameManager& gameManager);
@@ -40,7 +37,13 @@ public:
 	//Functions
 	Question& getQuestionForUser(const LoggedUser& user) const;
 	void removePlayer(LoggedUser& user);
+	void changeGameDataOfUser(const LoggedUser user, const GameData newGameData);
+	GameData& getGameDataOfUser(const LoggedUser user);
+	bool isGameOver() const;
+	bool isUserFinished(const LoggedUser user) const;
 
-	//Getter
+	//Getters
 	GameId getGameId() const;
+	vector<LoggedUser>& getGameUsers() const;
+	int getAmountQuestionsInGame() const;
 };

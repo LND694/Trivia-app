@@ -56,17 +56,36 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     unsigned int id = 0;
 
     //Checking if there is a chance that the user finished to answer all the questions he needs
+    GameData& playerGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
+    unsigned int numQuestionsInGame = this->m_game.getAmountQuestionsInGame();
 
-    //Preparing the GetQuestionResponse for serialization
-    resp.status = OK_STATUS_CODE;
-    resp.question = question.getQuestion();
     resp.answers = map<unsigned int, string>();
+    resp.question = "";
+    resp.status = ERROR_STATUS_CODE;
 
-    //Getting the answers of the question
-    for (auto i = theAnswers.begin(); i != theAnswers.end(); i++)
+    //if the user did not finish to answer all the questions
+    if (!this->m_game.isUserFinished(this->m_loggedUser))
     {
-        resp.answers.insert({ id, *i });
-        id++;
+        resp.status = OK_STATUS_CODE;
+
+        //Getting another question from the last one
+        while (playerGameData.currentQuestion == question)
+        {
+            question = this->m_game.getQuestionForUser(this->m_loggedUser);
+        }
+        resp.question = question.getQuestion();
+        playerGameData.currentQuestion = question;
+        
+        //Getting the answers of the question
+        for (auto i = theAnswers.begin(); i != theAnswers.end(); i++)
+        {
+            resp.answers.insert({ id, *i });
+            id++;
+        }
+    }
+    else
+    {
+        playerGameData.currentQuestion = Question();
     }
 
     //Creating the RequestResult
@@ -86,10 +105,22 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
     SubmitAnswerRequest& reqs = JsonRequestPacketDeserializer::desrializeSubmitAnswerRequest(reqInfo.buffer);
 
     //Submitting the answer
-    //Should be something here
+    GameData& currentData = this->m_game.getGameDataOfUser(this->m_loggedUser);
+    if (reqs.answerId == currentData.currentQuestion.getCorrectAnswerId())
+    {
+        currentData.correctAnswerCount++;
+    }
+    else
+    {
+        currentData.wrongAnswerCount++;
+    }
+
+    //Should change averageAnswerTime
+
+    this->m_gameManager.submitStatistics(currentData, this->m_game.getGameId(), this->m_loggedUser);
 
     resp.status = OK_STATUS_CODE;
-    //resp.correctAnswerId = ?
+    resp.correctAnswerId = currentData.currentQuestion.getCorrectAnswerId();
 
     //Creating the RequestResult
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
@@ -104,14 +135,44 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     GetGameResultsResponse resp = GetGameResultsResponse();
+    PlayerResults currentResult = PlayerResults();
+    vector<LoggedUser> listOfPlayers = this->m_game.getGameUsers();
+    GameData currentGameData = GameData();
 
+    resp.results = vector<PlayerResults>();
+    
     //Checking if the game is over or not
+    if (this->m_game.isGameOver()) // game is over
+    {
+        resp.status = OK_STATUS_CODE;
+        //Getting the results of the game
 
-    //Getting the results of the game
+        //Going over the players of the game and getting their data
+        for (auto i = listOfPlayers.begin(); i != listOfPlayers.end(); i++)
+        {
+            currentGameData = this->m_game.getGameDataOfUser(*i);
+
+            //Making the current PlayerResults
+            currentResult.username = i->getUsername();
+            currentResult.correctAnswerCount = currentGameData.correctAnswerCount;
+            currentResult.wrongAnswerCount = currentGameData.wrongAnswerCount;
+            currentResult.averageAnswerTime = currentGameData.averageAnswerTime;
+
+            resp.results.push_back(currentResult);
+        }
+
+        reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
+
+        //Updating statistics of user
+    }
+    else //the game is not over
+    {
+        resp.status = ERROR_STATUS_CODE;
+        reqRes->newHandler = this;
+    }
 
     //Creating the RequestResult
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
-    //reqRes->newHandler = this//MenuRequestHandler;
 
     return *reqRes;
 }
@@ -129,7 +190,7 @@ RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 
     //Creating the RequestResult
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
-    reqRes->newHandler = this;
+    reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
 
     return *reqRes;
 }

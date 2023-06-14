@@ -1,10 +1,5 @@
 #include "Game.h"
 
-void Game::submitGameStatsToDB(const GameData& gameData)
-{
-
-}
-
 /// <summary>
 /// C'tor of class Game.
 /// </summary>
@@ -44,13 +39,59 @@ void Game::removePlayer(LoggedUser& user)
 	{
 		throw std::exception("This user is not in the room");
 	}
-	submitGameStatsToDB(this->m_players.at(user));
 
 	std::erase_if(this->m_players, [&user](LoggedUser currentUser) {return user.getUsername() == currentUser.getUsername(); });
 
 }
 
+void Game::changeGameDataOfUser(const LoggedUser user, const GameData newGameData)
+{
+	this->m_players.at(user) = newGameData;
+}
+
+GameData& Game::getGameDataOfUser(const LoggedUser user)
+{
+	return this->m_players.at(user);
+}
+
+bool Game::isGameOver() const
+{
+	//Going over the players
+	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	{
+		if (!isUserFinished(i->first))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Game::isUserFinished(const LoggedUser user) const
+{
+	int amountQuestionsInGame = this->m_questions.size();
+	GameData dataUser = this->m_players.at(user);
+	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame;
+}
+
 GameId Game::getGameId() const
 {
 	return this->m_gameId;
+}
+
+vector<LoggedUser>& Game::getGameUsers() const
+{
+	vector<LoggedUser>* users = new vector<LoggedUser>();
+
+	//Going over the map of the players
+	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	{
+		users->push_back(i->first);
+	}
+	return *users;
+}
+
+int Game::getAmountQuestionsInGame() const
+{
+	return this->m_questions.size();
 }
