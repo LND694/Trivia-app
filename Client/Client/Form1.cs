@@ -26,6 +26,7 @@ namespace Client
         private Mutex roomsLock;
         private Mutex highScoresLock;
         private int seconds;
+        private int restart;
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -642,7 +643,6 @@ namespace Client
             this.roomDataLock.WaitOne();
             UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
             UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
-            this.seconds = Convert.ToInt32(this.textBox64.Text);
             UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
             this.roomDataLock.ReleaseMutex();
@@ -798,6 +798,8 @@ namespace Client
             const string TITLE_ERROR = "Error Creating Room";
             string roomName = textBox51.Text;
             int timePerQuestion = int.Parse(textBox52.Text);
+            this.seconds = timePerQuestion;
+            this.restart = seconds;
             int maxUsersInRoom = int.Parse(numericUpDown2.Value.ToString());
             int amountQuestions = int.Parse(numericUpDown3.Value.ToString());
             CreateRoomRequest createRoomRequest = new CreateRoomRequest(roomName, maxUsersInRoom, amountQuestions, timePerQuestion);
@@ -914,6 +916,7 @@ namespace Client
                 MessageBox.Show("Game begun by you!");
             }
             MoveTab(roomAdminPanel, panel1);
+            timer1.Start();
         }
 
         /// <summary>
@@ -960,7 +963,6 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            timer1.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -970,7 +972,13 @@ namespace Client
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
+
             label1.Text = seconds--.ToString();
+            if(seconds == 0)
+            {
+                seconds = restart;
+            }
+            
         }
     }
 }
