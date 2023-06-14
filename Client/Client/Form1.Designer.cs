@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.signUpPanel = new System.Windows.Forms.Panel();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
@@ -126,9 +127,11 @@
             this.textBox70 = new System.Windows.Forms.TextBox();
             this.textBox71 = new System.Windows.Forms.TextBox();
             this.textBox72 = new System.Windows.Forms.TextBox();
-            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox79 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button_WOC23 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
@@ -149,6 +152,9 @@
             this.button_WOC14 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC13 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC12 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -164,6 +170,7 @@
             this.enterRoomPanel.SuspendLayout();
             this.roomMemberPanel.SuspendLayout();
             this.roomAdminPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // signUpPanel
@@ -1429,62 +1436,54 @@
             this.textBox72.TabIndex = 8;
             this.textBox72.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button_WOC17
+            // panel1
             // 
-            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
-            this.button_WOC17.Name = "button_WOC17";
-            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC17.TabIndex = 3;
-            this.button_WOC17.Text = "Enter Room";
-            this.button_WOC17.TextColor = System.Drawing.Color.Black;
-            this.button_WOC17.UseVisualStyleBackColor = false;
-            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.textBox79);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1283, 645);
+            this.panel1.TabIndex = 11;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // button_WOC19
+            // button1
             // 
-            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
-            this.button_WOC19.Name = "button_WOC19";
-            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC19.TabIndex = 5;
-            this.button_WOC19.Text = "Cancel";
-            this.button_WOC19.TextColor = System.Drawing.Color.Black;
-            this.button_WOC19.UseVisualStyleBackColor = false;
-            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
+            this.button1.Location = new System.Drawing.Point(597, 167);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(111, 36);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button_WOC21
+            // textBox79
             // 
-            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
-            this.button_WOC21.Name = "button_WOC21";
-            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
-            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC21.TabIndex = 7;
-            this.button_WOC21.Text = "Leave Room";
-            this.button_WOC21.TextColor = System.Drawing.Color.Black;
-            this.button_WOC21.UseVisualStyleBackColor = false;
-            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
+            this.textBox79.BackColor = System.Drawing.Color.Yellow;
+            this.textBox79.Location = new System.Drawing.Point(489, 12);
+            this.textBox79.Multiline = true;
+            this.textBox79.Name = "textBox79";
+            this.textBox79.Size = new System.Drawing.Size(296, 60);
+            this.textBox79.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(649, 255);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(143, 76);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "000";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
             // button_WOC23
             // 
@@ -1866,16 +1865,71 @@
             this.button_WOC12.UseVisualStyleBackColor = false;
             this.button_WOC12.Click += new System.EventHandler(this.button_WOC12_Click);
             // 
+            // button_WOC17
+            // 
+            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
+            this.button_WOC17.Name = "button_WOC17";
+            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC17.TabIndex = 3;
+            this.button_WOC17.Text = "Enter Room";
+            this.button_WOC17.TextColor = System.Drawing.Color.Black;
+            this.button_WOC17.UseVisualStyleBackColor = false;
+            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
+            // 
+            // button_WOC19
+            // 
+            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
+            this.button_WOC19.Name = "button_WOC19";
+            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC19.TabIndex = 5;
+            this.button_WOC19.Text = "Cancel";
+            this.button_WOC19.TextColor = System.Drawing.Color.Black;
+            this.button_WOC19.UseVisualStyleBackColor = false;
+            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
+            // 
+            // button_WOC21
+            // 
+            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
+            this.button_WOC21.Name = "button_WOC21";
+            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
+            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC21.TabIndex = 7;
+            this.button_WOC21.Text = "Leave Room";
+            this.button_WOC21.TextColor = System.Drawing.Color.Black;
+            this.button_WOC21.UseVisualStyleBackColor = false;
+            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
-            this.Controls.Add(this.enterRoomPanel);
-            this.Controls.Add(this.roomMemberPanel);
-            this.Controls.Add(this.roomAdminPanel);
             this.Controls.Add(this.createRoomPanel);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.loginPanel);
@@ -1883,8 +1937,12 @@
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.openPanel);
             this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.enterRoomPanel);
+            this.Controls.Add(this.roomMemberPanel);
+            this.Controls.Add(this.roomAdminPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.signUpPanel.ResumeLayout(false);
             this.signUpPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -1911,6 +1969,8 @@
             this.roomMemberPanel.PerformLayout();
             this.roomAdminPanel.ResumeLayout(false);
             this.roomAdminPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2037,6 +2097,11 @@
         private System.Windows.Forms.TextBox textBox76;
         private System.Windows.Forms.TextBox textBox78;
         private System.Windows.Forms.TextBox textBox77;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox79;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

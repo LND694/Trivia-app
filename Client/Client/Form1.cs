@@ -25,6 +25,7 @@ namespace Client
         private Mutex roomDataLock;
         private Mutex roomsLock;
         private Mutex highScoresLock;
+        private int seconds;
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -641,6 +642,7 @@ namespace Client
             this.roomDataLock.WaitOne();
             UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
             UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            this.seconds = Convert.ToInt32(this.textBox64.Text);
             UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
             this.roomDataLock.ReleaseMutex();
@@ -911,6 +913,7 @@ namespace Client
             {
                 MessageBox.Show("Game begun by you!");
             }
+            MoveTab(roomAdminPanel, panel1);
         }
 
         /// <summary>
@@ -938,6 +941,36 @@ namespace Client
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.textBox78.Text = this.comboBox2.Text;
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timer1.Start();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            label1.Text = seconds--.ToString();
         }
     }
 }
