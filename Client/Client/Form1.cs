@@ -18,15 +18,16 @@ namespace Client
     public partial class Form1 : Form
     {
         //The fields of the Form.
-        private Communicator communicator;
+        private readonly Communicator communicator;
         private Queue<RoomData> rooms;
         private Queue<string> highScores;
         private GetRoomStateResponse roomData;
-        private Mutex roomDataLock;
-        private Mutex roomsLock;
-        private Mutex highScoresLock;
+        private readonly Mutex roomDataLock;
+        private readonly Mutex roomsLock;
+        private readonly Mutex highScoresLock;
         private int seconds;
         private int restart;
+        private int questionsLeft;
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -657,6 +658,8 @@ namespace Client
             this.textBox72.Text = roomName;
             this.roomDataLock.WaitOne();
             UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
+            this.questionsLeft = this.roomData.GetQuestionCount();
+            textBox80.Text = "questions left: " + questionsLeft;
             UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
             UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
@@ -974,13 +977,17 @@ namespace Client
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-
             label1.Text = seconds--.ToString();
-            if(seconds == 0)
+            textBox80.Text = "questions left: " + questionsLeft;
+            if (seconds == 0)
             {
                 seconds = restart;
+                this.questionsLeft--;
             }
-            
+            if(questionsLeft == 0)
+            {
+
+            }
         }
     }
 }

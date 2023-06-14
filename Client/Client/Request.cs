@@ -35,10 +35,10 @@ namespace Client
     public class LoginRequest : Request
     {
         [JsonProperty("username")]
-        private string username;
+        private readonly string username;
 
         [JsonProperty("password")]
-        private string password;
+        private readonly string password;
 
         public LoginRequest(string username, string password):
             base()
@@ -60,16 +60,16 @@ namespace Client
     public class SignupRequest : LoginRequest
     {
         [JsonProperty("email")]
-        private string email;
+        private readonly string email;
 
         [JsonProperty("address")]
-        private string address;
+        private readonly string address;
 
         [JsonProperty("phone")]
-        private string phoneNum;
+        private readonly string phoneNum;
 
         [JsonProperty("date")]
-        private string bornDate;
+        private readonly string bornDate;
 
         public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate):
             base(username, password)
@@ -102,7 +102,7 @@ namespace Client
     public class RequestWithRoomId : Request
     {
         [JsonProperty("roomId")]
-        private int roomId;
+        private readonly int roomId;
 
         public RequestWithRoomId(int roomId):
             base()
@@ -133,16 +133,16 @@ namespace Client
     public class CreateRoomRequest : Request
     {
         [JsonProperty("roomName")]
-        private string roomName;
+        private readonly string roomName;
 
         [JsonProperty("maxUsers")]
-        private int maxUsers;
+        private readonly int maxUsers;
 
         [JsonProperty("questionCount")]
-        private int questionCount;
+        private readonly int questionCount;
 
         [JsonProperty("answerTimeout")]
-        private int answerTimeout;
+        private readonly int answerTimeout;
 
         public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):
             base()

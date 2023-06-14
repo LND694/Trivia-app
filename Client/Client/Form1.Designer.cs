@@ -155,6 +155,7 @@
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
+            this.textBox80 = new System.Windows.Forms.TextBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -1537,6 +1538,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.textBox80);
             this.panel1.Controls.Add(this.listBox3);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.textBox79);
@@ -2048,12 +2050,22 @@
             this.button_WOC20.UseVisualStyleBackColor = false;
             this.button_WOC20.Click += new System.EventHandler(this.button_WOC20_Click);
             // 
+            // textBox80
+            // 
+            this.textBox80.Location = new System.Drawing.Point(395, 175);
+            this.textBox80.Multiline = true;
+            this.textBox80.Name = "textBox80";
+            this.textBox80.Size = new System.Drawing.Size(259, 63);
+            this.textBox80.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1924, 992);
+            this.Controls.Add(this.roomAdminPanel);
+            this.Controls.Add(this.createRoomPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
@@ -2064,8 +2076,6 @@
             this.Controls.Add(this.statisticsPanel);
             this.Controls.Add(this.enterRoomPanel);
             this.Controls.Add(this.roomMemberPanel);
-            this.Controls.Add(this.roomAdminPanel);
-            this.Controls.Add(this.createRoomPanel);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
@@ -2229,6 +2239,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.TextBox textBox80;
     }
 }
 
