@@ -29,12 +29,19 @@ public:
 
 	//Question functions
 	list<Question>& getQuestions(const int amountQuestions) override;
+
+	//Statistics functions
 	float getPlayerAverageAnswerTime(const string player) override;
 	int getNumOfCorrectAnswers(const string player) override;
 	int getNumOfTotalAnswers(const string player) override;
 	int getNumOfPlayerGames(const string player) override;
 	int getPlayerScore(const string player) override;
 	vector<string>& getHighScores() override;
+
+	//Game Functions
+	int createGame(const Room& room);
+	int deleteGame(const GameId idGame);
+	int submitGameStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData);
 
 private:
 	void insertQuestions(const int numOfQuestions);

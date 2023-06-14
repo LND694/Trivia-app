@@ -63,6 +63,11 @@ public:
 	int getPlayerScore(const string player) override;
 	vector<string>& getHighScores() override;
 
+	//Game Functions
+	int createGame(const Room& room);
+	int deleteGame(const GameId idGame);
+	int submitGameStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData);
+
 protected:
 	//C'tor
 	SqliteDatabase();

@@ -46,13 +46,19 @@ public:
 
 	//Question functions
 	virtual list<Question>& getQuestions(const int amountQuestions) = 0;
+
+	//Statistics functions
 	virtual float getPlayerAverageAnswerTime(const string player) = 0;
 	virtual int getNumOfCorrectAnswers(const string player) = 0;
 	virtual int getNumOfTotalAnswers(const string player) = 0;
 	virtual int getNumOfPlayerGames(const string player) = 0;
 	virtual int getPlayerScore(const string player) = 0;
 	virtual vector<string>& getHighScores() = 0;
-	virtual int submitGameStatistics(const GameData& gameData) = 0;
+
+	//Game Functions
+	virtual int createGame(const Room& room) = 0;
+	virtual int deleteGame(const GameId idGame) = 0;
+	virtual int submitGameStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData) = 0;
 
 protected:
 	vector<Question>& fetchQuestions(const int numOfQuestions);
