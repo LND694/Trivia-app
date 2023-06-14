@@ -660,6 +660,7 @@ namespace Client
             UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
             UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -797,6 +798,7 @@ namespace Client
         {
             const string TITLE_ERROR = "Error Creating Room";
             string roomName = textBox51.Text;
+            textBox79.Text = roomName;
             int timePerQuestion = int.Parse(textBox52.Text);
             this.seconds = timePerQuestion;
             this.restart = seconds;
