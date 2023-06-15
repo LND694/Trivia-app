@@ -94,7 +94,15 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
             stateResp.status = OK_STATUS_CODE;
 
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
-            reqRes->newHandler = this;
+
+            if (stateResp.hasGameBegun) //the game has already begun
+            {
+                reqRes->newHandler = this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id);
+            }
+            else
+            {
+                reqRes->newHandler = this;
+            }
         }
         catch (const std::exception& excp)
         {
