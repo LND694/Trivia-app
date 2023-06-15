@@ -117,8 +117,6 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 
     //Should change averageAnswerTime
 
-    this->m_gameManager.submitStatistics(currentData, this->m_game.getGameId(), this->m_loggedUser);
-
     resp.status = OK_STATUS_CODE;
     resp.correctAnswerId = currentData.currentQuestion.getCorrectAnswerId();
 
@@ -152,6 +150,8 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         {
             currentGameData = this->m_game.getGameDataOfUser(*i);
 
+            this->m_gameManager.submitStatistics(currentGameData, *i);
+
             //Making the current PlayerResults
             currentResult.username = i->getUsername();
             currentResult.correctAnswerCount = currentGameData.correctAnswerCount;
@@ -164,6 +164,7 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
 
         //Updating statistics of user
+        
     }
     else //the game is not over
     {

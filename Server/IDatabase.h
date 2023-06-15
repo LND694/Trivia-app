@@ -7,6 +7,8 @@
 #include "global.h"
 #include "Singleton.h"
 #include "json.hpp"
+#include "StatisticsUser.h"
+#include "ScoreCalculator.h"
 #include <mongocxx/options/create_collection.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
 #include <mongocxx/client.hpp>
@@ -58,10 +60,11 @@ public:
 	//Game Functions
 	virtual int createGame(const Room& room) = 0;
 	virtual int deleteGame(const GameId idGame) = 0;
-	virtual int submitGameStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData) = 0;
+	virtual int submitGameStatistics(const GameData& gameData, const LoggedUser userData) = 0;
 
 protected:
 	vector<Question>& fetchQuestions(const int numOfQuestions);
+	static void updateStatistics(StatisticsUser& oldStats, const GameData& newStats);
 private:
 	string eraseSubString(string str, const string substr);
 };

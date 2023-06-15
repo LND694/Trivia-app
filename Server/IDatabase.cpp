@@ -53,6 +53,25 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
 
 }
 
+void IDatabase::updateStatistics(StatisticsUser& oldStats, const GameData& newStats)
+{
+    int highScore = oldStats.getHighScore();
+    int lastScore = ScoreClaculator::calculateScore(newStats.correctAnswerCount, newStats.averageAnswerTime);
+    oldStats.setAverageAnswerTime(ScoreClaculator::calculateAverageTime(oldStats.getAmountTotalAnswers(),
+        oldStats.getAverageAnswerTime(),
+        newStats.correctAnswerCount + newStats.wrongAnswerCount,
+        newStats.averageAnswerTime));
+
+    oldStats.setAmountGames(oldStats.getAmountGames() + 1);
+    oldStats.setAmountCorrectAnswers(oldStats.getAmountCorrectAnswers() + newStats.correctAnswerCount);
+    oldStats.setAmountTotalAnswers(oldStats.getAmountTotalAnswers() + newStats.correctAnswerCount + newStats.wrongAnswerCount);
+
+    if (highScore < lastScore)
+    {
+        oldStats.setHighScore(lastScore);
+    }
+}
+
 /// <summary>
 /// erase a certain substring from a string
 /// </summary>

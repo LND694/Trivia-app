@@ -11,7 +11,7 @@ public:
 	LoggedUser(const string username);
 
 	//Getter
-	string getUsername();
+	string getUsername() const;
 
 private:
 	//Field
