@@ -26,7 +26,6 @@ namespace Client
         private readonly Mutex roomsLock;
         private readonly Mutex highScoresLock;
         private int seconds;
-        private int restart;
         private int questionsLeft;
         public Form1()
         {
@@ -805,7 +804,6 @@ namespace Client
             textBox79.Text = roomName;
             int timePerQuestion = int.Parse(textBox52.Text);
             this.seconds = timePerQuestion;
-            this.restart = seconds;
             int maxUsersInRoom = int.Parse(numericUpDown2.Value.ToString());
             int amountQuestions = int.Parse(numericUpDown3.Value.ToString());
             CreateRoomRequest createRoomRequest = new CreateRoomRequest(roomName, maxUsersInRoom, amountQuestions, timePerQuestion);
@@ -982,13 +980,52 @@ namespace Client
             textBox80.Text = "questions left: " + questionsLeft;
             if (seconds == 0)
             {
-                seconds = restart;
+                seconds = this.roomData.GetAnswerTimeOut();
                 this.questionsLeft--;
+                GetQuestionResponse resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                textBox81.Text = resp.GetQuestion();
+                Dictionary<int,string> answers = resp.GetAnswers();
+                button1.Text = answers[0];
+                button2.Text = answers[1];
+                button3.Text = answers[2];
+                button4.Text = answers[3];
             }
             if(questionsLeft == 0)
             {
 
             }
+        }
+        private void SendAnswer(int id)
+        {
+            SubmitAnswerRequest req = new SubmitAnswerRequest(id);
+            try
+            {
+                SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(ex.Message,"ERROR");
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SendAnswer(3);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            SendAnswer(1);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SendAnswer(2);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SendAnswer(4);
         }
     }
 }

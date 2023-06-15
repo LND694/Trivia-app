@@ -40,7 +40,7 @@ namespace Client
         [JsonProperty("password")]
         private readonly string password;
 
-        public LoginRequest(string username, string password):
+        public LoginRequest(string username, string password) :
             base()
         {
             this.username = username;
@@ -71,7 +71,7 @@ namespace Client
         [JsonProperty("date")]
         private readonly string bornDate;
 
-        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate):
+        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate) :
             base(username, password)
         {
             this.email = email;
@@ -104,7 +104,7 @@ namespace Client
         [JsonProperty("roomId")]
         private readonly int roomId;
 
-        public RequestWithRoomId(int roomId):
+        public RequestWithRoomId(int roomId) :
             base()
         {
             this.roomId = roomId;
@@ -113,7 +113,7 @@ namespace Client
 
     public class GetPlayersInRoomRequest : RequestWithRoomId
     {
-        public GetPlayersInRoomRequest(int roomId):
+        public GetPlayersInRoomRequest(int roomId) :
             base(roomId)
         {
 
@@ -144,7 +144,7 @@ namespace Client
         [JsonProperty("answerTimeout")]
         private readonly int answerTimeout;
 
-        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):
+        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout) :
             base()
         {
             this.roomName = roomName;
@@ -170,5 +170,13 @@ namespace Client
             return this.answerTimeout;
         }
 
+    }
+    public class SubmitAnswerRequest
+    {
+        private int answerId;
+        public SubmitAnswerRequest(int answerId)
+        {
+            this.answerId = answerId;
+        }
     }
 }

@@ -99,7 +99,6 @@ void Communicator::handleNewClient(SOCKET socket)
 
 		while (this->m_clients.at(socket) != nullptr)
 		{
-
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
 			if (len == 0)
 			{
