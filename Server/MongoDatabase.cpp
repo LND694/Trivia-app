@@ -306,6 +306,80 @@ vector<string>& MongoDatabase::getHighScores()
 	return *vec;
 }
 
+int MongoDatabase::createGame(const Room& room)
+{
+	const string COLLECTION_NAME = "GAME_" + room.getRoomData().id;
+	vector<string> usersRoom = room.getAllUsers();
+	this->db.create_collection(COLLECTION_NAME);
+
+	//Going over the players in the game
+	for (auto i = usersRoom.begin(); i != usersRoom.end(); i++)
+	{
+		auto doc = make_document(kvp("username", *i),
+			kvp("current_question", ""), 
+			kvp("correct_answers", 0),
+			kvp("wrong_answers", 0),
+			kvp("average_time", 0.0));
+		
+		try
+		{
+			this->db[COLLECTION_NAME].insert_one(doc.view());
+		}
+		catch (...)
+		{
+			return ERROR_CODE;
+		}
+	}
+	return OK_CODE;
+
+}
+
+int MongoDatabase::deleteGame(const GameId idGame)
+{
+	try
+	{
+		this->db.collection("GAME_" + idGame).drop();
+	}
+	catch (...)
+	{
+		return ERROR_CODE;
+	}
+	return OK_CODE;
+}
+
+int MongoDatabase::submitGameStatistics(const GameData& gameData, const LoggedUser userData)
+{
+	string username = userData.getUsername();
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << username
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+
+	StatisticsUser statistics = StatisticsUser(-1, 
+		this->getNumOfPlayerGames(username), 
+		this->getNumOfTotalAnswers(username), 
+		this->getNumOfCorrectAnswers(username), 
+		this->getPlayerAverageAnswerTime(username), 
+		this->getPlayerScore(username));
+
+	IDatabase::updateStatistics(statistics, gameData);
+
+	auto result = coll.update_one(filter.view(), make_document(kvp("$set",
+		make_document(kvp("average_time", statistics.getAverageAnswerTime()), 
+			kvp("correct_answers", statistics.getAmountCorrectAnswers()), 
+			kvp("total_answers", statistics.getAmountTotalAnswers()), 
+			kvp("total_games", statistics.getAmountTotalAnswers()), 
+			kvp("score", statistics.getHighScore())
+		))));
+	if (!result)
+	{
+		return ERROR_CODE;
+	}
+
+	return OK_CODE;
+}
+
 /// <summary>
 /// insert questions to the mongo database
 /// </summary>
