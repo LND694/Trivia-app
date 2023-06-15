@@ -13,7 +13,7 @@ LoggedUser::LoggedUser(const string username):
 /// The function getts the username of the user. 
 /// </summary>
 /// <returns> The username of the user</returns>
-string LoggedUser::getUsername()
+string LoggedUser::getUsername() const
 {
     return this->m_username;
 }
