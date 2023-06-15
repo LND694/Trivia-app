@@ -95,6 +95,7 @@ namespace Client
                         ShowErrorMessage("The host left the room", "Leaving room");
                     }
                 }
+                
                 System.Threading.Thread.Sleep(3000);
             }
 
