@@ -36,7 +36,7 @@ void GameManager::deleteGame(const GameId gameId)
     this->m_database->deleteGame(gameId);
 }
 
-void GameManager::submitStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData)
+void GameManager::submitStatistics(const GameData& gameData, const LoggedUser userData)
 {
     this->m_database->submitGameStatistics(gameData, idGame, userData);
     this->m_games[getIndexGame(idGame)].changeGameDataOfUser(userData, gameData);

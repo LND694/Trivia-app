@@ -16,7 +16,7 @@ private:
 public:
 	Game& createGame(const Room& room);
 	void deleteGame(const GameId gameId);
-	void submitStatistics(const GameData& gameData, const GameId idGame, const LoggedUser userData);
+	void submitStatistics(const GameData& gameData, const LoggedUser userData);
 
 	vector<Question>& getQuestionsFromDB(const int amountQuestions);
 };
