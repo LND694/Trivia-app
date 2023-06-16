@@ -39,13 +39,14 @@ public:
 	vector<string>& getHighScores() override;
 
 	//Game Functions
-	int createGame(const Room& room) override;
-	int deleteGame(const GameId idGame) override;
-	int submitGameStatistics(const GameData& gameData, const LoggedUser userData) override;
+	int submitGameStatistics(const GameData& gameData, const LoggedUser& userData) override;
 
 private:
-	void insertQuestions(const int numOfQuestions);
+	//Fields
 	mongocxx::database db;
 	mongocxx::client client;
+	
+	//Help function
+	void insertQuestions(const int numOfQuestions);
 };
 

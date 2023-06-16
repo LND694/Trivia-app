@@ -62,11 +62,9 @@ public:
 	int getNumOfPlayerGames(const string player) override;
 	int getPlayerScore(const string player) override;
 	vector<string>& getHighScores() override;
-
+	
 	//Game Functions
-	int createGame(const Room& room) override;
-	int deleteGame(const GameId idGame) override;
-	int submitGameStatistics(const GameData& gameData, const LoggedUser userData) override;
+	int submitGameStatistics(const GameData& gameData, const LoggedUser& userData) override;
 
 protected:
 	//C'tor
