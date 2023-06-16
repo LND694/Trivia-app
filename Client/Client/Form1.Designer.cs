@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.signUpPanel = new System.Windows.Forms.Panel();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
@@ -126,13 +127,18 @@
             this.textBox70 = new System.Windows.Forms.TextBox();
             this.textBox71 = new System.Windows.Forms.TextBox();
             this.textBox72 = new System.Windows.Forms.TextBox();
-            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC23 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
-            this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
+            this.gamePanel = new System.Windows.Forms.Panel();
+            this.textBox82 = new System.Windows.Forms.TextBox();
+            this.textBox81 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox80 = new System.Windows.Forms.TextBox();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox79 = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button_WOC15 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC16 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC7 = new ePOSOne.btnProduct.Button_WOC();
@@ -149,6 +155,15 @@
             this.button_WOC14 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC13 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC12 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC17 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC19 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC21 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC23 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.listBox4 = new System.Windows.Forms.ListBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -164,6 +179,8 @@
             this.enterRoomPanel.SuspendLayout();
             this.roomMemberPanel.SuspendLayout();
             this.roomAdminPanel.SuspendLayout();
+            this.gamePanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // signUpPanel
@@ -199,7 +216,7 @@
             // textBox17
             // 
             this.textBox17.BackColor = System.Drawing.Color.White;
-            this.textBox17.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox17.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox17.Location = new System.Drawing.Point(597, 268);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(188, 31);
@@ -209,7 +226,7 @@
             // textBox16
             // 
             this.textBox16.BackColor = System.Drawing.Color.White;
-            this.textBox16.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox16.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox16.Location = new System.Drawing.Point(597, 194);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(188, 31);
@@ -226,7 +243,7 @@
             // textBox14
             // 
             this.textBox14.BackColor = System.Drawing.Color.Orange;
-            this.textBox14.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox14.Location = new System.Drawing.Point(493, 268);
             this.textBox14.Name = "textBox14";
             this.textBox14.ReadOnly = true;
@@ -237,7 +254,7 @@
             // textBox13
             // 
             this.textBox13.BackColor = System.Drawing.Color.Orange;
-            this.textBox13.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox13.Location = new System.Drawing.Point(493, 231);
             this.textBox13.Name = "textBox13";
             this.textBox13.ReadOnly = true;
@@ -248,7 +265,7 @@
             // textBox15
             // 
             this.textBox15.BackColor = System.Drawing.Color.Orange;
-            this.textBox15.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox15.Location = new System.Drawing.Point(493, 194);
             this.textBox15.Name = "textBox15";
             this.textBox15.ReadOnly = true;
@@ -259,7 +276,7 @@
             // textBox12
             // 
             this.textBox12.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox12.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox12.Location = new System.Drawing.Point(451, 157);
             this.textBox12.Name = "textBox12";
             this.textBox12.ReadOnly = true;
@@ -270,7 +287,7 @@
             // textBox11
             // 
             this.textBox11.BackColor = System.Drawing.Color.White;
-            this.textBox11.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox11.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox11.Location = new System.Drawing.Point(1160, 360);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(188, 31);
@@ -294,7 +311,7 @@
             // textBox10
             // 
             this.textBox10.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox10.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox10.Location = new System.Drawing.Point(922, 136);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
@@ -313,7 +330,7 @@
             // textBox9
             // 
             this.textBox9.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox9.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox9.Location = new System.Drawing.Point(922, 362);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
@@ -324,7 +341,7 @@
             // textBox7
             // 
             this.textBox7.BackColor = System.Drawing.Color.White;
-            this.textBox7.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox7.Location = new System.Drawing.Point(174, 362);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(188, 31);
@@ -334,7 +351,7 @@
             // textBox8
             // 
             this.textBox8.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox8.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox8.Location = new System.Drawing.Point(31, 362);
             this.textBox8.Name = "textBox8";
             this.textBox8.ReadOnly = true;
@@ -345,7 +362,7 @@
             // textBox5
             // 
             this.textBox5.BackColor = System.Drawing.Color.White;
-            this.textBox5.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox5.Location = new System.Drawing.Point(174, 255);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(188, 31);
@@ -355,7 +372,7 @@
             // textBox6
             // 
             this.textBox6.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox6.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox6.Location = new System.Drawing.Point(31, 255);
             this.textBox6.Name = "textBox6";
             this.textBox6.ReadOnly = true;
@@ -366,7 +383,7 @@
             // textBox4
             // 
             this.textBox4.BackColor = System.Drawing.Color.White;
-            this.textBox4.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox4.Location = new System.Drawing.Point(174, 136);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(188, 31);
@@ -376,7 +393,7 @@
             // textBox3
             // 
             this.textBox3.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox3.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox3.Location = new System.Drawing.Point(31, 136);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
@@ -387,7 +404,7 @@
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.Color.Aquamarine;
-            this.textBox2.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(510, 44);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
@@ -414,7 +431,7 @@
             // textBox23
             // 
             this.textBox23.BackColor = System.Drawing.SystemColors.Highlight;
-            this.textBox23.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox23.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox23.Location = new System.Drawing.Point(568, 44);
             this.textBox23.Multiline = true;
             this.textBox23.Name = "textBox23";
@@ -440,7 +457,7 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.Color.Aquamarine;
-            this.textBox1.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.textBox1.Location = new System.Drawing.Point(451, 44);
             this.textBox1.Multiline = true;
@@ -467,7 +484,7 @@
             // textBox24
             // 
             this.textBox24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox24.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox24.Location = new System.Drawing.Point(574, 57);
             this.textBox24.Multiline = true;
             this.textBox24.Name = "textBox24";
@@ -496,7 +513,7 @@
             // textBox22
             // 
             this.textBox22.BackColor = System.Drawing.Color.Aquamarine;
-            this.textBox22.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox22.Location = new System.Drawing.Point(580, 41);
             this.textBox22.Multiline = true;
             this.textBox22.Name = "textBox22";
@@ -509,7 +526,7 @@
             // textBox18
             // 
             this.textBox18.BackColor = System.Drawing.Color.White;
-            this.textBox18.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox18.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox18.Location = new System.Drawing.Point(698, 336);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(188, 31);
@@ -519,7 +536,7 @@
             // textBox19
             // 
             this.textBox19.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox19.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox19.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox19.Location = new System.Drawing.Point(555, 336);
             this.textBox19.Name = "textBox19";
             this.textBox19.ReadOnly = true;
@@ -530,7 +547,7 @@
             // textBox20
             // 
             this.textBox20.BackColor = System.Drawing.Color.White;
-            this.textBox20.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox20.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox20.Location = new System.Drawing.Point(698, 217);
             this.textBox20.Name = "textBox20";
             this.textBox20.Size = new System.Drawing.Size(188, 31);
@@ -540,7 +557,7 @@
             // textBox21
             // 
             this.textBox21.BackColor = System.Drawing.Color.RoyalBlue;
-            this.textBox21.Font = new System.Drawing.Font("Poor Richard", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox21.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox21.Location = new System.Drawing.Point(555, 217);
             this.textBox21.Name = "textBox21";
             this.textBox21.ReadOnly = true;
@@ -599,7 +616,7 @@
             // textBox48
             // 
             this.textBox48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox48.Font = new System.Drawing.Font("Snap ITC", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox48.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox48.Location = new System.Drawing.Point(394, 404);
             this.textBox48.Multiline = true;
             this.textBox48.Name = "textBox48";
@@ -651,7 +668,7 @@
             // textBox29
             // 
             this.textBox29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox29.Font = new System.Drawing.Font("Snap ITC", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox29.Location = new System.Drawing.Point(727, 296);
             this.textBox29.Multiline = true;
             this.textBox29.Name = "textBox29";
@@ -664,7 +681,7 @@
             // textBox28
             // 
             this.textBox28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox28.Font = new System.Drawing.Font("Snap ITC", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox28.Location = new System.Drawing.Point(727, 154);
             this.textBox28.Multiline = true;
             this.textBox28.Name = "textBox28";
@@ -677,7 +694,7 @@
             // textBox27
             // 
             this.textBox27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox27.Font = new System.Drawing.Font("Snap ITC", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox27.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox27.Location = new System.Drawing.Point(40, 296);
             this.textBox27.Multiline = true;
             this.textBox27.Name = "textBox27";
@@ -690,7 +707,7 @@
             // textBox26
             // 
             this.textBox26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox26.Font = new System.Drawing.Font("Snap ITC", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox26.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox26.Location = new System.Drawing.Point(40, 154);
             this.textBox26.Multiline = true;
             this.textBox26.Name = "textBox26";
@@ -703,7 +720,7 @@
             // textBox25
             // 
             this.textBox25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox25.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox25.Location = new System.Drawing.Point(492, 49);
             this.textBox25.Multiline = true;
             this.textBox25.Name = "textBox25";
@@ -775,7 +792,7 @@
             // textBox43
             // 
             this.textBox43.BackColor = System.Drawing.Color.White;
-            this.textBox43.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox43.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox43.Location = new System.Drawing.Point(828, 395);
             this.textBox43.Multiline = true;
             this.textBox43.Name = "textBox43";
@@ -787,7 +804,7 @@
             // textBox41
             // 
             this.textBox41.BackColor = System.Drawing.Color.White;
-            this.textBox41.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox41.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox41.Location = new System.Drawing.Point(828, 312);
             this.textBox41.Multiline = true;
             this.textBox41.Name = "textBox41";
@@ -812,7 +829,7 @@
             // textBox39
             // 
             this.textBox39.BackColor = System.Drawing.Color.White;
-            this.textBox39.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox39.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox39.Location = new System.Drawing.Point(828, 235);
             this.textBox39.Multiline = true;
             this.textBox39.Name = "textBox39";
@@ -824,7 +841,7 @@
             // textBox38
             // 
             this.textBox38.BackColor = System.Drawing.Color.Cyan;
-            this.textBox38.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox38.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox38.Location = new System.Drawing.Point(492, 395);
             this.textBox38.Multiline = true;
             this.textBox38.Name = "textBox38";
@@ -837,7 +854,7 @@
             // textBox37
             // 
             this.textBox37.BackColor = System.Drawing.Color.Cyan;
-            this.textBox37.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox37.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox37.Location = new System.Drawing.Point(492, 312);
             this.textBox37.Multiline = true;
             this.textBox37.Name = "textBox37";
@@ -850,7 +867,7 @@
             // textBox36
             // 
             this.textBox36.BackColor = System.Drawing.Color.Cyan;
-            this.textBox36.Font = new System.Drawing.Font("Stencil", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox36.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox36.Location = new System.Drawing.Point(492, 235);
             this.textBox36.Multiline = true;
             this.textBox36.Name = "textBox36";
@@ -889,7 +906,7 @@
             // textBox42
             // 
             this.textBox42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBox42.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox42.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox42.Location = new System.Drawing.Point(458, 34);
             this.textBox42.Multiline = true;
             this.textBox42.Name = "textBox42";
@@ -971,7 +988,7 @@
             // textBox56
             // 
             this.textBox56.BackColor = System.Drawing.SystemColors.Highlight;
-            this.textBox56.Font = new System.Drawing.Font("Gloucester MT Extra Condensed", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox56.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox56.Location = new System.Drawing.Point(952, 198);
             this.textBox56.Multiline = true;
             this.textBox56.Name = "textBox56";
@@ -983,7 +1000,7 @@
             // textBox52
             // 
             this.textBox52.BackColor = System.Drawing.SystemColors.Highlight;
-            this.textBox52.Font = new System.Drawing.Font("Lucida Handwriting", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox52.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox52.Location = new System.Drawing.Point(813, 198);
             this.textBox52.Multiline = true;
             this.textBox52.Name = "textBox52";
@@ -1055,7 +1072,7 @@
             // textBox49
             // 
             this.textBox49.BackColor = System.Drawing.SystemColors.Highlight;
-            this.textBox49.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox49.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox49.Location = new System.Drawing.Point(511, 3);
             this.textBox49.Multiline = true;
             this.textBox49.Name = "textBox49";
@@ -1132,7 +1149,7 @@
             // textBox62
             // 
             this.textBox62.BackColor = System.Drawing.SystemColors.Highlight;
-            this.textBox62.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox62.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox62.Location = new System.Drawing.Point(568, 44);
             this.textBox62.Multiline = true;
             this.textBox62.Name = "textBox62";
@@ -1194,7 +1211,7 @@
             this.listBox1.ItemHeight = 28;
             this.listBox1.Location = new System.Drawing.Point(36, 312);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(278, 256);
+            this.listBox1.Size = new System.Drawing.Size(278, 228);
             this.listBox1.TabIndex = 17;
             // 
             // textBox60
@@ -1276,7 +1293,7 @@
             // textBox57
             // 
             this.textBox57.BackColor = System.Drawing.Color.Yellow;
-            this.textBox57.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox57.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox57.Location = new System.Drawing.Point(458, 41);
             this.textBox57.Multiline = true;
             this.textBox57.Name = "textBox57";
@@ -1338,7 +1355,7 @@
             this.listBox2.ItemHeight = 28;
             this.listBox2.Location = new System.Drawing.Point(36, 285);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(282, 312);
+            this.listBox2.Size = new System.Drawing.Size(282, 284);
             this.listBox2.TabIndex = 17;
             // 
             // textBox66
@@ -1420,7 +1437,7 @@
             // textBox72
             // 
             this.textBox72.BackColor = System.Drawing.Color.Yellow;
-            this.textBox72.Font = new System.Drawing.Font("Perpetua Titling MT", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox72.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox72.Location = new System.Drawing.Point(458, 41);
             this.textBox72.Multiline = true;
             this.textBox72.Name = "textBox72";
@@ -1429,138 +1446,136 @@
             this.textBox72.TabIndex = 8;
             this.textBox72.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button_WOC17
+            // gamePanel
             // 
-            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
-            this.button_WOC17.Name = "button_WOC17";
-            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC17.TabIndex = 3;
-            this.button_WOC17.Text = "Enter Room";
-            this.button_WOC17.TextColor = System.Drawing.Color.Black;
-            this.button_WOC17.UseVisualStyleBackColor = false;
-            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
+            this.gamePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gamePanel.Controls.Add(this.textBox82);
+            this.gamePanel.Controls.Add(this.textBox81);
+            this.gamePanel.Controls.Add(this.button4);
+            this.gamePanel.Controls.Add(this.button3);
+            this.gamePanel.Controls.Add(this.button2);
+            this.gamePanel.Controls.Add(this.button1);
+            this.gamePanel.Controls.Add(this.textBox80);
+            this.gamePanel.Controls.Add(this.listBox3);
+            this.gamePanel.Controls.Add(this.label1);
+            this.gamePanel.Controls.Add(this.textBox79);
+            this.gamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gamePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gamePanel.Location = new System.Drawing.Point(0, 0);
+            this.gamePanel.Name = "gamePanel";
+            this.gamePanel.Size = new System.Drawing.Size(1283, 645);
+            this.gamePanel.TabIndex = 11;
+            this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // button_WOC19
+            // textBox82
             // 
-            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
-            this.button_WOC19.Name = "button_WOC19";
-            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC19.TabIndex = 5;
-            this.button_WOC19.Text = "Cancel";
-            this.button_WOC19.TextColor = System.Drawing.Color.Black;
-            this.button_WOC19.UseVisualStyleBackColor = false;
-            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
+            this.textBox82.Font = new System.Drawing.Font("MV Boli", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox82.Location = new System.Drawing.Point(1000, 79);
+            this.textBox82.Multiline = true;
+            this.textBox82.Name = "textBox82";
+            this.textBox82.Size = new System.Drawing.Size(241, 94);
+            this.textBox82.TabIndex = 25;
+            this.textBox82.Text = "The room created by";
             // 
-            // button_WOC21
+            // textBox81
             // 
-            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
-            this.button_WOC21.Name = "button_WOC21";
-            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
-            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC21.TabIndex = 7;
-            this.button_WOC21.Text = "Leave Room";
-            this.button_WOC21.TextColor = System.Drawing.Color.Black;
-            this.button_WOC21.UseVisualStyleBackColor = false;
-            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
+            this.textBox81.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox81.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox81.Location = new System.Drawing.Point(100, 176);
+            this.textBox81.Multiline = true;
+            this.textBox81.Name = "textBox81";
+            this.textBox81.Size = new System.Drawing.Size(754, 102);
+            this.textBox81.TabIndex = 24;
+            this.textBox81.Text = "question:";
             // 
-            // button_WOC23
+            // button4
             // 
-            this.button_WOC23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC23.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC23.ButtonColor = System.Drawing.Color.Lime;
-            this.button_WOC23.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC23.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC23.Location = new System.Drawing.Point(775, 414);
-            this.button_WOC23.Name = "button_WOC23";
-            this.button_WOC23.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC23.OnHoverButtonColor = System.Drawing.Color.Aqua;
-            this.button_WOC23.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC23.Size = new System.Drawing.Size(373, 166);
-            this.button_WOC23.TabIndex = 18;
-            this.button_WOC23.Text = "Start Game";
-            this.button_WOC23.TextColor = System.Drawing.Color.Black;
-            this.button_WOC23.UseVisualStyleBackColor = false;
-            this.button_WOC23.Click += new System.EventHandler(this.button_WOC23_Click);
+            this.button4.Location = new System.Drawing.Point(564, 437);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(290, 60);
+            this.button4.TabIndex = 23;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button_WOC22
+            // button3
             // 
-            this.button_WOC22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC22.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC22.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC22.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC22.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC22.Location = new System.Drawing.Point(425, 339);
-            this.button_WOC22.Name = "button_WOC22";
-            this.button_WOC22.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC22.OnHoverButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button_WOC22.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC22.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC22.TabIndex = 7;
-            this.button_WOC22.Text = "Close Room";
-            this.button_WOC22.TextColor = System.Drawing.Color.Black;
-            this.button_WOC22.UseVisualStyleBackColor = false;
-            this.button_WOC22.Click += new System.EventHandler(this.button_WOC22_Click);
+            this.button3.Location = new System.Drawing.Point(564, 296);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(290, 58);
+            this.button3.TabIndex = 22;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button_WOC18
+            // button2
             // 
-            this.button_WOC18.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC18.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC18.ButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC18.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC18.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC18.Location = new System.Drawing.Point(568, 480);
-            this.button_WOC18.Name = "button_WOC18";
-            this.button_WOC18.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC18.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC18.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC18.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC18.TabIndex = 3;
-            this.button_WOC18.Text = "Create Room";
-            this.button_WOC18.TextColor = System.Drawing.Color.Black;
-            this.button_WOC18.UseVisualStyleBackColor = false;
-            this.button_WOC18.Click += new System.EventHandler(this.button_WOC18_Click);
+            this.button2.Location = new System.Drawing.Point(106, 437);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(290, 60);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button_WOC20
+            // button1
             // 
-            this.button_WOC20.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC20.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC20.ButtonColor = System.Drawing.Color.Red;
-            this.button_WOC20.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC20.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC20.Location = new System.Drawing.Point(41, 480);
-            this.button_WOC20.Name = "button_WOC20";
-            this.button_WOC20.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC20.OnHoverButtonColor = System.Drawing.Color.HotPink;
-            this.button_WOC20.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC20.Size = new System.Drawing.Size(277, 105);
-            this.button_WOC20.TabIndex = 5;
-            this.button_WOC20.Text = "Cancel";
-            this.button_WOC20.TextColor = System.Drawing.Color.Black;
-            this.button_WOC20.UseVisualStyleBackColor = false;
-            this.button_WOC20.Click += new System.EventHandler(this.button_WOC20_Click);
+            this.button1.Location = new System.Drawing.Point(100, 296);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(296, 62);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // textBox80
+            // 
+            this.textBox80.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox80.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox80.Location = new System.Drawing.Point(100, 107);
+            this.textBox80.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox80.Multiline = true;
+            this.textBox80.Name = "textBox80";
+            this.textBox80.Size = new System.Drawing.Size(258, 42);
+            this.textBox80.TabIndex = 19;
+            this.textBox80.Text = "questions left:";
+            // 
+            // listBox3
+            // 
+            this.listBox3.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 28;
+            this.listBox3.Location = new System.Drawing.Point(989, 224);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(282, 284);
+            this.listBox3.TabIndex = 18;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(646, 97);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(143, 76);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "000";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // textBox79
+            // 
+            this.textBox79.BackColor = System.Drawing.Color.Yellow;
+            this.textBox79.Font = new System.Drawing.Font("Microsoft Sans Serif", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox79.Location = new System.Drawing.Point(568, 24);
+            this.textBox79.Multiline = true;
+            this.textBox79.Name = "textBox79";
+            this.textBox79.Size = new System.Drawing.Size(296, 60);
+            this.textBox79.TabIndex = 1;
+            this.textBox79.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
             // button_WOC15
             // 
@@ -1866,16 +1881,167 @@
             this.button_WOC12.UseVisualStyleBackColor = false;
             this.button_WOC12.Click += new System.EventHandler(this.button_WOC12_Click);
             // 
+            // button_WOC17
+            // 
+            this.button_WOC17.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC17.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC17.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC17.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC17.Location = new System.Drawing.Point(568, 480);
+            this.button_WOC17.Name = "button_WOC17";
+            this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC17.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC17.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC17.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC17.TabIndex = 3;
+            this.button_WOC17.Text = "Enter Room";
+            this.button_WOC17.TextColor = System.Drawing.Color.Black;
+            this.button_WOC17.UseVisualStyleBackColor = false;
+            this.button_WOC17.Click += new System.EventHandler(this.button_WOC17_Click);
+            // 
+            // button_WOC19
+            // 
+            this.button_WOC19.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC19.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC19.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC19.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC19.Location = new System.Drawing.Point(41, 480);
+            this.button_WOC19.Name = "button_WOC19";
+            this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC19.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC19.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC19.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC19.TabIndex = 5;
+            this.button_WOC19.Text = "Cancel";
+            this.button_WOC19.TextColor = System.Drawing.Color.Black;
+            this.button_WOC19.UseVisualStyleBackColor = false;
+            this.button_WOC19.Click += new System.EventHandler(this.button_WOC19_Click);
+            // 
+            // button_WOC21
+            // 
+            this.button_WOC21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button_WOC21.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC21.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC21.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC21.Location = new System.Drawing.Point(774, 373);
+            this.button_WOC21.Name = "button_WOC21";
+            this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC21.OnHoverButtonColor = System.Drawing.Color.GreenYellow;
+            this.button_WOC21.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC21.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC21.TabIndex = 7;
+            this.button_WOC21.Text = "Leave Room";
+            this.button_WOC21.TextColor = System.Drawing.Color.Black;
+            this.button_WOC21.UseVisualStyleBackColor = false;
+            this.button_WOC21.Click += new System.EventHandler(this.button_WOC21_Click);
+            // 
+            // button_WOC23
+            // 
+            this.button_WOC23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button_WOC23.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC23.ButtonColor = System.Drawing.Color.Lime;
+            this.button_WOC23.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC23.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC23.Location = new System.Drawing.Point(775, 414);
+            this.button_WOC23.Name = "button_WOC23";
+            this.button_WOC23.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC23.OnHoverButtonColor = System.Drawing.Color.Aqua;
+            this.button_WOC23.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC23.Size = new System.Drawing.Size(373, 166);
+            this.button_WOC23.TabIndex = 18;
+            this.button_WOC23.Text = "Start Game";
+            this.button_WOC23.TextColor = System.Drawing.Color.Black;
+            this.button_WOC23.UseVisualStyleBackColor = false;
+            this.button_WOC23.Click += new System.EventHandler(this.button_WOC23_Click);
+            // 
+            // button_WOC22
+            // 
+            this.button_WOC22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button_WOC22.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC22.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC22.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC22.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC22.Location = new System.Drawing.Point(425, 339);
+            this.button_WOC22.Name = "button_WOC22";
+            this.button_WOC22.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC22.OnHoverButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_WOC22.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC22.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC22.TabIndex = 7;
+            this.button_WOC22.Text = "Close Room";
+            this.button_WOC22.TextColor = System.Drawing.Color.Black;
+            this.button_WOC22.UseVisualStyleBackColor = false;
+            this.button_WOC22.Click += new System.EventHandler(this.button_WOC22_Click);
+            // 
+            // button_WOC18
+            // 
+            this.button_WOC18.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC18.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC18.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC18.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC18.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC18.Location = new System.Drawing.Point(568, 480);
+            this.button_WOC18.Name = "button_WOC18";
+            this.button_WOC18.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC18.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC18.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC18.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC18.TabIndex = 3;
+            this.button_WOC18.Text = "Create Room";
+            this.button_WOC18.TextColor = System.Drawing.Color.Black;
+            this.button_WOC18.UseVisualStyleBackColor = false;
+            this.button_WOC18.Click += new System.EventHandler(this.button_WOC18_Click);
+            // 
+            // button_WOC20
+            // 
+            this.button_WOC20.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC20.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC20.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC20.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC20.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC20.Location = new System.Drawing.Point(41, 480);
+            this.button_WOC20.Name = "button_WOC20";
+            this.button_WOC20.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC20.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC20.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC20.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC20.TabIndex = 5;
+            this.button_WOC20.Text = "Cancel";
+            this.button_WOC20.TextColor = System.Drawing.Color.Black;
+            this.button_WOC20.UseVisualStyleBackColor = false;
+            this.button_WOC20.Click += new System.EventHandler(this.button_WOC20_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.listBox4);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1283, 645);
+            this.panel1.TabIndex = 26;
+            // 
+            // listBox4
+            // 
+            this.listBox4.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.ItemHeight = 28;
+            this.listBox4.Location = new System.Drawing.Point(484, 85);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(338, 340);
+            this.listBox4.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
-            this.Controls.Add(this.enterRoomPanel);
-            this.Controls.Add(this.roomMemberPanel);
-            this.Controls.Add(this.roomAdminPanel);
-            this.Controls.Add(this.createRoomPanel);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.gamePanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.loginPanel);
@@ -1883,8 +2049,13 @@
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.openPanel);
             this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.enterRoomPanel);
+            this.Controls.Add(this.roomMemberPanel);
+            this.Controls.Add(this.roomAdminPanel);
+            this.Controls.Add(this.createRoomPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.signUpPanel.ResumeLayout(false);
             this.signUpPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -1911,6 +2082,9 @@
             this.roomMemberPanel.PerformLayout();
             this.roomAdminPanel.ResumeLayout(false);
             this.roomAdminPanel.PerformLayout();
+            this.gamePanel.ResumeLayout(false);
+            this.gamePanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2037,6 +2211,20 @@
         private System.Windows.Forms.TextBox textBox76;
         private System.Windows.Forms.TextBox textBox78;
         private System.Windows.Forms.TextBox textBox77;
+        private System.Windows.Forms.Panel gamePanel;
+        private System.Windows.Forms.TextBox textBox79;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.TextBox textBox80;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox textBox82;
+        private System.Windows.Forms.TextBox textBox81;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListBox listBox4;
     }
 }
 

@@ -35,12 +35,12 @@ namespace Client
     public class LoginRequest : Request
     {
         [JsonProperty("username")]
-        private string username;
+        private readonly string username;
 
         [JsonProperty("password")]
-        private string password;
+        private readonly string password;
 
-        public LoginRequest(string username, string password):
+        public LoginRequest(string username, string password) :
             base()
         {
             this.username = username;
@@ -60,18 +60,18 @@ namespace Client
     public class SignupRequest : LoginRequest
     {
         [JsonProperty("email")]
-        private string email;
+        private readonly string email;
 
         [JsonProperty("address")]
-        private string address;
+        private readonly string address;
 
         [JsonProperty("phone")]
-        private string phoneNum;
+        private readonly string phoneNum;
 
         [JsonProperty("date")]
-        private string bornDate;
+        private readonly string bornDate;
 
-        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate):
+        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate) :
             base(username, password)
         {
             this.email = email;
@@ -102,9 +102,9 @@ namespace Client
     public class RequestWithRoomId : Request
     {
         [JsonProperty("roomId")]
-        private int roomId;
+        private readonly int roomId;
 
-        public RequestWithRoomId(int roomId):
+        public RequestWithRoomId(int roomId) :
             base()
         {
             this.roomId = roomId;
@@ -113,7 +113,7 @@ namespace Client
 
     public class GetPlayersInRoomRequest : RequestWithRoomId
     {
-        public GetPlayersInRoomRequest(int roomId):
+        public GetPlayersInRoomRequest(int roomId) :
             base(roomId)
         {
 
@@ -133,18 +133,18 @@ namespace Client
     public class CreateRoomRequest : Request
     {
         [JsonProperty("roomName")]
-        private string roomName;
+        private readonly string roomName;
 
         [JsonProperty("maxUsers")]
-        private int maxUsers;
+        private readonly int maxUsers;
 
         [JsonProperty("questionCount")]
-        private int questionCount;
+        private readonly int questionCount;
 
         [JsonProperty("answerTimeout")]
-        private int answerTimeout;
+        private readonly int answerTimeout;
 
-        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):
+        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout) :
             base()
         {
             this.roomName = roomName;
@@ -170,5 +170,13 @@ namespace Client
             return this.answerTimeout;
         }
 
+    }
+    public class SubmitAnswerRequest
+    {
+        private int answerId;
+        public SubmitAnswerRequest(int answerId)
+        {
+            this.answerId = answerId;
+        }
     }
 }
