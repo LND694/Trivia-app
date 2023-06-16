@@ -43,7 +43,7 @@ Game::~Game()
 }
 
 /// <summary>
-/// The function getts a question for the user.
+/// The function gets a question for the user.
 /// </summary>
 /// <param name="user"> The user who wants to get the question.</param>
 /// <returns> The question for the user.</returns>
@@ -65,7 +65,7 @@ Question& Game::getQuestionForUser(const LoggedUser& user) const
 /// <param name="user"> The user who wants to leave the game.</param>
 void Game::removePlayer(const LoggedUser& user)
 {
-	if (this->m_players.find(user) != this->m_players.end())
+	if (this->m_players.find(user) == this->m_players.end())
 	{
 		throw std::exception("This user is not in the game");
 	}
@@ -79,7 +79,7 @@ void Game::removePlayer(const LoggedUser& user)
 /// <returns>The GameData for the user.</returns>
 GameData& Game::getGameDataOfUser(const LoggedUser& user)
 {
-	if (this->m_players.find(user) != this->m_players.end())
+	if (this->m_players.find(user) == this->m_players.end())
 	{
 		throw std::exception("This user is not in the game");
 	}
@@ -110,7 +110,7 @@ bool Game::isGameOver() const
 /// <returns> If he finished or not.</returns>
 bool Game::isUserFinished(const LoggedUser& user) const
 {
-	unsigned int amountQuestionsInGame = static_cast<unsigned int>(this->m_questions.size());
+	unsigned int amountQuestionsInGame = getAmountQuestionsInGame();
 	GameData dataUser = this->m_players.at(user);
 	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame ||
 		dataUser.currentQuestion.getQuestion() == "";
