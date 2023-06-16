@@ -127,7 +127,13 @@
             this.textBox70 = new System.Windows.Forms.TextBox();
             this.textBox71 = new System.Windows.Forms.TextBox();
             this.textBox72 = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.gamePanel = new System.Windows.Forms.Panel();
+            this.textBox82 = new System.Windows.Forms.TextBox();
+            this.textBox81 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.textBox80 = new System.Windows.Forms.TextBox();
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -156,12 +162,8 @@
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC18 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC20 = new ePOSOne.btnProduct.Button_WOC();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox81 = new System.Windows.Forms.TextBox();
-            this.textBox82 = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.listBox4 = new System.Windows.Forms.ListBox();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -177,6 +179,7 @@
             this.enterRoomPanel.SuspendLayout();
             this.roomMemberPanel.SuspendLayout();
             this.roomAdminPanel.SuspendLayout();
+            this.gamePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1443,33 +1446,94 @@
             this.textBox72.TabIndex = 8;
             this.textBox72.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // panel1
+            // gamePanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.textBox82);
-            this.panel1.Controls.Add(this.textBox81);
-            this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.textBox80);
-            this.panel1.Controls.Add(this.listBox3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.textBox79);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1283, 645);
-            this.panel1.TabIndex = 11;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.gamePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gamePanel.Controls.Add(this.textBox82);
+            this.gamePanel.Controls.Add(this.textBox81);
+            this.gamePanel.Controls.Add(this.button4);
+            this.gamePanel.Controls.Add(this.button3);
+            this.gamePanel.Controls.Add(this.button2);
+            this.gamePanel.Controls.Add(this.button1);
+            this.gamePanel.Controls.Add(this.textBox80);
+            this.gamePanel.Controls.Add(this.listBox3);
+            this.gamePanel.Controls.Add(this.label1);
+            this.gamePanel.Controls.Add(this.textBox79);
+            this.gamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gamePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gamePanel.Location = new System.Drawing.Point(0, 0);
+            this.gamePanel.Name = "gamePanel";
+            this.gamePanel.Size = new System.Drawing.Size(1283, 645);
+            this.gamePanel.TabIndex = 11;
+            this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // textBox82
+            // 
+            this.textBox82.Font = new System.Drawing.Font("MV Boli", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox82.Location = new System.Drawing.Point(1000, 79);
+            this.textBox82.Multiline = true;
+            this.textBox82.Name = "textBox82";
+            this.textBox82.Size = new System.Drawing.Size(241, 94);
+            this.textBox82.TabIndex = 25;
+            this.textBox82.Text = "The room created by";
+            // 
+            // textBox81
+            // 
+            this.textBox81.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox81.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox81.Location = new System.Drawing.Point(100, 176);
+            this.textBox81.Multiline = true;
+            this.textBox81.Name = "textBox81";
+            this.textBox81.Size = new System.Drawing.Size(754, 102);
+            this.textBox81.TabIndex = 24;
+            this.textBox81.Text = "question:";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(564, 437);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(290, 60);
+            this.button4.TabIndex = 23;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(564, 296);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(290, 58);
+            this.button3.TabIndex = 22;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(106, 437);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(290, 60);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(100, 296);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(296, 62);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // textBox80
             // 
             this.textBox80.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.textBox80.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox80.Location = new System.Drawing.Point(100, 107);
-            this.textBox80.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox80.Margin = new System.Windows.Forms.Padding(2);
             this.textBox80.Multiline = true;
             this.textBox80.Name = "textBox80";
             this.textBox80.Size = new System.Drawing.Size(258, 42);
@@ -1950,66 +2014,25 @@
             this.button_WOC20.UseVisualStyleBackColor = false;
             this.button_WOC20.Click += new System.EventHandler(this.button_WOC20_Click);
             // 
-            // button1
+            // panel1
             // 
-            this.button1.Location = new System.Drawing.Point(100, 296);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(296, 62);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.listBox4);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1283, 645);
+            this.panel1.TabIndex = 26;
             // 
-            // button2
+            // listBox4
             // 
-            this.button2.Location = new System.Drawing.Point(106, 437);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(290, 60);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(564, 296);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(290, 58);
-            this.button3.TabIndex = 22;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(564, 437);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(290, 60);
-            this.button4.TabIndex = 23;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // textBox81
-            // 
-            this.textBox81.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.textBox81.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox81.Location = new System.Drawing.Point(100, 176);
-            this.textBox81.Multiline = true;
-            this.textBox81.Name = "textBox81";
-            this.textBox81.Size = new System.Drawing.Size(754, 102);
-            this.textBox81.TabIndex = 24;
-            this.textBox81.Text = "question:";
-            // 
-            // textBox82
-            // 
-            this.textBox82.Font = new System.Drawing.Font("MV Boli", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox82.Location = new System.Drawing.Point(1000, 79);
-            this.textBox82.Multiline = true;
-            this.textBox82.Name = "textBox82";
-            this.textBox82.Size = new System.Drawing.Size(241, 94);
-            this.textBox82.TabIndex = 25;
-            this.textBox82.Text = "The room created by";
+            this.listBox4.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.ItemHeight = 28;
+            this.listBox4.Location = new System.Drawing.Point(484, 85);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(338, 340);
+            this.listBox4.TabIndex = 19;
             // 
             // Form1
             // 
@@ -2018,6 +2041,7 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.gamePanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.loginPanel);
@@ -2058,8 +2082,9 @@
             this.roomMemberPanel.PerformLayout();
             this.roomAdminPanel.ResumeLayout(false);
             this.roomAdminPanel.PerformLayout();
+            this.gamePanel.ResumeLayout(false);
+            this.gamePanel.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2186,7 +2211,7 @@
         private System.Windows.Forms.TextBox textBox76;
         private System.Windows.Forms.TextBox textBox78;
         private System.Windows.Forms.TextBox textBox77;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.TextBox textBox79;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
@@ -2198,6 +2223,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox82;
         private System.Windows.Forms.TextBox textBox81;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListBox listBox4;
     }
 }
 

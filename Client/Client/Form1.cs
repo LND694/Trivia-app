@@ -664,6 +664,20 @@ namespace Client
             UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
+            // Assuming you have a ListBox named "myListBox"
+
+            // Iterate through the ListBox items
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                // Retrieve the current item
+                string currentItem = this.listBox3.Items[i].ToString();
+
+                // Append zero to the current item
+                string updatedItem = currentItem + " 0";
+
+                // Update the ListBox with the modified item
+                this.listBox3.Items[i] = updatedItem;
+            }
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -919,7 +933,7 @@ namespace Client
             {
                 MessageBox.Show("Game begun by you!");
             }
-            MoveTab(roomAdminPanel, panel1);
+            MoveTab(roomAdminPanel, gamePanel);
             timer1.Start();
         }
 
@@ -978,21 +992,56 @@ namespace Client
         {
             label1.Text = seconds--.ToString();
             textBox80.Text = "questions left: " + questionsLeft;
+            GetQuestionResponse resp = null;
+            GetGameResultsResponse response = null;
+            Dictionary<int, string> answers = null;
             if (seconds == 0)
             {
-                seconds = this.roomData.GetAnswerTimeOut();
                 this.questionsLeft--;
-                GetQuestionResponse resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                textBox81.Text = resp.GetQuestion();
-                Dictionary<int,string> answers = resp.GetAnswers();
-                button1.Text = answers[0];
-                button2.Text = answers[1];
-                button3.Text = answers[2];
-                button4.Text = answers[3];
+                updateScore(this.textBox20.Text);
+                seconds = this.roomData.GetAnswerTimeOut();
+                //resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                //textBox81.Text = resp.GetQuestion();
+                //answers = resp.GetAnswers();
+                //button1.Text = answers[0];
+                //button2.Text = answers[1];
+                //button3.Text = answers[2];
+                //button4.Text = answers[3];
             }
             if(questionsLeft == 0)
             {
+                Queue<string> results = new Queue<string>();
+                response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                foreach(var i in response.GetPlayerResults())
+                {
+                    results.Enqueue("Name: " + i.GetUsername() + "Correct Answers: "+i.GetCorrectAnswerCount() + "Average time for question: "+ i.GetAverageAnswerTime());
+                }
+                AddTextsToListBox(results, this.listBox4);
+                MoveTab(this.gamePanel, this.panel1);//move to the results tab
+            }
+        }
+        private void updateScore(string playerName)
+        {
+            // Find the player's index
+            int playerIndex = -1;
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(playerName))
+                {
+                    playerIndex = i;
+                    break;
+                }
+            }
+            // Update the score
+            if (playerIndex != -1)
+            {
+                string currentEntry = this.listBox3.Items[playerIndex].ToString();
+                int currentScore = int.Parse(currentEntry.Substring(playerName.Length + 1));
+                int updatedScore = currentScore + 1;  // Append score by 1
 
+                // Update the ListBox with the new score
+                this.listBox3.Items[playerIndex] = playerName + " " + updatedScore;
             }
         }
         private void SendAnswer(int id)
@@ -1001,6 +1050,10 @@ namespace Client
             try
             {
                 SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
+                if(response.GetCorrectAnswerId() == id)
+                {
+                    updateScore(this.textBox20.Text);//update the player score
+                }
             }
             catch (Exception ex)
             {
