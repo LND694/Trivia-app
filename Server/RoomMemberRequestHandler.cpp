@@ -8,7 +8,7 @@
 /// <param name="m_user"> the user itself</param>
 /// <param name="m_roomManager"> room manager</param>
 /// <param name="m_handlerFactory"> handler factory </param>
-RoomMemberRequestHandler::RoomMemberRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(const Room& m_room, const LoggedUser& m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory)
     : m_room(m_room), m_user(m_user), m_roomManager(m_roomManager), m_handlerFactory(m_handlerFactory)
 {
 }
@@ -97,7 +97,7 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
 
             if (stateResp.hasGameBegun) //the game has already begun
             {
-                reqRes->newHandler = this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id);
+                reqRes->newHandler = (IRequestHandler*)(this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id));
             }
             else
             {
@@ -106,7 +106,7 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
         }
         catch (const std::exception& excp)
         {
-            createErrorResponse("Room not exists", reqRes);
+            createErrorResponse(excp.what(), reqRes);
         }
     }
     else

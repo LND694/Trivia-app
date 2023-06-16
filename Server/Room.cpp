@@ -41,11 +41,6 @@ void Room::removeUser(LoggedUser& user)
 	std::erase_if(this->m_users, [&user](LoggedUser player) {return user.getUsername() == player.getUsername(); });//erase_if is better (c++20 feature)
 }
 
-
-/// <summary>
-/// get a vector of the names of the users in the room
-/// </summary>
-/// <returns> the names of the users in the room</returns>
 vector<string>& Room::getAllUsers() const
 {
 	vector<string>* res = new vector<string>();

@@ -17,3 +17,14 @@ string LoggedUser::getUsername() const
 {
     return this->m_username;
 }
+
+/// <summary>
+/// The operator '<' checks if this logged user
+/// is smaller than the other logged user.
+/// </summary>
+/// <param name="other"> The other logged user.</param>
+/// <returns> If his logged user is smaller or not.</returns>
+bool LoggedUser::operator<(const LoggedUser& other) const
+{
+    return this->m_username < other.m_username;
+}

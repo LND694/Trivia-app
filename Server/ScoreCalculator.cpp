@@ -6,9 +6,9 @@
 /// <param name="amountCorrectAnswers"> The amount of his correct answers.</param>
 /// <param name="averageTime"> His average time</param>
 /// <returns>an integer value- his score</returns>
-int ScoreClaculator::calculateScore(const int amountCorrectAnswers, const float averageTime)
+int ScoreClaculator::calculateScore(const unsigned int amountCorrectAnswers, const float averageTime)
 {
-    return roundf(amountCorrectAnswers * averageTime);
+    return static_cast<int>(round(amountCorrectAnswers * averageTime));
 }
 
 /// <summary>

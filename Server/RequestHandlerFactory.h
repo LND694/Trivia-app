@@ -9,6 +9,7 @@ class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
+class GameRequestHandler;
 
 
 class RequestHandlerFactory : Singleton
@@ -20,10 +21,10 @@ public:
 	void operator=(const RequestHandlerFactory& other) = delete;
 	//Functions to create handlers
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler(const LoggedUser user);
-	RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser user, const Room room);
-	RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser user, const Room room);
-	GameRequestHandler* createGameRequestHandler(const LoggedUser user, const RoomId roomId);
+	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser& user, const Room& room);
+	RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser& user, const Room& room);
+	GameRequestHandler* createGameRequestHandler(LoggedUser& user, const RoomId roomId);
 
 	//Functions to get managers
 	LoginManager* getLoginManager();

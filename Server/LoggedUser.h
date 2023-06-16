@@ -13,6 +13,8 @@ public:
 	//Getter
 	string getUsername() const;
 
+	bool operator<(const LoggedUser& other) const;
+
 private:
 	//Field
 	string m_username;

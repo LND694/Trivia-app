@@ -10,12 +10,12 @@
 /// <param name="difficulty"> The difficulty level of the question</param>
 Question::Question(const string question, const vector<string>& answers,
 	const string rightAnswer, const string category, const string difficulty):
-	m_question(question), m_answers(vector<string>()), m_rightAnswer(rightAnswer), 
+	m_question(question), m_answers(answers), m_rightAnswer(rightAnswer), 
 	m_category(category), m_difficulty(difficulty)
 {
-	if (answers.size() != AMOUNT_ANSWERS - 1)
+	if (answers.size() != AMOUNT_ANSWERS)
 	{
-		throw std::exception("The amount of incorrect answers should be " + AMOUNT_ANSWERS - 1);
+		throw std::exception("The amount of incorrect answers should be " + AMOUNT_ANSWERS);
 	}
 	//Copying the answers to the object
 	for (auto i = answers.begin(); i != answers.end(); i++)
@@ -98,6 +98,7 @@ unsigned int Question::getCorrectAnswerId() const
 {
 	unsigned int id = 0;
 
+	//Going over the answers
 	for (auto i = this->m_answers.begin(); i != this->m_answers.end(); i++)
 	{
 		if (*i == this->m_rightAnswer)
@@ -109,6 +110,28 @@ unsigned int Question::getCorrectAnswerId() const
 	return id;
 }
 
+void Question::setAnswers(const vector<string>& newAnswers)
+{
+	this->m_answers.~vector();
+	this->m_answers = vector<string>();
+
+	//Copying the answers
+	for (int i = 0; i < newAnswers.size(); i++)
+	{
+		this->m_answers.push_back(newAnswers[i]);
+	}
+}
+
+void Question::setQuestion(const string newQuestion)
+{
+	this->m_question = newQuestion;
+}
+
+/// <summary>
+/// The operator '==' checks if Questions are equal or not.
+/// </summary>
+/// <param name="other"> The other Question to compare to.</param>
+/// <returns> If the Questions are equal or not.</returns>
 bool Question::operator==(const Question& other) const
 {
 	return this->m_question == other.m_question;

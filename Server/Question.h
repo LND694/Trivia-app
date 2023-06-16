@@ -39,6 +39,10 @@ public:
 	string getDifficulty() const;
 	unsigned int getCorrectAnswerId() const;
 
+	//Setters
+	void setAnswers(const vector<string>& newAnswers);
+	void setQuestion(const string newQuestion);
+
 	//Operator
 	bool operator==(const Question& other) const;
 

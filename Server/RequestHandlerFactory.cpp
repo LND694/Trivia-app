@@ -1,5 +1,6 @@
 #include "RequestHandlerFactory.h"
 #include "RoomAdminRequestHandler.h"
+#include "GameRequestHandler.h"
 
 RequestHandlerFactory* RequestHandlerFactory::m_instance = nullptr;
 Lock RequestHandlerFactory::m_lock;
@@ -45,7 +46,7 @@ RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db, LoginMa
 /// <returns>a LoginRequestHandler value- the handler of the login requests.</returns>
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this);
+    return new LoginRequestHandler(this);
 }
 
 /// <summary>
@@ -53,7 +54,7 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 /// </summary>
 /// <param name="user"> The logged user to handle</param>
 /// <returns>The handler for the menu stage.</returns>
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser user)
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
 	return new MenuRequestHandler(user, *this->m_roomManager, *this->m_statisticsManager, this);
 }
@@ -64,7 +65,7 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 /// <param name="user"> The member which wants to enter to the room</param>
 /// <param name="room"> The room which the member enters to.</param>
 /// <returns> The handler for the member.</returns>
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser user, const Room room)
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, const Room& room)
 {
 	return new RoomMemberRequestHandler(room, user, *this->m_roomManager, this);
 }
@@ -75,7 +76,7 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 /// <param name="user"> The admin which wants to create the room</param>
 /// <param name="room"> The room which the admin created.</param>
 /// <returns> The handler for the admin.</returns>
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser user, const Room room)
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, const Room& room)
 {
 	return new RoomAdminRequestHandler(room, user, *this->m_roomManager, this);
 }
@@ -86,7 +87,7 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(co
 /// <param name="user"> The user in the game</param>
 /// <param name="roomId"> The id of the room.</param>
 /// <returns></returns>
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(const LoggedUser user, const RoomId roomId)
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser& user, const RoomId roomId)
 {
 	Game& game = this->m_gameManager->createGame(this->m_roomManager->getRoom(roomId));
 

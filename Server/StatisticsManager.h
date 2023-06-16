@@ -9,9 +9,9 @@ public:
 	StatisticsManager(IDatabase* db);
 	~StatisticsManager();
 
-	//Fucntions
-	vector<string>& getHighScore();
-	vector<string>& getUserStatistics(const string username);
+	//Functions
+	vector<string>& getHighScore() const;
+	vector<string>& getUserStatistics(const string username) const;
 private:
 	//Field
 	IDatabase* m_database;
