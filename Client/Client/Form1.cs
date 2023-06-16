@@ -1080,6 +1080,29 @@ namespace Client
         {
             SendAnswer(4);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            LeaveGameResponse resp = null;
+            try
+            {
+                resp = SendRequestToServer<NullableConverter, LeaveGameResponse>(null, REQUEST_CODES.LEAVE_GAME_REQS_CODE);
+                if(resp.GetStatus() != RESPONSE_CODES.ERROR_RESP_CODE)
+                {
+                    MoveTab(this.gamePanel, this.menuPanel);
+                }
+                else
+                {
+                    throw new Exception("Cant leave the game!");
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                ShowErrorMessage(ex.Message, "ERROR");
+            }
+
+        }
     }
 }
 
