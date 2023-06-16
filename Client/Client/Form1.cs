@@ -1012,7 +1012,7 @@ namespace Client
             {
                 Queue<string> results = new Queue<string>();
                 response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
-                foreach(var i in response.GetPlayerResults())
+                foreach (var i in response.GetPlayerResults())
                 {
                     results.Enqueue("Name: " + i.GetUsername() + "Correct Answers: "+i.GetCorrectAnswerCount() + "Average time for question: "+ i.GetAverageAnswerTime());
                 }
