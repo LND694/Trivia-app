@@ -27,6 +27,7 @@ namespace Client
         private readonly Mutex highScoresLock;
         private int seconds;
         private int questionsLeft;
+        private bool wasCliked = false;
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -990,16 +991,13 @@ namespace Client
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-            label1.Text = seconds--.ToString();
             textBox80.Text = "questions left: " + questionsLeft;
             GetQuestionResponse resp = null;
             GetGameResultsResponse response = null;
             Dictionary<int, string> answers = null;
-            if (seconds == 0)
+            if(seconds == this.roomData.GetAnswerTimeOut())
             {
-                this.questionsLeft--;
-                updateScore(this.textBox20.Text);
-                seconds = this.roomData.GetAnswerTimeOut();
+
                 resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
                 textBox81.Text = resp.GetQuestion();
                 answers = resp.GetAnswers();
@@ -1007,6 +1005,13 @@ namespace Client
                 button2.Text = answers[1];
                 button3.Text = answers[2];
                 button4.Text = answers[3];
+            }
+            label1.Text = seconds--.ToString();
+            if (seconds == 0)
+            {
+                this.questionsLeft--;
+                seconds = this.roomData.GetAnswerTimeOut();
+                wasCliked = false;
             }
             if(questionsLeft == 0)
             {
@@ -1063,22 +1068,38 @@ namespace Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SendAnswer(3);
+            if(!wasCliked)
+            {
+                wasCliked = true;
+                SendAnswer(3);
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            SendAnswer(1);
+            if (!wasCliked)
+            {
+                wasCliked = true;
+                SendAnswer(1);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SendAnswer(2);
+            if (!wasCliked)
+            {
+                wasCliked = true;
+                SendAnswer(2);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            SendAnswer(4);
+            if (!wasCliked)
+            {
+                wasCliked = true;
+                SendAnswer(4);
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
