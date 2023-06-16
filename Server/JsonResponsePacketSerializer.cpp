@@ -305,7 +305,7 @@ string JsonResponsePacketSerializer::getPlayerResultsString(const PlayerResults&
 /// <returns> The field as a string.</returns>
 string JsonResponsePacketSerializer::getMapField(unsigned int key, string value)
 {
-    return to_string(key) + ":" + value;
+    return to_string(key) + ":" + echoStringJsonFormat(value);
 }
 
 /// <summary>

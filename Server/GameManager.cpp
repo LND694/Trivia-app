@@ -91,6 +91,5 @@ vector<Question>& GameManager::getQuestionsFromDB(const int amountQuestions)
     {
         theQuestions->push_back(*i);
     }
-    questions.~list();
     return *theQuestions;
 }

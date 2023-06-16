@@ -112,8 +112,7 @@ bool Game::isUserFinished(const LoggedUser& user) const
 {
 	unsigned int amountQuestionsInGame = getAmountQuestionsInGame();
 	GameData dataUser = this->m_players.at(user);
-	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame ||
-		dataUser.currentQuestion.getQuestion() == "";
+	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame;
 }
 
 GameId Game::getGameId() const

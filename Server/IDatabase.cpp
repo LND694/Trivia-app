@@ -13,7 +13,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     string correctAnswer;
     string difficulty;
     string response;
-    vector<string> incorrectAnswers;
+    vector<string> answers;
     curlpp::Easy request;
  
     string apiUrl = OPENTDB_URL + std::to_string(amountOfQuestions) + "&type=multiple";
@@ -39,10 +39,12 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
             correctAnswer = result["correct_answer"].get<std::string>();
             difficulty = result["difficulty"].get<std::string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
-                incorrectAnswers.push_back(incorrectAnswer.get<std::string>());
+                answers.push_back(incorrectAnswer.get<std::string>());
             }
-            questions->push_back(Question(question, incorrectAnswers, correctAnswer, category, difficulty));
-            incorrectAnswers.clear();//reset the incorrectAnswers
+            answers.push_back(correctAnswer);
+
+            questions->push_back(Question(question, answers, correctAnswer, category, difficulty));
+            answers.clear();//reset the incorrectAnswers
         }
     }
     else

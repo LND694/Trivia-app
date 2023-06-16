@@ -1000,13 +1000,13 @@ namespace Client
                 this.questionsLeft--;
                 updateScore(this.textBox20.Text);
                 seconds = this.roomData.GetAnswerTimeOut();
-                //resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                //textBox81.Text = resp.GetQuestion();
-                //answers = resp.GetAnswers();
-                //button1.Text = answers[0];
-                //button2.Text = answers[1];
-                //button3.Text = answers[2];
-                //button4.Text = answers[3];
+                resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                textBox81.Text = resp.GetQuestion();
+                answers = resp.GetAnswers();
+                button1.Text = answers[0];
+                button2.Text = answers[1];
+                button3.Text = answers[2];
+                button4.Text = answers[3];
             }
             if(questionsLeft == 0)
             {
