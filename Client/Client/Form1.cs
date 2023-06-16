@@ -1083,6 +1083,7 @@ namespace Client
 
         private void button5_Click(object sender, EventArgs e)
         {
+            string playerName = this.textBox20.Text;
             LeaveGameResponse resp = null;
             try
             {
@@ -1095,7 +1096,17 @@ namespace Client
                 {
                     throw new Exception("Cant leave the game!");
                 }
-                
+                //update the player list
+                for (int i = 0; i < this.listBox3.Items.Count; i++)
+                {
+                    string playerEntry = this.listBox3.Items[i].ToString();
+                    if (playerEntry.StartsWith(playerName))
+                    {
+                        playerEntry = "";
+                        break;
+                    }
+                }
+
             }
             catch(Exception ex)
             {
