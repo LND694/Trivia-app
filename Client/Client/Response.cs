@@ -66,7 +66,7 @@ namespace Client
     public class ResponseWithStatistics : ResponseWithStatus
     {
         [JsonProperty("statistics")]
-        private Queue<string> statistics;
+        private readonly Queue<string> statistics;
 
         public ResponseWithStatistics(int status, Queue<string> statistics):
             base(status)
@@ -81,7 +81,7 @@ namespace Client
 
     public class ResponseWithPlayers : Response
     {
-        private Queue<string> players;
+        private readonly Queue<string> players;
 
         public ResponseWithPlayers(Queue<string> players):
             base()
@@ -126,7 +126,7 @@ namespace Client
     public class GetRoomsResponse : ResponseWithStatus
     {
         [JsonProperty("Rooms")]
-        private Queue<RoomData> roomDatas;
+        private readonly Queue<RoomData> roomDatas;
 
         public GetRoomsResponse(int status, Queue<RoomData> rooms):
             base(status)
@@ -212,17 +212,17 @@ namespace Client
     public class GetRoomStateResponse : ResponseWithStatus
     {
         [JsonProperty("hasGameBegun")]
-        private bool hasGameBegun;
+        private readonly bool hasGameBegun;
 
 
         [JsonProperty("players")]
-        private Queue<string> players;
+        private readonly Queue<string> players;
 
         [JsonProperty("questionCount")]
-        private int questionCount;
+        private readonly int questionCount;
 
         [JsonProperty("answerTimeOut")]
-        private int answerTimeOut;
+        private readonly int answerTimeOut;
 
         public GetRoomStateResponse(int status, bool hasGameBegun, Queue<string> players, int answerCount, int answerTimeOut) : base(status)
         {
@@ -253,7 +253,7 @@ namespace Client
     public class GetGameResultsResponse : ResponseWithStatus
     {
         [JsonProperty("results")]
-        private Queue<PlayerResults> results;
+        private readonly Queue<PlayerResults> results;
 
         public GetGameResultsResponse(int status, Queue<PlayerResults> results):
             base(status)
@@ -279,7 +279,7 @@ namespace Client
     public class SubmitAnswerResponse : ResponseWithStatus
     {
         [JsonProperty("correctAnswerId")]
-        private int correctAnswerId;
+        private readonly int correctAnswerId;
 
         public SubmitAnswerResponse(int status, int correctAnswerId) :
             base(status)
@@ -296,10 +296,10 @@ namespace Client
     public class GetQuestionResponse : ResponseWithStatus
     {
         [JsonProperty("question")]
-        private string question;
+        private readonly string question;
 
         [JsonProperty("answers")]
-        private Dictionary<int, string> answers;
+        private readonly Dictionary<int, string> answers;
 
         public GetQuestionResponse(int status, string question, Dictionary<int, string> answers):
             base(status)
@@ -322,7 +322,7 @@ namespace Client
     public class ErrorResopnse : Response
     {
         [JsonProperty("message")]
-        private string message;
+        private readonly string message;
 
 
         public ErrorResopnse(string message):

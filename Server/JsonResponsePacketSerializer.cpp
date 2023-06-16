@@ -145,7 +145,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse&
 
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse& getRoomStateResp)
 {
-    string playersData = "";
+    string playersData = "[";
     string condition = getRoomStateResp.hasGameBegun ? "true" : "false";
     string responseData = getField<unsigned int>("status", to_string(getRoomStateResp.status));
     responseData += SEPERATOR + getField<bool>("hasGameBegun", condition);
@@ -153,14 +153,14 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
     //Adding the names of the players in the room
     for (const auto& i : getRoomStateResp.players)
     {
-        playersData += echoStringJsonFormat(i) + SEPERATOR;
+        playersData += echoStringJsonFormat(i)+ SEPERATOR;
     }
     if (getRoomStateResp.players.size() > 0)
     {
         playersData.pop_back();
     }
-
-    responseData += getField<vector<string>>("players", playersData);
+    playersData += ']';
+    responseData += SEPERATOR + getField<vector<string>>("players", playersData);
     responseData += SEPERATOR + getField<unsigned int>("questionCount", to_string(getRoomStateResp.questionCount));
     responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
     return *makeBuffer(GET_ROOM_STATE_RESP_CODE, echoJsonFormat(responseData));
