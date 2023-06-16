@@ -1080,6 +1080,40 @@ namespace Client
         {
             SendAnswer(4);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string playerName = this.textBox20.Text;
+            LeaveGameResponse resp = null;
+            try
+            {
+                resp = SendRequestToServer<NullableConverter, LeaveGameResponse>(null, REQUEST_CODES.LEAVE_GAME_REQS_CODE);
+                if(resp.GetStatus() != RESPONSE_CODES.ERROR_RESP_CODE)
+                {
+                    MoveTab(this.gamePanel, this.menuPanel);
+                }
+                else
+                {
+                    throw new Exception("Cant leave the game!");
+                }
+                //update the player list
+                for (int i = 0; i < this.listBox3.Items.Count; i++)
+                {
+                    string playerEntry = this.listBox3.Items[i].ToString();
+                    if (playerEntry.StartsWith(playerName))
+                    {
+                        playerEntry = "";
+                        break;
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                ShowErrorMessage(ex.Message, "ERROR");
+            }
+
+        }
     }
 }
 
