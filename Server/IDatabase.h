@@ -58,13 +58,13 @@ public:
 	virtual vector<string>& getHighScores() = 0;
 
 	//Game Functions
-	virtual int createGame(const Room& room) = 0;
-	virtual int deleteGame(const GameId idGame) = 0;
-	virtual int submitGameStatistics(const GameData& gameData, const LoggedUser userData) = 0;
+	virtual int submitGameStatistics(const GameData& gameData, const LoggedUser& userData) = 0;
 
 protected:
-	vector<Question>& fetchQuestions(const int numOfQuestions);
+	//Help functions to the inheritors of the class
+	static vector<Question>& fetchQuestions(const int numOfQuestions);
 	static void updateStatistics(StatisticsUser& oldStats, const GameData& newStats);
+	static vector<string>& randomizeOrderAnswers(const vector<string>& answers);
 private:
-	string eraseSubString(string str, const string substr);
+	static string eraseSubString(string str, const string substr);
 };
