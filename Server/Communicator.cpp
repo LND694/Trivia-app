@@ -85,7 +85,7 @@ void Communicator::bindAndListen()
 /// <param name="socket">The Socket of the client to handle.</param>
 void Communicator::handleNewClient(SOCKET socket)
 {
-	int len = ERROR_LEN;//the length of the recieved message
+	int len = 0;
 	char buffer[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
@@ -93,18 +93,21 @@ void Communicator::handleNewClient(SOCKET socket)
 	SignupRequest signUpReq;
 	string code;
 	Buffer* data;
+	time_t sendingTime{};
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
-
 		while (this->m_clients.at(socket) != nullptr)
 		{
-
+			//Getting the response of the client and checking the respose time
+			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			if (len == 0)
+			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
 			}
+
+			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
 			Buffer charVector(buffer, buffer + MAX_SIZE);
 			charVector[len] = '\0';//add null terminator
@@ -118,7 +121,6 @@ void Communicator::handleNewClient(SOCKET socket)
 
 			//turn the buffer into request
 			info.buffer = *data;
-			info.receivalTime = time(nullptr);//get the current time
 			info.id = static_cast<RequestId>(atoi(code.c_str()));
 
 			//get the response
@@ -132,7 +134,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			delete data;
 			code = "";
 			this->m_clients.at(socket) = res.newHandler;
-			len = ERROR_LEN;
+			len = 0;
 
 			//Reseting the buffer
 			for (int i = 0; i < MAX_SIZE; i++)
@@ -141,7 +143,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			}
 		}
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		cout << e.what() << endl;
 	}
