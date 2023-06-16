@@ -62,6 +62,9 @@ public:
 	int getNumOfPlayerGames(const string player) override;
 	int getPlayerScore(const string player) override;
 	vector<string>& getHighScores() override;
+	
+	//Game Functions
+	int submitGameStatistics(const GameData& gameData, const LoggedUser& userData) override;
 
 protected:
 	//C'tor
@@ -83,6 +86,7 @@ private:
 	static int callbackFloat(void* data, int argc, char** argv, char** azColName);
 	static int callbackInt(void* data, int argc, char** argv, char** azColName);
 	static int callbackString(void* data, int argc, char** argv, char** azColName);
+	static int callBackStatistics(void* data, int argc, char** argv, char** azColName);
 	template <class T>
 	list<T>* runSqlCommand(const string command);
 	template <class T>

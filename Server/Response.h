@@ -6,6 +6,7 @@
 using std::map;
 
 constexpr int OK_STATUS_CODE = 1;
+constexpr int ERROR_STATUS_CODE = 0;
 const string ERROR_MSG = "ERROR";
 
 //Base class
@@ -102,10 +103,10 @@ typedef struct LeaveRoomResponse : ResponseWithStatus
 
 typedef struct GetRoomStateResponse : ResponseWithStatus
 {
-	bool hasGameBegun;
-	vector<string> players;
-	unsigned int questionCount;
-	unsigned int answerTimeOut;
+	bool hasGameBegun{};
+	vector<string> players{};
+	unsigned int questionCount{};
+	unsigned int answerTimeOut{};
 }GetRoomStateResponse;
 
 typedef struct LeaveGameResponse : ResponseWithStatus
@@ -115,8 +116,8 @@ typedef struct LeaveGameResponse : ResponseWithStatus
 
 typedef struct GetQuestionResponse : ResponseWithStatus
 {
-	string question;
-	map<unsigned int, string> answers;
+	string question{};
+	map<unsigned int, string> answers{};
 }GetQuestionResponse;
 
 typedef struct SubmitAnswerResponse : ResponseWithStatus

@@ -9,9 +9,9 @@ class RoomMemberRequestHandler;
 class RoomAdminRequestHandler : public RoomMemberRequestHandler
 {
 public:
-	//c`tor
+	//C`tors
 	RoomAdminRequestHandler() = default;
-	RoomAdminRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory);
+	RoomAdminRequestHandler(const Room& m_room, const LoggedUser& m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory);
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo);
 	RequestResult& handleRequest(const RequestInfo& requestInfo);

@@ -11,7 +11,7 @@ Server::Server(IDatabase* db):
 	m_database(db)
 {
 	//this->m_handlerFactory = RequestHandlerFactory::getInstance()
-	this->m_handlerFactory = RequestHandlerFactory::getInstance(db, LoginManager::getInstance(db), new RoomManager(), new StatisticsManager(db));
+	this->m_handlerFactory = RequestHandlerFactory::getInstance(db, LoginManager::getInstance(db), new RoomManager(), new StatisticsManager(db), new GameManager(db));
 	this->m_communicator = Communicator::getInstance(m_handlerFactory);
 }
 

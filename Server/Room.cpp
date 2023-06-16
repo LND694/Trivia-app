@@ -41,22 +41,25 @@ void Room::removeUser(LoggedUser& user)
 	std::erase_if(this->m_users, [&user](LoggedUser player) {return user.getUsername() == player.getUsername(); });//erase_if is better (c++20 feature)
 }
 
-
-/// <summary>
-/// get a vector of the names of the users in the room
-/// </summary>
-/// <returns> the names of the users in the room</returns>
-vector<string>& Room::getAllUsers()
+vector<string>& Room::getAllUsers() const
 {
 	vector<string>* res = new vector<string>();
-	for (auto& i : this->m_users)
+	for (auto i : this->m_users)
 	{
 		res->push_back(i.getUsername());
 	}
 	return *res;
 }
 
-RoomData& Room::getRoomData()
+RoomData& Room::getRoomData() const
 {
-	return this->m_metadata;
+	RoomData* roomData = new RoomData();
+	//Copying the metadata
+	roomData->id = this->m_metadata.id;
+	roomData->isActive = this->m_metadata.isActive;
+	roomData->name = this->m_metadata.name;
+	roomData->maxPlayers = this->m_metadata.maxPlayers;
+	roomData->numOfQuestionsInGame = this->m_metadata.numOfQuestionsInGame;
+	roomData->timePerQuestion = this->m_metadata.timePerQuestion;
+	return *roomData;
 }

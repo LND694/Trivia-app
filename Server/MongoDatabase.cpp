@@ -17,6 +17,7 @@ MongoDatabase::MongoDatabase()
 /// </summary>
 MongoDatabase::~MongoDatabase()
 {
+
 }
 
 /// <summary>
@@ -80,6 +81,13 @@ int MongoDatabase::doesUserExist(const string username)
 	return USER_NOT_EXIST;
 }
 
+/// <summary>
+/// The function checks if a certain user has a 
+/// specific password.
+/// </summary>
+/// <param name="username"> The username of the User.</param>
+/// <param name="password"> The password to check.</param>
+/// <returns>an integer variable- if the password matches, does not matches or if there was an error.</returns>
 int MongoDatabase::doesPasswordMatch(const string username, const string password)
 {
 	auto doc = make_document(kvp(USERNAME_FIELD, username), kvp(PASSWORD_FIELD, password));
@@ -93,6 +101,12 @@ int MongoDatabase::doesPasswordMatch(const string username, const string passwor
 	return PASSWORD_NOT_MATCH;
 }
 
+/// <summary>
+/// The function adds another user to the database.
+/// </summary>
+/// <param name="user">The user to insert</param>
+/// <returns>an integer value- if the user already exsit, if there was
+/// an error or if the adding was OK.</returns>
 int MongoDatabase::addNewUser(const User& user)
 {
 	// Document with username, password, and email fields
@@ -133,10 +147,11 @@ list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
 	string correctAnswer;
 	string difficulty;
 	string response;
-	vector<string> incorrectAnswers;
+	vector<string> answers;
 	// Find all documents in the collection
 	auto cursor = this->db[QUESTIONS_COLLECTION].find({});
 
+	//Going over the Question Documents
 	for (auto&& doc : cursor)
 	{
 		category = doc["category"].get_string();
@@ -144,16 +159,17 @@ list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
 		correctAnswer = doc["correct_answer"].get_string();
 		difficulty = doc["difficulty"].get_string();
 		for (auto&& incorrectAnswer : doc["incorrect_answers"].get_array().value) {
-			incorrectAnswers.push_back(incorrectAnswer.get_string().value.data());//get_string() is not working
+			answers.push_back(incorrectAnswer.get_string().value.data());//get_string() is not working
 		}
-		questions->push_back(Question(question, incorrectAnswers, correctAnswer, category, difficulty));
-		incorrectAnswers.clear();//reset incorrect answers
+		answers.push_back(correctAnswer);
+		questions->push_back(Question(question, IDatabase::randomizeOrderAnswers(answers), correctAnswer, category, difficulty));
+		answers.clear();//reset incorrect answers
 	}
 	return *questions;
 }
 
 /// <summary>
-/// gets player vaerage answer time
+/// gets player average answer time
 /// </summary>
 /// <param username="player"> the username of the player to get</param>
 /// <returns> the average answer time</returns>
@@ -304,6 +320,49 @@ vector<string>& MongoDatabase::getHighScores()
 		vec->push_back('"'+username + '"'+"," + label);
 	}
 	return *vec;
+}
+
+/// <summary>
+/// The function submitts the new statistics of the 
+/// last game in the old statistics of the user.
+/// </summary>
+/// <param name="gameData"> The data of the new game.</param>
+/// <param name="userData"> The user which this data belongs to him.</param>
+/// <returns> If the submittion succeeded or not.</returns>
+int MongoDatabase::submitGameStatistics(const GameData& gameData, const LoggedUser& userData)
+{
+	string username = userData.getUsername();
+	// Define the filter to match the desired username
+	auto filter = bsoncxx::builder::stream::document{}
+		<< "username" << username
+		<< bsoncxx::builder::stream::finalize;
+	auto coll = this->db[STATS_COLLECTION];
+
+	//Getting the old statistics
+	StatisticsUser statistics = StatisticsUser(-1, 
+		this->getNumOfPlayerGames(username), 
+		this->getNumOfTotalAnswers(username), 
+		this->getNumOfCorrectAnswers(username), 
+		this->getPlayerAverageAnswerTime(username), 
+		this->getPlayerScore(username));
+
+	IDatabase::updateStatistics(statistics, gameData);
+
+	//Updating the document in the database
+	auto result = coll.update_one(filter.view(), make_document(kvp("$set",
+		make_document(kvp("average_time", statistics.getAverageAnswerTime()), 
+			kvp("correct_answers", statistics.getAmountCorrectAnswers()), 
+			kvp("total_answers", statistics.getAmountTotalAnswers()), 
+			kvp("total_games", statistics.getAmountTotalAnswers()), 
+			kvp("score", statistics.getHighScore())
+		))));
+
+	if (!result) //the updating failed
+	{
+		return ERROR_CODE;
+	}
+
+	return OK_CODE;
 }
 
 /// <summary>

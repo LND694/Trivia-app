@@ -21,7 +21,6 @@
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 constexpr int SIZE_CODE_FIELD = 3;
-constexpr int ERROR_LEN = -1;
 
 using std::vector;
 using std::to_string;
@@ -71,6 +70,7 @@ enum REQUEST_CODES {
 };
 
 typedef vector<unsigned char> Buffer;
+typedef unsigned int GameId;
 typedef REQUEST_CODES RequestId;
 typedef mutex Lock;
 
