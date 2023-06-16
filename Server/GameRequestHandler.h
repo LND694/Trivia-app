@@ -9,7 +9,7 @@ class GameRequestHandler : public IRequestHandler
 {
 public:
 	//C'tor
-	GameRequestHandler(Game game, LoggedUser loggedUser, GameManager& gameManager, RequestHandlerFactory* reqHandlerFactory);
+	GameRequestHandler(Game& game, LoggedUser& loggedUser, GameManager& gameManager, RequestHandlerFactory* reqHandlerFactory);
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
 	RequestResult& handleRequest(const RequestInfo& requestInfo) override;

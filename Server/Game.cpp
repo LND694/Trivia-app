@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameManager.h"
 
 /// <summary>
 /// C'tor of class Game.
@@ -22,38 +23,73 @@ Game::Game(const GameId gameId, const Room& room, GameManager& gameManager):
 	players.~vector();
 }
 
+/// <summary>
+/// C'tor of class Game.
+/// </summary>
+/// <param name="gameManager"> THe manager of all games.</param>
+Game::Game(GameManager& gameManager):
+	m_gameId(-1), m_players(map<LoggedUser, GameData>()), m_questions(vector<Question>()), m_gameManager(gameManager)
+{
+	
+}
+
+/// <summary>
+/// D'tor of class Game.
+/// </summary>
+Game::~Game()
+{
+	this->m_players.clear();
+	this->m_questions.~vector();
+}
+
+/// <summary>
+/// The function getts a question for the user.
+/// </summary>
+/// <param name="user"> The user who wants to get the question.</param>
+/// <returns> The question for the user.</returns>
 Question& Game::getQuestionForUser(const LoggedUser& user) const
 {
+	//Ranomizing an index for the vector of the Questions.
 	random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> dist(0, this->m_questions.size() - 1);
+	std::uniform_int_distribution<int> dist(0, static_cast<int>(this->m_questions.size()) - 1);
 	int randomIndex = dist(rng);
 	Question* question = new Question(this->m_questions[randomIndex]);
 
 	return *question;
 }
 
-void Game::removePlayer(LoggedUser& user)
+/// <summary>
+/// The function removes the user from the game.
+/// </summary>
+/// <param name="user"> The user who wants to leave the game.</param>
+void Game::removePlayer(const LoggedUser& user)
 {
 	if (this->m_players.find(user) != this->m_players.end())
 	{
-		throw std::exception("This user is not in the room");
+		throw std::exception("This user is not in the game");
 	}
-
-	std::erase_if(this->m_players, [&user](LoggedUser currentUser) {return user.getUsername() == currentUser.getUsername(); });
-
+	this->m_players.erase(user);
 }
 
-void Game::changeGameDataOfUser(const LoggedUser user, const GameData newGameData)
+/// <summary>
+/// The function getts the GameData of the user.
+/// </summary>
+/// <param name="user"> The user who has the GameData.</param>
+/// <returns>The GameData for the user.</returns>
+GameData& Game::getGameDataOfUser(const LoggedUser& user)
 {
-	this->m_players.at(user) = newGameData;
-}
-
-GameData& Game::getGameDataOfUser(const LoggedUser user)
-{
+	if (this->m_players.find(user) != this->m_players.end())
+	{
+		throw std::exception("This user is not in the game");
+	}
 	return this->m_players.at(user);
 }
 
+/// <summary>
+/// The function checks if all the players has finished their game.
+/// </summary>
+/// <returns> If the game is over</returns>
 bool Game::isGameOver() const
 {
 	//Going over the players
@@ -67,11 +103,17 @@ bool Game::isGameOver() const
 	return true;
 }
 
-bool Game::isUserFinished(const LoggedUser user) const
+/// <summary>
+/// The function checks if a single user has finished the game.
+/// </summary>
+/// <param name="user"> The user who the check is on him.</param>
+/// <returns> If he finished or not.</returns>
+bool Game::isUserFinished(const LoggedUser& user) const
 {
-	int amountQuestionsInGame = this->m_questions.size();
+	unsigned int amountQuestionsInGame = static_cast<unsigned int>(this->m_questions.size());
 	GameData dataUser = this->m_players.at(user);
-	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame;
+	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame ||
+		dataUser.currentQuestion.getQuestion() == "";
 }
 
 GameId Game::getGameId() const
@@ -93,5 +135,22 @@ vector<LoggedUser>& Game::getGameUsers() const
 
 int Game::getAmountQuestionsInGame() const
 {
-	return this->m_questions.size();
+	return static_cast<int>(this->m_questions.size());
+}
+
+/// <summary>
+/// The operator '=' copying the object Game. 
+/// </summary>
+/// <param name="other"> The other object to copy.</param>
+/// <returns></returns>
+Game& Game::operator=(const Game& other) const
+{
+	Game* game = new Game(other.m_gameManager);
+
+	//Copying the fields of the other game
+	game->m_gameId = other.m_gameId;
+	game->m_players = map<LoggedUser, GameData>(other.m_players);
+	game->m_questions = vector<Question>(other.m_questions);
+
+	return *game;
 }

@@ -7,11 +7,18 @@
 /// <param name="loggedUser"> The user who is in the game</param>
 /// <param name="gameManager"> The manager of all games</param>
 /// <param name="reqHandlerFactory"> The factory of handlers.</param>
-GameRequestHandler::GameRequestHandler(Game game, LoggedUser loggedUser, GameManager& gameManager, RequestHandlerFactory* reqHandlerFactory):
+GameRequestHandler::GameRequestHandler(Game& game, LoggedUser& loggedUser, GameManager& gameManager, RequestHandlerFactory* reqHandlerFactory):
     m_game(game), m_loggedUser(loggedUser), m_gameManager(gameManager), m_requestHandlerFactory(reqHandlerFactory)
 {
+
 }
 
+/// <summary>
+/// The function checks if the request is relevent according to
+/// its id.
+/// </summary>
+/// <param name="requestInfo"> The info about the request which has an id.</param>
+/// <returns> If it is relevent or not.</returns>
 bool GameRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 {
     RequestId id = requestInfo.id;
@@ -19,34 +26,48 @@ bool GameRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
         SUBMIT_ANSWER_REQS_CODE == id || GET_GAME_RESULT_REQS_CODE == id;
 }
 
+/// <summary>
+/// The function handles the request.
+/// </summary>
+/// <param name="requestInfo"> The info about the request.</param>
+/// <returns> The result of the request.</returns>
 RequestResult& GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
     RequestResult* reqRes = new RequestResult();
 
+    //If the request is not relevent
     if (!isRequestRelevent(requestInfo))
     {
         createErrorResponse(ERROR_MSG, reqRes);
         return *reqRes;
     }
-    delete reqRes;
     switch (requestInfo.id)
     {
     case LEAVE_GAME_REQS_CODE:
-        *reqRes = leaveGame(requestInfo);
+        delete reqRes;
+        return leaveGame(requestInfo);
         break;
     case GET_QUESTION_REQS_CODE:
-        *reqRes = getQuestion(requestInfo);
+        delete reqRes;
+        return getQuestion(requestInfo);
         break;
     case SUBMIT_ANSWER_REQS_CODE:
-        *reqRes = submitAnswer(requestInfo);
+        delete reqRes;
+        return submitAnswer(requestInfo);
         break;
     case GET_GAME_RESULT_REQS_CODE:
-        *reqRes = getGameResults(requestInfo);
+        delete reqRes;
+        return getGameResults(requestInfo);
         break;
     }
     return *reqRes;
 }
 
+/// <summary>
+/// The function getts the next question for the user.
+/// </summary>
+/// <param name="reqInfo"> The info about the request.</param>
+/// <returns></returns>
 RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
@@ -57,7 +78,6 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 
     //Checking if there is a chance that the user finished to answer all the questions he needs
     GameData& playerGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
-    unsigned int numQuestionsInGame = this->m_game.getAmountQuestionsInGame();
 
     resp.answers = map<unsigned int, string>();
     resp.question = "";
@@ -66,13 +86,8 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     //if the user did not finish to answer all the questions
     if (!this->m_game.isUserFinished(this->m_loggedUser))
     {
+        //Making the response 
         resp.status = OK_STATUS_CODE;
-
-        //Getting another question from the last one
-        while (playerGameData.currentQuestion == question)
-        {
-            question = this->m_game.getQuestionForUser(this->m_loggedUser);
-        }
         resp.question = question.getQuestion();
         playerGameData.currentQuestion = question;
         
@@ -98,14 +113,23 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     return *reqRes;
 }
 
+/// <summary>
+/// The function submitts the answer of the user.
+/// </summary>
+/// <param name="reqInfo"> The info about this request.</param>
+/// <returns> The result of this request.</returns>
 RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     SubmitAnswerResponse resp = SubmitAnswerResponse();
     SubmitAnswerRequest& reqs = JsonRequestPacketDeserializer::desrializeSubmitAnswerRequest(reqInfo.buffer);
 
-    //Submitting the answer
+    //Submitting the answer and updating the current data of the user
     GameData& currentData = this->m_game.getGameDataOfUser(this->m_loggedUser);
+    currentData.averageAnswerTime = ScoreClaculator::calculateAverageTime(currentData.correctAnswerCount + currentData.wrongAnswerCount,
+        currentData.averageAnswerTime, 1, static_cast<float>(reqInfo.receivalTime));
+
+    //If the user was correct
     if (reqs.answerId == currentData.currentQuestion.getCorrectAnswerId())
     {
         currentData.correctAnswerCount++;
@@ -114,8 +138,6 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
     {
         currentData.wrongAnswerCount++;
     }
-
-    //Should change averageAnswerTime
 
     resp.status = OK_STATUS_CODE;
     resp.correctAnswerId = currentData.currentQuestion.getCorrectAnswerId();
@@ -129,12 +151,17 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
     return *reqRes;
 }
 
+/// <summary>
+/// The function getts the results of the game.
+/// </summary>
+/// <param name="reqInfo"> The info about the request.</param>
+/// <returns> The result of the request.</returns>
 RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     GetGameResultsResponse resp = GetGameResultsResponse();
     PlayerResults currentResult = PlayerResults();
-    vector<LoggedUser> listOfPlayers = this->m_game.getGameUsers();
+    vector<LoggedUser>& listOfPlayers = this->m_game.getGameUsers();
     GameData currentGameData = GameData();
 
     resp.results = vector<PlayerResults>();
@@ -150,6 +177,7 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         {
             currentGameData = this->m_game.getGameDataOfUser(*i);
 
+            //Updating statistics of user
             this->m_gameManager.submitStatistics(currentGameData, *i);
 
             //Making the current PlayerResults
@@ -159,11 +187,13 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
             currentResult.averageAnswerTime = currentGameData.averageAnswerTime;
 
             resp.results.push_back(currentResult);
+            //Leaving the game
+            this->m_game.removePlayer(this->m_loggedUser);
         }
 
         reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
 
-        //Updating statistics of user
+
         
     }
     else //the game is not over
@@ -175,16 +205,23 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
     //Creating the RequestResult
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
 
+    delete& listOfPlayers;
+
     return *reqRes;
 }
 
+/// <summary>
+/// The function removes the player from the game. 
+/// </summary>
+/// <param name="reqInfo"> The info about the request.</param>
+/// <returns> The result of the request.</returns>
 RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     LeaveGameResponse resp = LeaveGameResponse();
 
-    //Leaving the game
-    this->m_game.removePlayer(this->m_loggedUser);
+    //A sign that the user is not in the game anymore
+    this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
 
     //Preparing the LeaveGameResponse for serialization
     resp.status = OK_STATUS_CODE;
