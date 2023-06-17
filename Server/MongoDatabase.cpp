@@ -148,9 +148,11 @@ list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
 	string difficulty;
 	string response;
 	vector<string> answers;
+	// Create the aggregation pipeline
+	mongocxx::pipeline pipeline{};
+	pipeline.sample(amountQuestions); // Set the number of random documents to retrieve
 	// Find all documents in the collection
-	auto cursor = this->db[QUESTIONS_COLLECTION].find({});
-
+	auto cursor = this->db[QUESTIONS_COLLECTION].aggregate(pipeline);
 	//Going over the Question Documents
 	for (auto&& doc : cursor)
 	{

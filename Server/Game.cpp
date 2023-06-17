@@ -19,7 +19,6 @@ Game::Game(const GameId gameId, const Room& room, GameManager& gameManager):
 	}
 
 	this->m_questions = this->m_gameManager.getQuestionsFromDB(room.getRoomData().numOfQuestionsInGame);
-	this->m_questions.resize(room.getRoomData().numOfQuestionsInGame);
 	players.~vector();
 }
 

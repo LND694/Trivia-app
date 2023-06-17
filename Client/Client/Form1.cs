@@ -1026,7 +1026,7 @@ namespace Client
                 response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
                 foreach (var i in response.GetPlayerResults())
                 {
-                    results.Enqueue("Name: " + i.GetUsername() + "Correct Answers: "+i.GetCorrectAnswerCount() + "Average time for question: "+ i.GetAverageAnswerTime());
+                    results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());
                 }
                 AddTextsToListBox(results, this.listBox4);
                 MoveTab(this.gamePanel, this.results);//move to the results tab
