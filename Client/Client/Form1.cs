@@ -1021,6 +1021,7 @@ namespace Client
             }
             if(questionsLeft == 0)
             {
+                this.timer1.Stop();
                 Queue<string> results = new Queue<string>();
                 response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
                 foreach (var i in response.GetPlayerResults())

@@ -19,9 +19,9 @@ namespace Client
         private int wrongAnswerCount;
 
         [JsonProperty("averageAnswerTime")]
-        private int averageAnswerTime;
+        private float averageAnswerTime;
 
-        public PlayerResults(string username, int correctAnswerCount, int wrongAnswerCount, int averageAnswerTime)
+        public PlayerResults(string username, int correctAnswerCount, int wrongAnswerCount, float averageAnswerTime)
         {
             this.username = username;
             this.correctAnswerCount = correctAnswerCount;
@@ -44,7 +44,7 @@ namespace Client
             return this.wrongAnswerCount;
         }
 
-        public int GetAverageAnswerTime()
+        public float GetAverageAnswerTime()
         {
             return this.averageAnswerTime;
         }
