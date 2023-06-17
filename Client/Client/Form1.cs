@@ -1028,7 +1028,7 @@ namespace Client
                     results.Enqueue("Name: " + i.GetUsername() + "Correct Answers: "+i.GetCorrectAnswerCount() + "Average time for question: "+ i.GetAverageAnswerTime());
                 }
                 AddTextsToListBox(results, this.listBox4);
-                MoveTab(this.gamePanel, this.panel1);//move to the results tab
+                MoveTab(this.gamePanel, this.results);//move to the results tab
             }
         }
         private void updateScore(string playerName)

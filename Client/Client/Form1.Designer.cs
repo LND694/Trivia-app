@@ -151,6 +151,7 @@
             this.textBox72 = new System.Windows.Forms.TextBox();
             this.button_WOC22 = new ePOSOne.btnProduct.Button_WOC();
             this.gamePanel = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
             this.textBox82 = new System.Windows.Forms.TextBox();
             this.textBox81 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -162,9 +163,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox79 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.results = new System.Windows.Forms.Panel();
             this.listBox4 = new System.Windows.Forms.ListBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -181,7 +181,7 @@
             this.roomMemberPanel.SuspendLayout();
             this.roomAdminPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.results.SuspendLayout();
             this.SuspendLayout();
             // 
             // signUpPanel
@@ -1906,6 +1906,16 @@
             this.gamePanel.TabIndex = 11;
             this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(394, 556);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(174, 50);
+            this.button5.TabIndex = 26;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // textBox82
             // 
             this.textBox82.Font = new System.Drawing.Font("MV Boli", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2016,15 +2026,15 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
-            // panel1
+            // results
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.listBox4);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1283, 645);
-            this.panel1.TabIndex = 26;
+            this.results.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.results.Controls.Add(this.listBox4);
+            this.results.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.results.Location = new System.Drawing.Point(0, 0);
+            this.results.Name = "results";
+            this.results.Size = new System.Drawing.Size(1283, 645);
+            this.results.TabIndex = 26;
             // 
             // listBox4
             // 
@@ -2035,16 +2045,6 @@
             this.listBox4.Name = "listBox4";
             this.listBox4.Size = new System.Drawing.Size(338, 340);
             this.listBox4.TabIndex = 19;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(394, 556);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(174, 50);
-            this.button5.TabIndex = 26;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
@@ -2064,7 +2064,7 @@
             this.Controls.Add(this.roomMemberPanel);
             this.Controls.Add(this.roomAdminPanel);
             this.Controls.Add(this.createRoomPanel);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.results);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -2096,7 +2096,7 @@
             this.roomAdminPanel.PerformLayout();
             this.gamePanel.ResumeLayout(false);
             this.gamePanel.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.results.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2235,7 +2235,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox82;
         private System.Windows.Forms.TextBox textBox81;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel results;
         private System.Windows.Forms.ListBox listBox4;
         private System.Windows.Forms.Button button5;
     }
