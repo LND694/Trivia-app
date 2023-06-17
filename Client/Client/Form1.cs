@@ -1141,6 +1141,11 @@ namespace Client
             }
 
         }
+
+        private void button_WOC24_Click(object sender, EventArgs e)
+        {
+            MoveTab(this.results, this.menuPanel);
+        }
     }
 }
 

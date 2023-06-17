@@ -165,6 +165,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.results = new System.Windows.Forms.Panel();
             this.listBox4 = new System.Windows.Forms.ListBox();
+            this.textBox83 = new System.Windows.Forms.TextBox();
+            this.button_WOC24 = new ePOSOne.btnProduct.Button_WOC();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -443,6 +445,7 @@
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.Color.Aquamarine;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(510, 44);
             this.textBox2.Multiline = true;
@@ -527,6 +530,7 @@
             // textBox23
             // 
             this.textBox23.BackColor = System.Drawing.SystemColors.Highlight;
+            this.textBox23.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox23.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox23.Location = new System.Drawing.Point(568, 44);
             this.textBox23.Multiline = true;
@@ -629,6 +633,7 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.Color.Aquamarine;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.textBox1.Location = new System.Drawing.Point(451, 44);
@@ -694,6 +699,7 @@
             // textBox24
             // 
             this.textBox24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox24.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox24.Location = new System.Drawing.Point(574, 57);
             this.textBox24.Multiline = true;
@@ -761,6 +767,7 @@
             // textBox22
             // 
             this.textBox22.BackColor = System.Drawing.Color.Aquamarine;
+            this.textBox22.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox22.Location = new System.Drawing.Point(580, 41);
             this.textBox22.Multiline = true;
@@ -1006,6 +1013,7 @@
             // textBox25
             // 
             this.textBox25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox25.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox25.Location = new System.Drawing.Point(492, 49);
             this.textBox25.Multiline = true;
@@ -1192,6 +1200,7 @@
             // textBox42
             // 
             this.textBox42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.textBox42.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox42.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox42.Location = new System.Drawing.Point(458, 34);
             this.textBox42.Multiline = true;
@@ -1211,12 +1220,12 @@
             this.button_WOC15.ForeColor = System.Drawing.Color.Lime;
             this.button_WOC15.Location = new System.Drawing.Point(549, 490);
             this.button_WOC15.Name = "button_WOC15";
-            this.button_WOC15.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC15.OnHoverBorderColor = System.Drawing.Color.Transparent;
             this.button_WOC15.OnHoverButtonColor = System.Drawing.Color.HotPink;
             this.button_WOC15.OnHoverTextColor = System.Drawing.Color.Gray;
             this.button_WOC15.Size = new System.Drawing.Size(277, 105);
             this.button_WOC15.TabIndex = 6;
-            this.button_WOC15.Text = "<Back";
+            this.button_WOC15.Text = "Back";
             this.button_WOC15.TextColor = System.Drawing.Color.Black;
             this.button_WOC15.UseVisualStyleBackColor = false;
             this.button_WOC15.Click += new System.EventHandler(this.button_WOC15_Click);
@@ -1511,6 +1520,7 @@
             // textBox62
             // 
             this.textBox62.BackColor = System.Drawing.SystemColors.Highlight;
+            this.textBox62.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox62.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox62.Location = new System.Drawing.Point(568, 44);
             this.textBox62.Multiline = true;
@@ -1674,6 +1684,7 @@
             // textBox57
             // 
             this.textBox57.BackColor = System.Drawing.Color.Yellow;
+            this.textBox57.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox57.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox57.Location = new System.Drawing.Point(458, 41);
             this.textBox57.Multiline = true;
@@ -1818,6 +1829,7 @@
             // textBox69
             // 
             this.textBox69.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.textBox69.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox69.Font = new System.Drawing.Font("Sylfaen", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox69.Location = new System.Drawing.Point(273, 142);
             this.textBox69.Multiline = true;
@@ -1856,6 +1868,7 @@
             // textBox72
             // 
             this.textBox72.BackColor = System.Drawing.Color.Yellow;
+            this.textBox72.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox72.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox72.Location = new System.Drawing.Point(458, 41);
             this.textBox72.Multiline = true;
@@ -2029,6 +2042,8 @@
             // results
             // 
             this.results.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.results.Controls.Add(this.button_WOC24);
+            this.results.Controls.Add(this.textBox83);
             this.results.Controls.Add(this.listBox4);
             this.results.Dock = System.Windows.Forms.DockStyle.Fill;
             this.results.Location = new System.Drawing.Point(0, 0);
@@ -2041,10 +2056,42 @@
             this.listBox4.Font = new System.Drawing.Font("MV Boli", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox4.FormattingEnabled = true;
             this.listBox4.ItemHeight = 28;
-            this.listBox4.Location = new System.Drawing.Point(484, 85);
+            this.listBox4.Location = new System.Drawing.Point(484, 119);
             this.listBox4.Name = "listBox4";
             this.listBox4.Size = new System.Drawing.Size(338, 340);
             this.listBox4.TabIndex = 19;
+            // 
+            // textBox83
+            // 
+            this.textBox83.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox83.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox83.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox83.Location = new System.Drawing.Point(484, 34);
+            this.textBox83.Multiline = true;
+            this.textBox83.Name = "textBox83";
+            this.textBox83.Size = new System.Drawing.Size(338, 60);
+            this.textBox83.TabIndex = 20;
+            this.textBox83.Text = "Final Results";
+            this.textBox83.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // button_WOC24
+            // 
+            this.button_WOC24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button_WOC24.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC24.ButtonColor = System.Drawing.Color.Red;
+            this.button_WOC24.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC24.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC24.Location = new System.Drawing.Point(522, 490);
+            this.button_WOC24.Name = "button_WOC24";
+            this.button_WOC24.OnHoverBorderColor = System.Drawing.Color.Transparent;
+            this.button_WOC24.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC24.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC24.Size = new System.Drawing.Size(277, 105);
+            this.button_WOC24.TabIndex = 21;
+            this.button_WOC24.Text = "Back";
+            this.button_WOC24.TextColor = System.Drawing.Color.Black;
+            this.button_WOC24.UseVisualStyleBackColor = false;
+            this.button_WOC24.Click += new System.EventHandler(this.button_WOC24_Click);
             // 
             // Form1
             // 
@@ -2052,6 +2099,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
+            this.Controls.Add(this.results);
             this.Controls.Add(this.gamePanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.personalStatsPanel);
@@ -2064,7 +2112,6 @@
             this.Controls.Add(this.roomMemberPanel);
             this.Controls.Add(this.roomAdminPanel);
             this.Controls.Add(this.createRoomPanel);
-            this.Controls.Add(this.results);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -2097,6 +2144,7 @@
             this.gamePanel.ResumeLayout(false);
             this.gamePanel.PerformLayout();
             this.results.ResumeLayout(false);
+            this.results.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2238,6 +2286,8 @@
         private System.Windows.Forms.Panel results;
         private System.Windows.Forms.ListBox listBox4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox textBox83;
+        private ePOSOne.btnProduct.Button_WOC button_WOC24;
     }
 }
 
