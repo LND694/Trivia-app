@@ -115,6 +115,19 @@ bool Game::isUserFinished(const LoggedUser& user) const
 	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame;
 }
 
+bool Game::doesAllGotResults() const
+{
+	//Going over the players
+	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	{
+		if (i->second.currentQuestion.getQuestion() != "")
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 GameId Game::getGameId() const
 {
 	return this->m_gameId;

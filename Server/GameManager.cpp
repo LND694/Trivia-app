@@ -58,7 +58,7 @@ Game& GameManager::createGame(const Room& room)
 /// </summary>
 /// <param name="gameId"> The id of the game.</param>
 void GameManager::deleteGame(const GameId gameId)
-{
+{   
     std::erase_if(this->m_games, [gameId](Game current) {return current.getGameId() == gameId; });
 }
 

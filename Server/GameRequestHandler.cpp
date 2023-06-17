@@ -177,9 +177,6 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         {
             currentGameData = this->m_game.getGameDataOfUser(*i);
 
-            //Updating statistics of user
-            this->m_gameManager.submitStatistics(currentGameData, *i);
-
             //Making the current PlayerResults
             currentResult.username = i->getUsername();
             currentResult.correctAnswerCount = currentGameData.correctAnswerCount;
@@ -187,8 +184,20 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
             currentResult.averageAnswerTime = currentGameData.averageAnswerTime;
 
             resp.results.push_back(currentResult);
-            //Leaving the game
-            this->m_game.removePlayer(this->m_loggedUser);
+        }
+        //A sign that this user already got the results of the game
+        this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
+
+        //There is no need to save the results
+        if (this->m_game.doesAllGotResults())
+        {
+            //Submitting the statistics of the users
+            for (auto i = listOfPlayers.begin(); i != listOfPlayers.end(); i++)
+            {
+                //Updating statistics of user
+                this->m_gameManager.submitStatistics(currentGameData, *i);
+            }
+            this->m_gameManager.deleteGame(this->m_game.getGameId());
         }
 
         reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
@@ -221,7 +230,18 @@ RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
     LeaveGameResponse resp = LeaveGameResponse();
 
     //A sign that the user is not in the game anymore
+    GameData& userGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
+    unsigned int timePerQuestion = this->m_requestHandlerFactory->getRoomManager().getRoom(this->m_game.getGameId()).getRoomData().timePerQuestion;
+    userGameData.currentQuestion.setQuestion("");
     this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
+
+    //Setting the rest of his data like he did not answered all the rest of the questions
+    while(userGameData.correctAnswerCount + userGameData.wrongAnswerCount < this->m_game.getAmountQuestionsInGame())
+    {
+        userGameData.averageAnswerTime = ScoreClaculator::calculateAverageTime(userGameData.correctAnswerCount + userGameData.wrongAnswerCount,
+            userGameData.averageAnswerTime, 1, timePerQuestion);
+        userGameData.wrongAnswerCount++;
+    }
 
     //Preparing the LeaveGameResponse for serialization
     resp.status = OK_STATUS_CODE;
