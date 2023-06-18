@@ -1,5 +1,8 @@
 #include "GameRequestHandler.h"
 
+mutex lockQuestions;
+mutex lockGameDatas;
+
 /// <summary>
 /// C'tor of class GameRequestHandler.
 /// </summary>
@@ -72,11 +75,10 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 {
     RequestResult* reqRes = new RequestResult();
     GetQuestionResponse resp = GetQuestionResponse();
-    Question& question = this->m_game.getQuestionForUser(this->m_loggedUser);
-    vector<string>& theAnswers = question.getAnswers();
     unsigned int id = 0;
 
     //Checking if there is a chance that the user finished to answer all the questions he needs
+    lock_guard<mutex> gameDataGuard(lockGameDatas);
     GameData& playerGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
 
     resp.answers = map<unsigned int, string>();
@@ -87,6 +89,11 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     if (!this->m_game.isUserFinished(this->m_loggedUser))
     {
         //Making the response 
+        unique_lock<mutex> questLock(lockQuestions);
+        Question& question = this->m_game.getQuestionForUser(this->m_loggedUser);
+        questLock.unlock();
+        vector<string>& theAnswers = question.getAnswers();
+
         resp.status = OK_STATUS_CODE;
         resp.question = question.getQuestion();
         playerGameData.currentQuestion = question;
@@ -97,6 +104,9 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
             resp.answers.insert({ id, *i });
             id++;
         }
+
+        delete& question;
+        delete& theAnswers;
     }
     else
     {
@@ -107,8 +117,7 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
     reqRes->newHandler = this;
 
-    delete& question;
-    delete& theAnswers;
+
 
     return *reqRes;
 }
@@ -125,6 +134,8 @@ RequestResult& GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
     SubmitAnswerRequest& reqs = JsonRequestPacketDeserializer::desrializeSubmitAnswerRequest(reqInfo.buffer);
 
     //Submitting the answer and updating the current data of the user
+
+    lock_guard<mutex> guardGameData(lockGameDatas);
     GameData& currentData = this->m_game.getGameDataOfUser(this->m_loggedUser);
     currentData.averageAnswerTime = ScoreClaculator::calculateAverageTime(currentData.correctAnswerCount + currentData.wrongAnswerCount,
         currentData.averageAnswerTime, 1, static_cast<float>(reqInfo.receivalTime));
@@ -166,6 +177,7 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 
     resp.results = vector<PlayerResults>();
     
+    lock_guard<mutex> currentLock(lockGameDatas);
     //Checking if the game is over or not
     if (this->m_game.isGameOver()) // game is over
     {
@@ -177,9 +189,6 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         {
             currentGameData = this->m_game.getGameDataOfUser(*i);
 
-            //Updating statistics of user
-            this->m_gameManager.submitStatistics(currentGameData, *i);
-
             //Making the current PlayerResults
             currentResult.username = i->getUsername();
             currentResult.correctAnswerCount = currentGameData.correctAnswerCount;
@@ -187,8 +196,21 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
             currentResult.averageAnswerTime = currentGameData.averageAnswerTime;
 
             resp.results.push_back(currentResult);
-            //Leaving the game
-            this->m_game.removePlayer(this->m_loggedUser);
+        }
+        //A sign that this user already got the results of the game
+        this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
+
+        //There is no need to save the results
+        if (this->m_game.doesAllGotResults())
+        {
+            //Submitting the statistics of the users
+            for (auto i = listOfPlayers.begin(); i != listOfPlayers.end(); i++)
+            {
+                //Updating statistics of user
+                this->m_gameManager.submitStatistics(currentGameData, *i);
+            }
+            this->m_gameManager.deleteGame(this->m_game.getGameId());
+            this->m_requestHandlerFactory->getRoomManager().deleteRoom(this->m_game.getGameId());
         }
 
         reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
@@ -221,7 +243,18 @@ RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
     LeaveGameResponse resp = LeaveGameResponse();
 
     //A sign that the user is not in the game anymore
+    GameData& userGameData = this->m_game.getGameDataOfUser(this->m_loggedUser);
+    unsigned int timePerQuestion = this->m_requestHandlerFactory->getRoomManager().getRoom(this->m_game.getGameId()).getRoomData().timePerQuestion;
+    userGameData.currentQuestion.setQuestion("");
     this->m_game.getGameDataOfUser(this->m_loggedUser).currentQuestion.setQuestion("");
+
+    //Setting the rest of his data like he did not answered all the rest of the questions
+    while(static_cast<int>(userGameData.correctAnswerCount + userGameData.wrongAnswerCount) < this->m_game.getAmountQuestionsInGame())
+    {
+        userGameData.averageAnswerTime = ScoreClaculator::calculateAverageTime(userGameData.correctAnswerCount + userGameData.wrongAnswerCount,
+            userGameData.averageAnswerTime, 1, static_cast<float>(timePerQuestion));
+        userGameData.wrongAnswerCount++;
+    }
 
     //Preparing the LeaveGameResponse for serialization
     resp.status = OK_STATUS_CODE;

@@ -75,14 +75,13 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& 
 {
     string responseData = getField<unsigned int>("status", to_string(getRoomsResp.status)) + SEPERATOR;
     string roomsData = "";
-    int count = 1;
 
     //Getting the data from the rooms of the GetRoomsResp
     for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.end(); i++)
     {
         roomsData += echoJsonFormat(getRoomDataString(*i)) + SEPERATOR;
     }
-    if (roomsData.length() != 1) // there is not only the opening char for the vector
+    if (!roomsData.empty()) // there is not only the opening char for the vector
     {
         roomsData.pop_back(); // removing the last SEPERATOR
     }
@@ -305,7 +304,7 @@ string JsonResponsePacketSerializer::getPlayerResultsString(const PlayerResults&
 /// <returns> The field as a string.</returns>
 string JsonResponsePacketSerializer::getMapField(unsigned int key, string value)
 {
-    return to_string(key) + ":" + value;
+    return to_string(key) + ":" + echoStringJsonFormat(value);
 }
 
 /// <summary>

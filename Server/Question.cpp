@@ -10,7 +10,7 @@
 /// <param name="difficulty"> The difficulty level of the question</param>
 Question::Question(const string question, const vector<string>& answers,
 	const string rightAnswer, const string category, const string difficulty):
-	m_question(question), m_answers(answers), m_rightAnswer(rightAnswer), 
+	m_question(question), m_rightAnswer(rightAnswer), 
 	m_category(category), m_difficulty(difficulty)
 {
 	if (answers.size() != AMOUNT_ANSWERS)

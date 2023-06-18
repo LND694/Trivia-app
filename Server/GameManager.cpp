@@ -1,6 +1,8 @@
 #include "GameManager.h"
 #include "Game.h"
 
+mutex lockGames;
+
 /// <summary>
 /// The function finds the index of a Game in the 
 /// map by its GameId.
@@ -33,13 +35,14 @@ GameManager::GameManager(IDatabase* db):
 }
 
 /// <summary>
-/// The fucntion creates a Game by the 
+/// The function creates a Game by the 
 /// data of the Room.
 /// </summary>
 /// <param name="room"> The room which wants to create the game.</param>
 /// <returns> The game which was created.</returns>
 Game& GameManager::createGame(const Room& room)
 {
+    lock_guard<mutex> lock(lockGames);
     int gameIndex = getIndexGame(room.getRoomData().id);
     Game* game = nullptr;
     if (gameIndex != ERROR_CODE) //the game already exists
@@ -49,7 +52,8 @@ Game& GameManager::createGame(const Room& room)
     //Creating another game.
     game = new Game(room.getRoomData().id, room, *this);
     this->m_games.push_back(*game);
-    return *game;
+    delete game;
+    return this->m_games[getIndexGame(room.getRoomData().id)];
 }
 
 /// <summary>
@@ -58,7 +62,7 @@ Game& GameManager::createGame(const Room& room)
 /// </summary>
 /// <param name="gameId"> The id of the game.</param>
 void GameManager::deleteGame(const GameId gameId)
-{
+{   
     std::erase_if(this->m_games, [gameId](Game current) {return current.getGameId() == gameId; });
 }
 
@@ -91,6 +95,5 @@ vector<Question>& GameManager::getQuestionsFromDB(const int amountQuestions)
     {
         theQuestions->push_back(*i);
     }
-    questions.~list();
     return *theQuestions;
 }

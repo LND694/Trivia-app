@@ -19,7 +19,6 @@ Game::Game(const GameId gameId, const Room& room, GameManager& gameManager):
 	}
 
 	this->m_questions = this->m_gameManager.getQuestionsFromDB(room.getRoomData().numOfQuestionsInGame);
-
 	players.~vector();
 }
 
@@ -49,13 +48,20 @@ Game::~Game()
 /// <returns> The question for the user.</returns>
 Question& Game::getQuestionForUser(const LoggedUser& user) const
 {
-	//Ranomizing an index for the vector of the Questions.
-	random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> dist(0, static_cast<int>(this->m_questions.size()) - 1);
-	int randomIndex = dist(rng);
-	Question* question = new Question(this->m_questions[randomIndex]);
+	Question* question = nullptr;
+	int counter = 0, index = -1;
 
+	//Going over the vector of the questions
+	for (const auto& i : this->m_questions)
+	{
+		if (this->m_players.at(user).currentQuestion == i)
+		{
+			index = counter;
+		}
+		counter++;
+	}
+
+	question = new Question(this->m_questions[index + 1]);
 	return *question;
 }
 
@@ -112,8 +118,20 @@ bool Game::isUserFinished(const LoggedUser& user) const
 {
 	unsigned int amountQuestionsInGame = getAmountQuestionsInGame();
 	GameData dataUser = this->m_players.at(user);
-	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame ||
-		dataUser.currentQuestion.getQuestion() == "";
+	return dataUser.correctAnswerCount + dataUser.wrongAnswerCount >= amountQuestionsInGame;
+}
+
+bool Game::doesAllGotResults() const
+{
+	//Going over the players
+	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	{
+		if (i->second.currentQuestion.getQuestion() != "")
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 GameId Game::getGameId() const
@@ -126,9 +144,9 @@ vector<LoggedUser>& Game::getGameUsers() const
 	vector<LoggedUser>* users = new vector<LoggedUser>();
 
 	//Going over the map of the players
-	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	for (const auto& i : this->m_players)
 	{
-		users->push_back(i->first);
+		users->push_back(i.first);
 	}
 	return *users;
 }

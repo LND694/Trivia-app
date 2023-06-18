@@ -13,7 +13,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     string correctAnswer;
     string difficulty;
     string response;
-    vector<string> incorrectAnswers;
+    vector<string> answers;
     curlpp::Easy request;
  
     string apiUrl = OPENTDB_URL + std::to_string(amountOfQuestions) + "&type=multiple";
@@ -27,22 +27,24 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
         }));
     // Perform the request
     request.perform();
-
+    response = eraseSubString(response, SUBSTR1);
+    response = eraseSubString(response, SUBSTR2);
     auto apiResponse = json::parse(response);//parse to json
     if (apiResponse["response_code"].get<int>() == 0) {
         for (const auto& result : apiResponse["results"])
         {
-            category = result["category"].get<std::string>();
-            question = result["question"].get<std::string>();
-            question = eraseSubString(question, SUBSTR1);//erase common "&quot;"
-            question = eraseSubString(question, SUBSTR2);//erase common "&#039;"
-            correctAnswer = result["correct_answer"].get<std::string>();
-            difficulty = result["difficulty"].get<std::string>();
+            category = result["category"].get<string>();
+            question = result["question"].get<string>();
+            std::cout << question << std::endl;
+            correctAnswer = result["correct_answer"].get<string>();
+            difficulty = result["difficulty"].get<string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
-                incorrectAnswers.push_back(incorrectAnswer.get<std::string>());
+                answers.push_back(incorrectAnswer.get<string>());
             }
-            questions->push_back(Question(question, incorrectAnswers, correctAnswer, category, difficulty));
-            incorrectAnswers.clear();//reset the incorrectAnswers
+            answers.push_back(correctAnswer);
+
+            questions->push_back(Question(question, answers, correctAnswer, category, difficulty));
+            answers.clear();//reset the incorrectAnswers
         }
     }
     else
@@ -140,8 +142,8 @@ string IDatabase::eraseSubString(string str, const string substr)
     ind = str.find(substr);
     while (ind != string::npos)
     {
-        str.erase(ind, SUBSTR1.length());
-        ind = str.find(SUBSTR1);
+        str.erase(ind, substr.length());
+        ind = str.find(substr);
     }
     return str;
 }

@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Client
@@ -27,6 +29,10 @@ namespace Client
         private readonly Mutex highScoresLock;
         private int seconds;
         private int questionsLeft;
+        private bool wasClicked = false;
+        private bool isRight = false;
+        private object control;
+
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -59,6 +65,7 @@ namespace Client
         /// </summary>
         private void AutoUpdate()
         {
+            int timePerQuestion = 0;
             while(!this.IsDisposed)
             {
                 if (this.bestPlayersPanel.Visible)
@@ -87,12 +94,28 @@ namespace Client
                     if (UpdateRoomState())
                     {
                         PresentRoomStateMember(this.textBox57.Text);
+                        if(this.roomData.GetHasGameBegun())
+                        {
+                            this.Invoke((MethodInvoker)delegate {
+                                timer1.Start();
+                            });
+                            timePerQuestion = int.Parse(textBox64.Text);
+                            this.seconds = timePerQuestion;
+                            UpdateControlText(textBox79, textBox57.Text);
+                            MoveTab(this.roomMemberPanel, this.gamePanel);
+
+                            //while (this.gamePanel.Visible)
+                            //{
+                            //    this.timer1_Tick_1(null, null);
+                            //}
+                        }
                     }
                     else
                     {
                         button_WOC21_Click(null, null); // leave room
                         ShowErrorMessage("The host left the room", "Leaving room");
                     }
+
                 }
                 
                 System.Threading.Thread.Sleep(3000);
@@ -642,10 +665,33 @@ namespace Client
         {
             this.textBox57.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
-            UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
+            this.questionsLeft = this.roomData.GetQuestionCount();
+            UpdateControlText(textBox63, "" + this.roomData.GetQuestionCount());
+            UpdateControlText(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox75, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
+
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
+
+
+            // Iterate through the ListBox items
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
+                    
+                }
+            }
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -657,11 +703,11 @@ namespace Client
         {
             this.textBox72.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
+            UpdateControlText(textBox69, "" + this.roomData.GetQuestionCount());
             this.questionsLeft = this.roomData.GetQuestionCount();
-            textBox80.Text = "questions left: " + questionsLeft;
-            UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
+            //textBox80.Text = "questions left: " + questionsLeft;
+            UpdateControlText(textBox67, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
             // Assuming you have a ListBox named "myListBox"
@@ -669,14 +715,19 @@ namespace Client
             // Iterate through the ListBox items
             for (int i = 0; i < this.listBox3.Items.Count; i++)
             {
-                // Retrieve the current item
-                string currentItem = this.listBox3.Items[i].ToString();
-
-                // Append zero to the current item
-                string updatedItem = currentItem + " 0";
-
-                // Update the ListBox with the modified item
-                this.listBox3.Items[i] = updatedItem;
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
+                }
             }
             this.roomDataLock.ReleaseMutex();
         }
@@ -806,7 +857,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Creatiing a room and if successful and getting its state-
+        /// Creating a room and if successful and getting its state-
         /// moving to the Room admin panel.
         /// </summary>
         /// <param name="sender"></param>
@@ -931,26 +982,25 @@ namespace Client
 
             if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
             {
-                MessageBox.Show("Game begun by you!");
+                MoveTab(roomAdminPanel, gamePanel);
+                timer1.Start();
             }
-            MoveTab(roomAdminPanel, gamePanel);
-            timer1.Start();
         }
 
         /// <summary>
-        /// Updating a textBox with a new text.
+        /// Updating a control with a new text.
         /// </summary>
-        /// <param name="textBox"> The text box to update.</param>
+        /// <param name="control"> The control to update.</param>
         /// <param name="text"> The new text of the Text Box.</param>
-        private void UpdateTextBox(TextBox textBox, string text)
+        private void UpdateControlText(Control control, string text)
         {
-            if (textBox.InvokeRequired)
+            if (control.InvokeRequired)
             {
-                textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+                control.Invoke((MethodInvoker)(() => control.Text = text));
             }
             else
             {
-                textBox.Text = text;
+                control.Text = text;
             }
         }
 
@@ -964,60 +1014,66 @@ namespace Client
             this.textBox78.Text = this.comboBox2.Text;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-            label1.Text = seconds--.ToString();
-            textBox80.Text = "questions left: " + questionsLeft;
+            UpdateControlText(textBox80, "questions left: " + questionsLeft);
             GetQuestionResponse resp = null;
             GetGameResultsResponse response = null;
             Dictionary<int, string> answers = null;
+            if(seconds == this.roomData.GetAnswerTimeOut())
+            {
+
+                try
+                {
+                    resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                    if (resp.GetStatus() != Constants.OK_STATUS_CODE)
+                    {
+                        throw new Exception("You finished all your questions");
+                    }
+                    UpdateControlText(textBox81, resp.GetQuestion());
+                    answers = resp.GetAnswers();
+                    UpdateControlText(button1, answers[0]);
+                    UpdateControlText(button2, answers[1]);
+                    UpdateControlText(button3, answers[2]);
+                    UpdateControlText(button4, answers[3]);
+                }
+                catch(Exception excp)
+                {
+                    ShowErrorMessage(excp.Message, "Error Getting question");
+                }
+
+            }
+            UpdateControlText(this.label1, seconds--.ToString());
             if (seconds == 0)
             {
-                this.questionsLeft--;
-                updateScore(this.textBox20.Text);
+                if(this.isRight)
+                {
+                    updateScore(this.textBox20.Text);
+                    this.isRight = false;
+                }
                 seconds = this.roomData.GetAnswerTimeOut();
-                //resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                //textBox81.Text = resp.GetQuestion();
-                //answers = resp.GetAnswers();
-                //button1.Text = answers[0];
-                //button2.Text = answers[1];
-                //button3.Text = answers[2];
-                //button4.Text = answers[3];
+                this.wasClicked = false;
+                this.questionsLeft--;
             }
-            if(questionsLeft == 0)
+            if(this.questionsLeft == 0) //there are no more questions left
             {
+                this.timer1.Stop();
+                Thread.Sleep(5000);
                 Queue<string> results = new Queue<string>();
-                response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+
+                
+                //Waiting for the game to be over
+                do
+                {
+                    Thread.Sleep(5000);
+                    response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                }while(Constants.OK_STATUS_CODE != response.GetStatus());
                 foreach (var i in response.GetPlayerResults())
                 {
-                    results.Enqueue("Name: " + i.GetUsername() + "Correct Answers: "+i.GetCorrectAnswerCount() + "Average time for question: "+ i.GetAverageAnswerTime());
+                    results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());
                 }
                 AddTextsToListBox(results, this.listBox4);
-                MoveTab(this.gamePanel, this.panel1);//move to the results tab
+                MoveTab(this.gamePanel, this.results);//move to the results tab
             }
         }
         private void updateScore(string playerName)
@@ -1052,7 +1108,7 @@ namespace Client
                 SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
                 if(response.GetCorrectAnswerId() == id)
                 {
-                    updateScore(this.textBox20.Text);//update the player score
+                    this.isRight = true;
                 }
             }
             catch (Exception ex)
@@ -1061,26 +1117,62 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Chose option 2
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
-            SendAnswer(3);
+            if(!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(2);
+            }
         }
 
+        /// <summary>
+        /// Chose option 0
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click_1(object sender, EventArgs e)
         {
-            SendAnswer(1);
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(0);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SendAnswer(2);
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(1);
+            }
         }
 
+        /// <summary>
+        /// Chose option 3
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
-            SendAnswer(4);
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(3);
+            }
         }
 
+        /// <summary>
+        /// Leaving the room
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button5_Click(object sender, EventArgs e)
         {
             string playerName = this.textBox20.Text;
@@ -1102,7 +1194,7 @@ namespace Client
                     string playerEntry = this.listBox3.Items[i].ToString();
                     if (playerEntry.StartsWith(playerName))
                     {
-                        playerEntry = "";
+                        this.listBox3.Items[i] = "";
                         break;
                     }
                 }
@@ -1113,6 +1205,16 @@ namespace Client
                 ShowErrorMessage(ex.Message, "ERROR");
             }
 
+        }
+
+        /// <summary>
+        /// Moving from the Results tab to the menu tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_WOC24_Click(object sender, EventArgs e)
+        {
+            MoveTab(this.results, this.menuPanel);
         }
     }
 }

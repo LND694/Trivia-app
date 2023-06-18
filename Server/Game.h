@@ -43,6 +43,7 @@ public:
 	GameData& getGameDataOfUser(const LoggedUser& user);
 	bool isGameOver() const;
 	bool isUserFinished(const LoggedUser& user) const;
+	bool doesAllGotResults() const;
 
 	//Getters
 	GameId getGameId() const;

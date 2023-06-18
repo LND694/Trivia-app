@@ -173,6 +173,7 @@ namespace Client
     }
     public class SubmitAnswerRequest
     {
+        [JsonProperty("answerId")]
         private int answerId;
         public SubmitAnswerRequest(int answerId)
         {
