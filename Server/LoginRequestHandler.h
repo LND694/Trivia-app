@@ -10,7 +10,7 @@ class LoginRequestHandler : public IRequestHandler
 {
 public:
 	//C'tor
-	LoginRequestHandler(RequestHandlerFactory& reqHandFac);
+	LoginRequestHandler(RequestHandlerFactory* reqHandFac);
 
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
@@ -19,7 +19,7 @@ public:
 	RequestResult& signUp(const RequestInfo& requestInfo);
 private:
 	//Field
-	RequestHandlerFactory& m_handlerFactory;
+	RequestHandlerFactory* m_handlerFactory;
 
 	//Help function
 	void createErrorResponse(const string errMsg, RequestResult* reqRes);

@@ -21,7 +21,7 @@ StatisticsManager::~StatisticsManager()
 /// get the best scores from the databse
 /// </summary>
 /// <returns> vector of strings </returns>
-vector<string>& StatisticsManager::getHighScore()
+vector<string>& StatisticsManager::getHighScore() const
 {
     return this->m_database->getHighScores();
 }
@@ -31,7 +31,7 @@ vector<string>& StatisticsManager::getHighScore()
 /// </summary>
 /// <param name="username"> the name of the user </param>
 /// <returns> vector of strings</returns>
-vector<string>& StatisticsManager::getUserStatistics(const string username)
+vector<string>& StatisticsManager::getUserStatistics(const string username) const
 {
     vector<string>* statistics = new vector<string>();
     statistics->push_back("'statistics':["+std::to_string(this->m_database->getPlayerScore(username)));

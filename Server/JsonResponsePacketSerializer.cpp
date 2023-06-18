@@ -74,19 +74,18 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LogoutResponse& lo
 Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& getRoomsResp)
 {
     string responseData = getField<unsigned int>("status", to_string(getRoomsResp.status)) + SEPERATOR;
-    string roomsData = string(1, SEPERATOR_ARGS_BEGIN);
-    int count = 1;
+    string roomsData = "";
 
     //Getting the data from the rooms of the GetRoomsResp
     for (auto i = getRoomsResp.rooms.begin(); i != getRoomsResp.rooms.end(); i++)
     {
         roomsData += echoJsonFormat(getRoomDataString(*i)) + SEPERATOR;
     }
-    if (roomsData.length() != 1) // there is not only the opening char for the vector
+    if (!roomsData.empty()) // there is not only the opening char for the vector
     {
         roomsData.pop_back(); // removing the last SEPERATOR
     }
-    responseData += getField<vector<RoomData>>("Rooms", roomsData + SEPERATOR_ARGS_END);
+    responseData += getField<vector<RoomData>>("Rooms", echoVectorJsonFormat(roomsData));
     return *makeBuffer(GET_ROOMS_RESP_CODE, echoJsonFormat(responseData));
 }
 
@@ -112,7 +111,7 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetHighScoreRespon
 {
     string responseData = getField<unsigned int>("status", to_string(getHighScoreResp.status));
     string statisticsData = getVectorString(getHighScoreResp.statistics);
-    statisticsData = "'statistics':[" + statisticsData + "]";
+    statisticsData = getField<vector<unsigned int>>("statistics", echoVectorJsonFormat(statisticsData));
     responseData += SEPERATOR + statisticsData;
     return *makeBuffer(GET_HIGH_SCORE_RESP_CODE, echoJsonFormat(responseData));
 }
@@ -131,39 +130,94 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse&
     return *makeBuffer(CLOSE_RESP_CODE, echoJsonFormat(responseData));
 }
 
-Buffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse& startGameResp)
+Buffer& JsonResponsePacketSerializer::serializeResponse(const StartGameResponse& startGameResp)
 {
     string responseData = getField<unsigned int>("status", to_string(startGameResp.status));
     return *makeBuffer(START_GAME_RESP_CODE, echoJsonFormat(responseData));
 }
 
-Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse& leaveRoomResp)
+Buffer& JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse& leaveRoomResp)
 {
     string responseData = getField<unsigned int>("status", to_string(leaveRoomResp.status));
     return *makeBuffer(LEAVE_ROOM_RESP_CODE, echoJsonFormat(responseData));
 }
 
-Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse& getRoomStateResp)
+Buffer& JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse& getRoomStateResp)
 {
+    string playersData = "[";
     string condition = getRoomStateResp.hasGameBegun ? "true" : "false";
     string responseData = getField<unsigned int>("status", to_string(getRoomStateResp.status));
     responseData += SEPERATOR + getField<bool>("hasGameBegun", condition);
-    responseData += ",'players':[";
 
     //Adding the names of the players in the room
     for (const auto& i : getRoomStateResp.players)
     {
-        responseData += echoStringJsonFormat(i) + SEPERATOR;
+        playersData += echoStringJsonFormat(i)+ SEPERATOR;
     }
     if (getRoomStateResp.players.size() > 0)
     {
-        responseData.pop_back();
+        playersData.pop_back();
     }
-
-    responseData += "]";
+    playersData += ']';
+    responseData += SEPERATOR + getField<vector<string>>("players", playersData);
     responseData += SEPERATOR + getField<unsigned int>("questionCount", to_string(getRoomStateResp.questionCount));
     responseData += SEPERATOR + getField<unsigned int>("answerTimeOut", to_string(getRoomStateResp.answerTimeOut));
     return *makeBuffer(GET_ROOM_STATE_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer& JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse& getGameResResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(getGameResResp.status)) + SEPERATOR;
+    string results = "";
+
+    //Going over the results's vector
+    for (auto i = getGameResResp.results.begin(); i != getGameResResp.results.end(); i++)
+    {
+        results += echoJsonFormat(getPlayerResultsString(*i)) + SEPERATOR;
+    }
+    if (results.length() > 0)
+    {
+        results.pop_back();
+    }
+
+    responseData += getField<vector<PlayerResults>>("results", echoVectorJsonFormat(results));
+
+    return *makeBuffer(GET_GAME_RES_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer& JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse& subAnswerResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(subAnswerResp.status)) + SEPERATOR;
+    responseData += getField<unsigned int>("correctAnswerId", to_string(subAnswerResp.correctAnswerId));
+
+    return *makeBuffer(SUBMIT_ANSWER_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer& JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse& getQuestionResp)
+{
+    string answersData = "";
+    string responseData = getField<unsigned int>("status", to_string(getQuestionResp.status)) + SEPERATOR;
+    responseData += getField<string>("question", getQuestionResp.question) + SEPERATOR;
+
+    //Going over the answers
+    for (auto i = getQuestionResp.answers.begin(); i != getQuestionResp.answers.end(); i++)
+    {
+        answersData += getMapField(i->first, i->second) + SEPERATOR;
+    }
+    if (answersData.length() > 0)
+    {
+        answersData.pop_back();
+    }
+
+    responseData += getField<map<unsigned int, string>>("answers", echoJsonFormat(answersData));
+    return *makeBuffer(GET_QUESTION_RESP_CODE, echoJsonFormat(responseData));
+
+}
+
+Buffer& JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse& leaveGameResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(leaveGameResp.status));
+    return *makeBuffer(LEAVE_GAME_RESP_CODE, echoJsonFormat(responseData));
 }
 
 
@@ -226,6 +280,34 @@ string JsonResponsePacketSerializer::getRoomDataString(const RoomData& roomData)
 }
 
 /// <summary>
+/// The function gets from a PlayerResults struct its
+/// string which sums up its properties.
+/// </summary>
+/// <param name="playerResults"> The struct with the data.</param>
+/// <returns> The string which sums up the data.</returns>
+string JsonResponsePacketSerializer::getPlayerResultsString(const PlayerResults& playerResults)
+{
+    string playerResultsStr = getField<string>("username", playerResults.username) + SEPERATOR;
+    playerResultsStr += getField<unsigned int>("correctAnswerCount", to_string(playerResults.correctAnswerCount)) + SEPERATOR;
+    playerResultsStr += getField<unsigned int>("wrongAnswerCount", to_string(playerResults.wrongAnswerCount)) + SEPERATOR;
+    playerResultsStr += getField<unsigned int>("averageAnswerTime", to_string(playerResults.averageAnswerTime));
+
+    return playerResultsStr;
+}
+
+/// <summary>
+/// The function gets the field from
+/// a key and a value of a map.
+/// </summary>
+/// <param name="key"> The key of the map.</param>
+/// <param name="value"> The value of the map.</param>
+/// <returns> The field as a string.</returns>
+string JsonResponsePacketSerializer::getMapField(unsigned int key, string value)
+{
+    return to_string(key) + ":" + echoStringJsonFormat(value);
+}
+
+/// <summary>
 /// The function adds the string to the buffer.
 /// </summary>
 /// <param name="buf">The Buffer to insert to.</param>
@@ -258,6 +340,16 @@ string JsonResponsePacketSerializer::echoJsonFormat(const string str)
 string JsonResponsePacketSerializer::echoStringJsonFormat(const string str)
 {
     return '"' + str + '"';
+}
+
+/// <summary>
+/// The function echos a Json Vector format.
+/// </summary>
+/// <param name="str"> The string without the format.</param>
+/// <returns> The string with the format.</returns>
+string JsonResponsePacketSerializer::echoVectorJsonFormat(const string str)
+{
+    return "[" + str + "]";
 }
 
 /// <summary>

@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Client
@@ -18,13 +20,19 @@ namespace Client
     public partial class Form1 : Form
     {
         //The fields of the Form.
-        private Communicator communicator;
+        private readonly Communicator communicator;
         private Queue<RoomData> rooms;
         private Queue<string> highScores;
         private GetRoomStateResponse roomData;
-        private Mutex roomDataLock;
-        private Mutex roomsLock;
-        private Mutex highScoresLock;
+        private readonly Mutex roomDataLock;
+        private readonly Mutex roomsLock;
+        private readonly Mutex highScoresLock;
+        private int seconds;
+        private int questionsLeft;
+        private bool wasClicked = false;
+        private bool isRight = false;
+        private object control;
+
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -57,6 +65,7 @@ namespace Client
         /// </summary>
         private void AutoUpdate()
         {
+            int timePerQuestion = 0;
             while(!this.IsDisposed)
             {
                 if (this.bestPlayersPanel.Visible)
@@ -85,13 +94,30 @@ namespace Client
                     if (UpdateRoomState())
                     {
                         PresentRoomStateMember(this.textBox57.Text);
+                        if(this.roomData.GetHasGameBegun())
+                        {
+                            this.Invoke((MethodInvoker)delegate {
+                                timer1.Start();
+                            });
+                            timePerQuestion = int.Parse(textBox64.Text);
+                            this.seconds = timePerQuestion;
+                            UpdateControlText(textBox79, textBox57.Text);
+                            MoveTab(this.roomMemberPanel, this.gamePanel);
+
+                            //while (this.gamePanel.Visible)
+                            //{
+                            //    this.timer1_Tick_1(null, null);
+                            //}
+                        }
                     }
                     else
                     {
                         button_WOC21_Click(null, null); // leave room
                         ShowErrorMessage("The host left the room", "Leaving room");
                     }
+
                 }
+                
                 System.Threading.Thread.Sleep(3000);
             }
 
@@ -639,10 +665,33 @@ namespace Client
         {
             this.textBox57.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox63, "" + this.roomData.GetQuestionCount());
-            UpdateTextBox(textBox64, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox75, "" + this.roomData.GetPlayers().Count);
+            this.questionsLeft = this.roomData.GetQuestionCount();
+            UpdateControlText(textBox63, "" + this.roomData.GetQuestionCount());
+            UpdateControlText(textBox64, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox75, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
+
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
+
+
+            // Iterate through the ListBox items
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
+                    
+                }
+            }
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -654,10 +703,32 @@ namespace Client
         {
             this.textBox72.Text = roomName;
             this.roomDataLock.WaitOne();
-            UpdateTextBox(textBox69, "" + this.roomData.GetQuestionCount());
-            UpdateTextBox(textBox67, "" + this.roomData.GetAnswerTimeOut());
-            UpdateTextBox(textBox73, "" + this.roomData.GetPlayers().Count);
+            UpdateControlText(textBox69, "" + this.roomData.GetQuestionCount());
+            this.questionsLeft = this.roomData.GetQuestionCount();
+            //textBox80.Text = "questions left: " + questionsLeft;
+            UpdateControlText(textBox67, "" + this.roomData.GetAnswerTimeOut());
+            UpdateControlText(textBox73, "" + this.roomData.GetPlayers().Count);
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox2);
+            AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
+            // Assuming you have a ListBox named "myListBox"
+
+            // Iterate through the ListBox items
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    if (this.listBox3.InvokeRequired)
+                    {
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                    }
+                    else
+                    {
+                        this.listBox3.Items[i] += " 0";
+                    }
+                }
+            }
             this.roomDataLock.ReleaseMutex();
         }
 
@@ -786,7 +857,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Creatiing a room and if successful and getting its state-
+        /// Creating a room and if successful and getting its state-
         /// moving to the Room admin panel.
         /// </summary>
         /// <param name="sender"></param>
@@ -795,7 +866,9 @@ namespace Client
         {
             const string TITLE_ERROR = "Error Creating Room";
             string roomName = textBox51.Text;
+            textBox79.Text = roomName;
             int timePerQuestion = int.Parse(textBox52.Text);
+            this.seconds = timePerQuestion;
             int maxUsersInRoom = int.Parse(numericUpDown2.Value.ToString());
             int amountQuestions = int.Parse(numericUpDown3.Value.ToString());
             CreateRoomRequest createRoomRequest = new CreateRoomRequest(roomName, maxUsersInRoom, amountQuestions, timePerQuestion);
@@ -909,24 +982,25 @@ namespace Client
 
             if(startGameResponse != null && Constants.OK_STATUS_CODE == startGameResponse.GetStatus())
             {
-                MessageBox.Show("Game begun by you!");
+                MoveTab(roomAdminPanel, gamePanel);
+                timer1.Start();
             }
         }
 
         /// <summary>
-        /// Updating a textBox with a new text.
+        /// Updating a control with a new text.
         /// </summary>
-        /// <param name="textBox"> The text box to update.</param>
+        /// <param name="control"> The control to update.</param>
         /// <param name="text"> The new text of the Text Box.</param>
-        private void UpdateTextBox(TextBox textBox, string text)
+        private void UpdateControlText(Control control, string text)
         {
-            if (textBox.InvokeRequired)
+            if (control.InvokeRequired)
             {
-                textBox.Invoke((MethodInvoker)(() => textBox.Text = text));
+                control.Invoke((MethodInvoker)(() => control.Text = text));
             }
             else
             {
-                textBox.Text = text;
+                control.Text = text;
             }
         }
 
@@ -938,6 +1012,209 @@ namespace Client
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.textBox78.Text = this.comboBox2.Text;
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            UpdateControlText(textBox80, "questions left: " + questionsLeft);
+            GetQuestionResponse resp = null;
+            GetGameResultsResponse response = null;
+            Dictionary<int, string> answers = null;
+            if(seconds == this.roomData.GetAnswerTimeOut())
+            {
+
+                try
+                {
+                    resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
+                    if (resp.GetStatus() != Constants.OK_STATUS_CODE)
+                    {
+                        throw new Exception("You finished all your questions");
+                    }
+                    UpdateControlText(textBox81, resp.GetQuestion());
+                    answers = resp.GetAnswers();
+                    UpdateControlText(button1, answers[0]);
+                    UpdateControlText(button2, answers[1]);
+                    UpdateControlText(button3, answers[2]);
+                    UpdateControlText(button4, answers[3]);
+                }
+                catch(Exception excp)
+                {
+                    ShowErrorMessage(excp.Message, "Error Getting question");
+                }
+
+            }
+            UpdateControlText(this.label1, seconds--.ToString());
+            if (seconds == 0)
+            {
+                if(this.isRight)
+                {
+                    updateScore(this.textBox20.Text);
+                    this.isRight = false;
+                }
+                seconds = this.roomData.GetAnswerTimeOut();
+                this.wasClicked = false;
+                this.questionsLeft--;
+            }
+            if(this.questionsLeft == 0) //there are no more questions left
+            {
+                this.timer1.Stop();
+                Thread.Sleep(5000);
+                Queue<string> results = new Queue<string>();
+
+                
+                //Waiting for the game to be over
+                do
+                {
+                    Thread.Sleep(5000);
+                    response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                }while(Constants.OK_STATUS_CODE != response.GetStatus());
+                foreach (var i in response.GetPlayerResults())
+                {
+                    results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());
+                }
+                AddTextsToListBox(results, this.listBox4);
+                MoveTab(this.gamePanel, this.results);//move to the results tab
+            }
+        }
+        private void updateScore(string playerName)
+        {
+            // Find the player's index
+            int playerIndex = -1;
+            for (int i = 0; i < this.listBox3.Items.Count; i++)
+            {
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(playerName))
+                {
+                    playerIndex = i;
+                    break;
+                }
+            }
+            // Update the score
+            if (playerIndex != -1)
+            {
+                string currentEntry = this.listBox3.Items[playerIndex].ToString();
+                int currentScore = int.Parse(currentEntry.Substring(playerName.Length + 1));
+                int updatedScore = currentScore + 1;  // Append score by 1
+
+                // Update the ListBox with the new score
+                this.listBox3.Items[playerIndex] = playerName + " " + updatedScore;
+            }
+        }
+        private void SendAnswer(int id)
+        {
+            SubmitAnswerRequest req = new SubmitAnswerRequest(id);
+            try
+            {
+                SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
+                if(response.GetCorrectAnswerId() == id)
+                {
+                    this.isRight = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(ex.Message,"ERROR");
+            }
+        }
+
+        /// <summary>
+        /// Chose option 2
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(2);
+            }
+        }
+
+        /// <summary>
+        /// Chose option 0
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(0);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(1);
+            }
+        }
+
+        /// <summary>
+        /// Chose option 3
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (!this.wasClicked)
+            {
+                this.wasClicked = true;
+                SendAnswer(3);
+            }
+        }
+
+        /// <summary>
+        /// Leaving the room
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string playerName = this.textBox20.Text;
+            LeaveGameResponse resp = null;
+            try
+            {
+                resp = SendRequestToServer<NullableConverter, LeaveGameResponse>(null, REQUEST_CODES.LEAVE_GAME_REQS_CODE);
+                if(resp.GetStatus() != RESPONSE_CODES.ERROR_RESP_CODE)
+                {
+                    MoveTab(this.gamePanel, this.menuPanel);
+                }
+                else
+                {
+                    throw new Exception("Cant leave the game!");
+                }
+                //update the player list
+                for (int i = 0; i < this.listBox3.Items.Count; i++)
+                {
+                    string playerEntry = this.listBox3.Items[i].ToString();
+                    if (playerEntry.StartsWith(playerName))
+                    {
+                        this.listBox3.Items[i] = "";
+                        break;
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                ShowErrorMessage(ex.Message, "ERROR");
+            }
+
+        }
+
+        /// <summary>
+        /// Moving from the Results tab to the menu tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_WOC24_Click(object sender, EventArgs e)
+        {
+            MoveTab(this.results, this.menuPanel);
         }
     }
 }

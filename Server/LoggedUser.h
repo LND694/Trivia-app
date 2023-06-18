@@ -11,7 +11,9 @@ public:
 	LoggedUser(const string username);
 
 	//Getter
-	string getUsername();
+	string getUsername() const;
+
+	bool operator<(const LoggedUser& other) const;
 
 private:
 	//Field

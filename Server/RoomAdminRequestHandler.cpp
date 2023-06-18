@@ -7,7 +7,7 @@
 /// <param name="m_user"> The admin of the room</param>
 /// <param name="m_roomManager">The rooms's manager</param>
 /// <param name="m_handlerFactory"> The factory for new reqeust handlers.</param>
-RoomAdminRequestHandler::RoomAdminRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory):
+RoomAdminRequestHandler::RoomAdminRequestHandler(const Room& m_room, const LoggedUser& m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory):
     RoomMemberRequestHandler(m_room, m_user, m_roomManager, m_handlerFactory)
 {
 }
@@ -77,7 +77,7 @@ RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo
 /// <summary>
 /// The function starts the game in the room.
 /// </summary>
-/// <param name="requestInfo"> THe information about the request.</param>
+/// <param name="requestInfo"> The information about the request.</param>
 /// <returns> The result from the request.</returns>
 RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
@@ -85,11 +85,12 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo
     RequestResult* reqRes = new RequestResult();//the result to return
 
     //Starting the game
-    this->m_roomManager.getRoom(this->m_room.getRoomData().id).getRoomData().isActive = true;
+    this->m_roomManager.getRoom(this->m_room.getRoomData().id).activeRoom();
     startGameResp.status = OK_STATUS_CODE;
 
+    //Making the request result
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(startGameResp);
-    reqRes->newHandler = new GameRequestHandler();
+    reqRes->newHandler = this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id);
 
     return *reqRes;
 }

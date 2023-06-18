@@ -85,54 +85,54 @@ void Communicator::bindAndListen()
 /// <param name="socket">The Socket of the client to handle.</param>
 void Communicator::handleNewClient(SOCKET socket)
 {
-	int len = ERROR_LEN;//the length of the recieved message
+	int len = 0;
 	char buffer[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
-	LoginRequest logReq;
-	SignupRequest signUpReq;
-	string code;
+	string username = "";
 	Buffer* data;
+	time_t sendingTime{};
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
-
 		while (this->m_clients.at(socket) != nullptr)
 		{
-
+			//Getting the response of the client and checking the respose time
+			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			if (len == 0)
+			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
 			}
+
+			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
 			Buffer charVector(buffer, buffer + MAX_SIZE);
 			charVector[len] = '\0';//add null terminator
 
 			data = getDataFromBuffer(charVector);
-			//Extracting the code from the request's buffer
-			for (int i = 0; i < SIZE_CODE_FIELD; i++)
-			{
-				code += data->at(i);
-			}
 
 			//turn the buffer into request
 			info.buffer = *data;
-			info.receivalTime = time(nullptr);//get the current time
-			info.id = static_cast<RequestId>(atoi(code.c_str()));
+			info.id = static_cast<RequestId>(getCode(*data));
 
 			//get the response
 			res = this->m_clients.at(socket)->handleRequest(info);
 			cout << res.response.data() << endl;
+
+			if (LOGIN_RESP_CODE == getCode(res.response)) //if there was a login
+			{
+				//saving the username
+				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
+			}
 
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
 			//Reseting variables
 			delete data;
-			code = "";
 			this->m_clients.at(socket) = res.newHandler;
-			len = ERROR_LEN;
+			len = 0;
 
 			//Reseting the buffer
 			for (int i = 0; i < MAX_SIZE; i++)
@@ -141,9 +141,10 @@ void Communicator::handleNewClient(SOCKET socket)
 			}
 		}
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		cout << e.what() << endl;
+		this->m_handlerFactory->getLoginManager()->logOut(username);
 	}
 }
 
@@ -169,4 +170,19 @@ Buffer* Communicator::getDataFromBuffer(const Buffer& buf)
 		}
 	}
 	return data;
+}
+
+/// <summary>
+/// The function getts the code from the Buffer.
+/// </summary>
+/// <param name="buffer"> The buffer with the code.</param>
+/// <returns> The code in the head of the buffer.</returns>
+int Communicator::getCode(const Buffer& buffer)
+{
+	string code = "";
+	for (int i = 0; i < SIZE_CODE_FIELD; i++)
+	{
+		code += buffer[i];
+	}
+	return atoi(code.c_str());
 }

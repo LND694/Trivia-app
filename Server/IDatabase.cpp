@@ -13,7 +13,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     string correctAnswer;
     string difficulty;
     string response;
-    vector<string> incorrectAnswers;
+    vector<string> answers;
     curlpp::Easy request;
  
     string apiUrl = OPENTDB_URL + std::to_string(amountOfQuestions) + "&type=multiple";
@@ -27,22 +27,24 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
         }));
     // Perform the request
     request.perform();
-
+    response = eraseSubString(response, SUBSTR1);
+    response = eraseSubString(response, SUBSTR2);
     auto apiResponse = json::parse(response);//parse to json
     if (apiResponse["response_code"].get<int>() == 0) {
         for (const auto& result : apiResponse["results"])
         {
-            category = result["category"].get<std::string>();
-            question = result["question"].get<std::string>();
-            question = eraseSubString(question, SUBSTR1);//erase common "&quot;"
-            question = eraseSubString(question, SUBSTR2);//erase common "&#039;"
-            correctAnswer = result["correct_answer"].get<std::string>();
-            difficulty = result["difficulty"].get<std::string>();
+            category = result["category"].get<string>();
+            question = result["question"].get<string>();
+            std::cout << question << std::endl;
+            correctAnswer = result["correct_answer"].get<string>();
+            difficulty = result["difficulty"].get<string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
-                incorrectAnswers.push_back(incorrectAnswer.get<std::string>());
+                answers.push_back(incorrectAnswer.get<string>());
             }
-            questions->push_back(Question(question, incorrectAnswers, correctAnswer, category, difficulty));
-            incorrectAnswers.clear();//reset the incorrectAnswers
+            answers.push_back(correctAnswer);
+
+            questions->push_back(Question(question, answers, correctAnswer, category, difficulty));
+            answers.clear();//reset the incorrectAnswers
         }
     }
     else
@@ -51,6 +53,81 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
     }
     return *questions;
 
+}
+
+/// <summary>
+/// The function updates a StatisticsUser variable by his
+/// new GameData.
+/// </summary>
+/// <param name="oldStats"> The old statistics of the user.</param>
+/// <param name="newStats"> The new statistics of the last game
+/// of the user.</param>
+void IDatabase::updateStatistics(StatisticsUser& oldStats, const GameData& newStats)
+{
+    //Getting the old and the new scores
+    int highScore = oldStats.getHighScore();
+    int lastScore = ScoreClaculator::calculateScore(newStats.correctAnswerCount, newStats.averageAnswerTime);
+
+    //Setting the averageAnswerTime
+    oldStats.setAverageAnswerTime(ScoreClaculator::calculateAverageTime(oldStats.getAmountTotalAnswers(),
+        oldStats.getAverageAnswerTime(),
+        newStats.correctAnswerCount + newStats.wrongAnswerCount,
+        newStats.averageAnswerTime));
+
+    //Settng the amount of the games and the answers
+    oldStats.setAmountGames(oldStats.getAmountGames() + 1);
+    oldStats.setAmountCorrectAnswers(oldStats.getAmountCorrectAnswers() + newStats.correctAnswerCount);
+    oldStats.setAmountTotalAnswers(oldStats.getAmountTotalAnswers() + newStats.correctAnswerCount + newStats.wrongAnswerCount);
+
+    //Setting the high score(if the record was broken)
+    if (highScore < lastScore)
+    {
+        oldStats.setHighScore(lastScore);
+    }
+}
+
+/// <summary>
+/// The function randomize the order of the vector
+/// of the answers.
+/// </summary>
+/// <param name="answers"> The answers to randomize their order.</param>
+/// <returns> The answers with new order.</returns>
+vector<string>& IDatabase::randomizeOrderAnswers(const vector<string>& answers)
+{
+    vector<string>* randomizedAnswers = new vector<string>();
+    random_device rd;
+    std::mt19937 rng(rd());
+    std::uniform_int_distribution<int> dist(0, AMOUNT_ANSWERS - 1);
+    int randomIndex = dist(rng);
+    bool hasAnswerAlready = false; //intializing the variables
+
+    //Going over the answers in the vector
+    for (int i = 0; i < AMOUNT_ANSWERS; i++)
+    {
+        while (hasAnswerAlready)
+        {
+            hasAnswerAlready = false;
+
+            //Randomizing the next index
+            rng = std::mt19937(rd());
+            dist = std::uniform_int_distribution<int>(0, AMOUNT_ANSWERS - 1);
+            randomIndex = dist(rng);
+
+            //Going over the randomized oreder questions
+            for (auto i = randomizedAnswers->begin(); i != randomizedAnswers->end(); i++)
+            {
+                //If this question in this index is already in the new answers.
+                if (answers[randomIndex] == *i)
+                {
+                    hasAnswerAlready = true;
+                }
+            }
+        }
+        randomizedAnswers->push_back(answers[randomIndex]);
+        hasAnswerAlready = true;
+    }
+
+    return *randomizedAnswers;
 }
 
 /// <summary>
@@ -65,8 +142,8 @@ string IDatabase::eraseSubString(string str, const string substr)
     ind = str.find(substr);
     while (ind != string::npos)
     {
-        str.erase(ind, SUBSTR1.length());
-        ind = str.find(SUBSTR1);
+        str.erase(ind, substr.length());
+        ind = str.find(substr);
     }
     return str;
 }

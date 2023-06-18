@@ -1,9 +1,10 @@
 #include "LoginRequestHandler.h"
 
 /// <summary>
-/// c`tor for login handler (currently empty)
+/// C`tor for login handler
 /// </summary>
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& reqHandFac):
+/// <param name="reqHandFac"> The fatory of the login request handler.</param>
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* reqHandFac):
     m_handlerFactory(reqHandFac)
 {
 
@@ -59,7 +60,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
         logReq = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);//get the details from the buffer
         try
         {
-            this->m_handlerFactory.getLoginManager()->login(logReq.username, logReq.password);//actual login
+            this->m_handlerFactory->getLoginManager()->login(logReq.username, logReq.password);//actual login
 
         }
         catch (const std::exception& excp)
@@ -71,7 +72,7 @@ RequestResult& LoginRequestHandler::login(const RequestInfo& requestInfo)
         {
             logResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(logResp);//turn the response into buffer of the request result
-            reqRes->newHandler = this->m_handlerFactory.createMenuRequestHandler(LoggedUser(logReq.username));//send a new menuHandler if the login was ssuccessful
+            reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(LoggedUser(logReq.username));//send a new menuHandler if the login was ssuccessful
         }
     }
     return *reqRes;
@@ -107,7 +108,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
             {
                 throw std::exception(excpStr.c_str());
             }
-            this->m_handlerFactory.getLoginManager()->signUp(signUpReq);//sign up (call database)
+            this->m_handlerFactory->getLoginManager()->signUp(signUpReq);//sign up (call database)
         }
         catch (const std::exception& excp)
         {
@@ -118,7 +119,7 @@ RequestResult& LoginRequestHandler::signUp(const RequestInfo& requestInfo)
         {
             signUpResp.status = OK_STATUS_CODE;
             reqRes->response = JsonResponsePacketSerializer::serializeResponse(signUpResp);//turn the response into buffer of the request result
-            reqRes->newHandler = this->m_handlerFactory.createMenuRequestHandler(LoggedUser(signUpReq.username));//send a new menuHandler if the login was ssuccessful
+            reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(LoggedUser(signUpReq.username));//send a new menuHandler if the login was ssuccessful
         }
     }
     return *reqRes;

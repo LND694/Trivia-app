@@ -22,6 +22,14 @@ namespace Client
         public const int CREATE_ROOM_RESP_CODE = 207;
         public const int GET_HIGH_SCORE_RESP_CODE = 208;
         public const int GET_PERS_STATS_RESP_CODE = 209;
+        public const int CLOSE_RESP_CODE = 210;
+        public const int START_GAME_RESP_CODE = 211;
+        public const int LEAVE_ROOM_RESP_CODE = 212;
+        public const int GET_ROOM_STATE_RESP_CODE = 213;
+        public const int LEAVE_GAME_RESP_CODE = 214;
+        public const int GET_QUESTION_RESP_CODE = 215;
+        public const int SUBMIT_ANSWER_RESP_CODE = 216;
+        public const int GET_GAME_RES_RESP_CODE = 217;
         public const int ERROR_RESP_CODE = 255;
     }
 
@@ -58,7 +66,7 @@ namespace Client
     public class ResponseWithStatistics : ResponseWithStatus
     {
         [JsonProperty("statistics")]
-        private Queue<string> statistics;
+        private readonly Queue<string> statistics;
 
         public ResponseWithStatistics(int status, Queue<string> statistics):
             base(status)
@@ -73,7 +81,7 @@ namespace Client
 
     public class ResponseWithPlayers : Response
     {
-        private Queue<string> players;
+        private readonly Queue<string> players;
 
         public ResponseWithPlayers(Queue<string> players):
             base()
@@ -118,7 +126,7 @@ namespace Client
     public class GetRoomsResponse : ResponseWithStatus
     {
         [JsonProperty("Rooms")]
-        private Queue<RoomData> roomDatas;
+        private readonly Queue<RoomData> roomDatas;
 
         public GetRoomsResponse(int status, Queue<RoomData> rooms):
             base(status)
@@ -204,17 +212,17 @@ namespace Client
     public class GetRoomStateResponse : ResponseWithStatus
     {
         [JsonProperty("hasGameBegun")]
-        private bool hasGameBegun;
+        private readonly bool hasGameBegun;
 
 
         [JsonProperty("players")]
-        private Queue<string> players;
+        private readonly Queue<string> players;
 
         [JsonProperty("questionCount")]
-        private int questionCount;
+        private readonly int questionCount;
 
         [JsonProperty("answerTimeOut")]
-        private int answerTimeOut;
+        private readonly int answerTimeOut;
 
         public GetRoomStateResponse(int status, bool hasGameBegun, Queue<string> players, int answerCount, int answerTimeOut) : base(status)
         {
@@ -242,10 +250,79 @@ namespace Client
         }
     }
 
+    public class GetGameResultsResponse : ResponseWithStatus
+    {
+        [JsonProperty("results")]
+        private readonly Queue<PlayerResults> results;
+
+        public GetGameResultsResponse(int status, Queue<PlayerResults> results):
+            base(status)
+        {
+            this.results = new Queue<PlayerResults>(results);
+        }
+
+        public Queue<PlayerResults> GetPlayerResults()
+        {
+            return new Queue<PlayerResults>(this.results);
+        }
+    }
+
+    public class LeaveGameResponse : ResponseWithStatus
+    {
+        public LeaveGameResponse(int status) :
+            base(status)
+        {
+
+        }
+    }
+
+    public class SubmitAnswerResponse : ResponseWithStatus
+    {
+        [JsonProperty("correctAnswerId")]
+        private readonly int correctAnswerId;
+
+        public SubmitAnswerResponse(int status, int correctAnswerId) :
+            base(status)
+        {
+            this.correctAnswerId = correctAnswerId;
+        }
+
+        public int GetCorrectAnswerId()
+        {
+            return this.correctAnswerId;
+        }
+    }
+
+    public class GetQuestionResponse : ResponseWithStatus
+    {
+        [JsonProperty("question")]
+        private readonly string question;
+
+        [JsonProperty("answers")]
+        private readonly Dictionary<int, string> answers;
+
+        public GetQuestionResponse(int status, string question, Dictionary<int, string> answers):
+            base(status)
+        {
+            this.question = question;
+            this.answers = new Dictionary<int, string>(answers);
+        }
+
+        public string GetQuestion()
+        {
+            return this.question;
+        }
+
+        public Dictionary<int, string> GetAnswers()
+        {
+            return new Dictionary<int, string>(this.answers);
+        }
+    }
+
     public class ErrorResopnse : Response
     {
         [JsonProperty("message")]
-        private string message;
+        private readonly string message;
 
 
         public ErrorResopnse(string message):

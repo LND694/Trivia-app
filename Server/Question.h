@@ -28,6 +28,7 @@ public:
 	Question(const string question, const vector<string>& answers, 
 		const string rightAnswer, const string category, const string difficulty);
 	Question();
+	Question(const Question& other);
 	~Question();
 
 	//Getters
@@ -36,5 +37,13 @@ public:
 	string getRightAnswer() const;
 	string getCategory() const;
 	string getDifficulty() const;
+	unsigned int getCorrectAnswerId() const;
+
+	//Setters
+	void setAnswers(const vector<string>& newAnswers);
+	void setQuestion(const string newQuestion);
+
+	//Operator
+	bool operator==(const Question& other) const;
 
 };

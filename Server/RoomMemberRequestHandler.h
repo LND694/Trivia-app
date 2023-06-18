@@ -19,7 +19,7 @@ protected:
 
 public:
 	//c`tor
-	RoomMemberRequestHandler(const Room m_room, const LoggedUser m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory);
+	RoomMemberRequestHandler(const Room& m_room, const LoggedUser& m_user, RoomManager& m_roomManager, RequestHandlerFactory* m_handlerFactory);
 	//Functions
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
 	RequestResult& handleRequest(const RequestInfo& requestInfo) override;

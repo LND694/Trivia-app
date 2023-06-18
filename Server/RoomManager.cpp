@@ -7,7 +7,7 @@
 /// </summary>
 /// <param name="user"> the creator of the room</param>
 /// <param name="data"> the room data</param>
-void RoomManager::createRoom(const LoggedUser& user, RoomData& data)
+void RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
 {
 	this->m_rooms.insert({ data.id, Room(data, user)});
 }
