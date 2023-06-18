@@ -221,8 +221,15 @@ int SqliteDatabase::addNewUser(const User& user)
 /// <returns> The list of the questions.</returns>
 list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 {
-	string command = "SELECT * FROM QUESTIONS LIMIT " + to_string(amountQuestions) + ";";
-	return *this->runSqlCommand<Question>(command);
+	string command = "SELECT * FROM QUESTIONS ORDER BY RAND() LIMIT " + to_string(amountQuestions) + ";";
+	list<Question>* questions =  this->runSqlCommand<Question>(command);
+
+	//Going over the questions and randmizing the order of their answers
+	for (auto i = questions->begin(); i != questions->end(); i++)
+	{
+		i->setAnswers(IDatabase::randomizeOrderAnswers(i->getAnswers()));
+	}
+	return *questions;
 }
 
 /// <summary>
@@ -371,6 +378,48 @@ int SqliteDatabase::callbackString(void* data, int argc, char** argv, char** azC
 	return OK_CODE;
 }
 
+int SqliteDatabase::callBackStatistics(void* data, int argc, char** argv, char** azColName)
+{
+	int id = 0, highScore = 0, totalAnswer = 0, correctAnswers = 0, amountGames = 0;
+	float averageTime = 0;
+	StatisticsUser statistics = StatisticsUser(id, amountGames, totalAnswer, correctAnswers, averageTime, highScore);
+
+	//Going over the arguments
+	for (int i = 0; i < argc; i++)
+	{
+		if (ID_FIELD == string(azColName[i]))
+		{
+			id = atoi(argv[i]);
+		}
+		else if (HIGH_SCORE_FIELD == string(azColName[i]))
+		{
+			highScore = atoi(argv[i]);
+
+		}
+		else if (AMOUNT_CORRECT_ANSWERS_FIELD == string(azColName[i]))
+		{
+			correctAnswers = atoi(argv[i]);
+		}
+		else if (AMOUNT_TOTAL_ANSWERS_FIELD == string(azColName[i]))
+		{
+			totalAnswer = atoi(argv[i]);
+		}
+		else if (AVERAGE_TIME_FIELD == string(azColName[i]))
+		{
+			averageTime = static_cast<float>(std::stoi(argv[i]));
+		}
+		else if (AMOUNT_GAMES_FIELD == string(azColName[i]))
+		{
+			amountGames = atoi(argv[i]);
+
+			//Adding another statistics to the list
+			statistics = StatisticsUser(id, amountGames, totalAnswer, correctAnswers, averageTime, highScore);
+			(static_cast<list<StatisticsUser>*>(data))->push_back(statistics);
+		}
+	}
+	return OK_CODE;
+}
+
 /// <summary>
 /// The function runns a command on the SQL database.
 /// </summary>
@@ -395,6 +444,10 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 	if (typeid(T).name() == typeid(int).name()) // the command should return integers
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackIntegers, listOfData, &errMsg);
+	}
+	if (typeid(T).name() == typeid(StatisticsUser).name()) // the command should return StatisticsUsers
+	{
+		result = sqlite3_exec(this->m_db, command.c_str(), callBackStatistics, listOfData, &errMsg);
 	}
 
 	if (result != SQLITE_OK)
@@ -424,15 +477,11 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackString, &data, &errMsg);
 	}
-	else if (typeid(T).name() == typeid(float).name()) // the command should return a float or int
+	else if (typeid(T).name() == typeid(float).name()) // the command should return a float
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackFloat, &data, &errMsg);
 	}
-	else if (typeid(T).name() == typeid(int).name())
-	{
-		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, &data, &errMsg);
-	}
-	else if (typeid(T).name() == typeid(int).name())
+	else if (typeid(T).name() == typeid(int).name()) // the command should return an integer
 	{
 		result = sqlite3_exec(this->m_db, command.c_str(), callbackInt, &data, &errMsg);
 	}
@@ -441,7 +490,7 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		throw std::exception(errMsg);
 	}
-	return data;
+	return T();
 }
 
 /// <summary>
@@ -554,4 +603,45 @@ vector<string>& SqliteDatabase::getHighScores()
 	}
 	idBestScores->~list();
 	return *theBestScores;
+}
+
+/// <summary>
+/// The function submitts the new statistics of the 
+/// last game in the old statistics of the user.
+/// </summary>
+/// <param name="gameData"> The data of the new game.</param>
+/// <param name="userData"> The user which this data belongs to him.</param>
+/// <returns> If the submittion succeeded or not.</returns>
+int SqliteDatabase::submitGameStatistics(const GameData& gameData, const LoggedUser& userData)
+{
+	string command = "SELECT ID FROM USERS WHERE USERNAME LIKE '" + userData.getUsername() + "';";
+	int userId = this->runSqlCommandSingleOutput<int>(command), highScore = 0;
+	int lastScore = ScoreClaculator::calculateScore(gameData.correctAnswerCount, gameData.averageAnswerTime);
+	list<StatisticsUser>* statistics = nullptr;
+
+	//Getting the last statistics of the user.
+	command = "SELECT * FROM STATISTICS WHERE USER_ID == " + to_string(userId) + ";";
+	statistics = runSqlCommand<StatisticsUser>(command);
+	StatisticsUser userStatistics = statistics->front();
+	
+	IDatabase::updateStatistics(userStatistics, gameData);
+
+	//Updating the new statistics in the database
+	command = "UPDATE STATISTICS SET \
+	HIGH_SCORE = " + to_string(userStatistics.getHighScore()) + ", " +
+		"AMOUNT_CORRECT_ANSWERS = " + to_string(userStatistics.getAmountCorrectAnswers()) + ", " +
+		"AVERAGE_ANSWER_TIME = " + to_string(userStatistics.getAverageAnswerTime()) + ", " +
+		"TOTAL_AMOUNT_ANSWERS = " + to_string(userStatistics.getAmountTotalAnswers()) + "," +
+		"AMOUNT_GAMES = " + to_string(userStatistics.getAmountGames()) +
+		" WHERE USER_ID == " + to_string(userId) + ";";
+
+	try
+	{
+		this->runSqlCommand(command);
+	}
+	catch (...)
+	{
+		return ERROR_CODE;
+	}
+	return OK_CODE;
 }

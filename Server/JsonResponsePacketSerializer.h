@@ -8,9 +8,6 @@
 #define ZERO_CHAR '0'
 #define SEPERATOR ","
 
-constexpr char SEPERATOR_ARGS_BEGIN = '[';
-constexpr char SEPERATOR_ARGS_END = ']';
-
 class JsonResponsePacketSerializer : public Singleton
 {
 public:
@@ -30,9 +27,13 @@ public:
 	static Buffer& serializeResponse(const GetHighScoreResponse& getHighScoreResp);
 	static Buffer& serializeResponse(const GetPersonalStatsResponse& getPersonStatsResp);
 	static Buffer& serializeResponse(const CloseRoomResponse& closeRoomResp);
-	static Buffer serializeResponse(const StartGameResponse& startGameResp);
-	static Buffer serializeResponse(const LeaveRoomResponse& leaveRoomResp);
-	static Buffer serializeResponse(const GetRoomStateResponse& getRoomStateResp);
+	static Buffer& serializeResponse(const StartGameResponse& startGameResp);
+	static Buffer& serializeResponse(const LeaveRoomResponse& leaveRoomResp);
+	static Buffer& serializeResponse(const GetRoomStateResponse& getRoomStateResp);
+	static Buffer& serializeResponse(const GetGameResultsResponse& getGameResResp);
+	static Buffer& serializeResponse(const SubmitAnswerResponse& subAnswerResp);
+	static Buffer& serializeResponse(const GetQuestionResponse& getQuestionResp);
+	static Buffer& serializeResponse(const LeaveGameResponse& leaveGameResp);
 protected:
 	JsonResponsePacketSerializer() = default;
 	//Singleton fields
@@ -43,11 +44,14 @@ private:
 	static string getPaddedNumber(const int num, const int digits);
 	static string echoJsonFormat(const string str);
 	static string echoStringJsonFormat(const string str);
+	static string echoVectorJsonFormat(const string str);
 	static Buffer* makeBuffer(const RESPONSE_CODES code, string responseData);
 	static void addStringToBuffer(Buffer* buf, string str);
 
 	static string getVectorString(const vector<string>& vec);
 	static string getRoomDataString(const RoomData& roomData);
+	static string getPlayerResultsString(const PlayerResults& playerResults);
+	static string getMapField(unsigned int key, string value);
 
 
 	template <class T>
@@ -56,7 +60,7 @@ private:
 
 /// <summary>
 /// The function combines the key and
-/// the vlue to a field format.
+/// the value to a field format.
 /// </summary>
 /// <typeparam name="T"> The real type of the value(what it has)</typeparam>
 /// <param name="nameField"> The name of the new field</param>
@@ -65,12 +69,12 @@ private:
 template <class T>
 inline string JsonResponsePacketSerializer::getField(const string nameField, const string value)
 { 
-	string str =  "'" + nameField + "':"; //the string needs "'"
+	string str =  echoStringJsonFormat(nameField) + ":"; //the string needs "'"
 
 
 	if (typeid(T).name() == typeid(string).name()) // the value is a string
 	{
-		str += "'" + value + "'"; //the string needs "'"
+		str += echoStringJsonFormat(value); //the string needs "'"
 	}
 	else // not a string
 	{

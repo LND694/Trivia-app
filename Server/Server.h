@@ -3,6 +3,7 @@
 #include "global.h"
 #include "Singleton.h"
 #include "SqliteDatabase.h"
+#include "GameManager.h"
 #include "RequestHandlerFactory.h"
 #include "Communicator.h"
 

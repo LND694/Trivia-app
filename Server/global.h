@@ -17,10 +17,10 @@
 #define MAX_USERS "maxUsers"
 #define QUESTION_COUNT "questionCount"
 #define ROOM_NAME "roomName"
+#define ANSWER_ID "answerId"
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 constexpr int SIZE_CODE_FIELD = 3;
-constexpr int ERROR_LEN = -1;
 
 using std::vector;
 using std::to_string;
@@ -41,6 +41,10 @@ enum RESPONSE_CODES {
 	START_GAME_RESP_CODE = 211,
 	LEAVE_ROOM_RESP_CODE = 212,
 	GET_ROOM_STATE_RESP_CODE = 213,
+	LEAVE_GAME_RESP_CODE = 214,
+	GET_QUESTION_RESP_CODE = 215,
+	SUBMIT_ANSWER_RESP_CODE = 216,
+	GET_GAME_RES_RESP_CODE = 217,
 	ERROR_RESP_CODE = 255
 };
 
@@ -58,10 +62,15 @@ enum REQUEST_CODES {
 	START_GAME_REQS_CODE = 111,
 	GET_ROOM_STATE_REQS_CODE = 112,
 	LEAVE_ROOM_REQS_CODE = 113,
+	LEAVE_GAME_REQS_CODE = 114,
+	GET_QUESTION_REQS_CODE = 115,
+	SUBMIT_ANSWER_REQS_CODE = 116,
+	GET_GAME_RESULT_REQS_CODE = 117,
 	ERROR_REQS_CODE = 255
 };
 
 typedef vector<unsigned char> Buffer;
+typedef unsigned int GameId;
 typedef REQUEST_CODES RequestId;
 typedef mutex Lock;
 

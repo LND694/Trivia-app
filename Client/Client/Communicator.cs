@@ -12,8 +12,8 @@ namespace Client
     internal class Communicator
     {
         private static Socket socket;
-        static private IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
-        static private int port = 8265;
+        static private readonly IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
+        static private readonly int  port = 8265;
 
         /// <summary>
         /// connect to the server

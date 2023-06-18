@@ -8,7 +8,7 @@ class RoomManager
 {
 public:
 	//Functions
-	void createRoom(const LoggedUser& user,RoomData& data);
+	void createRoom(const LoggedUser& user, const RoomData& data);
 	void deleteRoom(const RoomId id);
 	unsigned int getRoomState(const RoomId id);
 	vector<RoomData>& getRooms() const;

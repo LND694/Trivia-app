@@ -29,6 +29,8 @@ public:
 
 	//Question functions
 	list<Question>& getQuestions(const int amountQuestions) override;
+
+	//Statistics functions
 	float getPlayerAverageAnswerTime(const string player) override;
 	int getNumOfCorrectAnswers(const string player) override;
 	int getNumOfTotalAnswers(const string player) override;
@@ -36,9 +38,15 @@ public:
 	int getPlayerScore(const string player) override;
 	vector<string>& getHighScores() override;
 
+	//Game Functions
+	int submitGameStatistics(const GameData& gameData, const LoggedUser& userData) override;
+
 private:
-	void insertQuestions(const int numOfQuestions);
+	//Fields
 	mongocxx::database db;
 	mongocxx::client client;
+	
+	//Help function
+	void insertQuestions(const int numOfQuestions);
 };
 

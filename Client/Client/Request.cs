@@ -26,17 +26,21 @@ namespace Client
         public const int START_GAME_REQS_CODE = 111;
         public const int GET_ROOM_STATE_REQS_CODE = 112;
         public const int LEAVE_ROOM_REQS_CODE = 113;
+        public const int LEAVE_GAME_REQS_CODE = 114;
+        public const int GET_QUESTION_REQS_CODE = 115;
+        public const int SUBMIT_ANSWER_REQS_CODE = 116;
+        public const int GET_GAME_RESULT_REQS_CODE = 117;
         public const int ERROR_REQS_CODE = 255;
     }
     public class LoginRequest : Request
     {
         [JsonProperty("username")]
-        private string username;
+        private readonly string username;
 
         [JsonProperty("password")]
-        private string password;
+        private readonly string password;
 
-        public LoginRequest(string username, string password):
+        public LoginRequest(string username, string password) :
             base()
         {
             this.username = username;
@@ -56,18 +60,18 @@ namespace Client
     public class SignupRequest : LoginRequest
     {
         [JsonProperty("email")]
-        private string email;
+        private readonly string email;
 
         [JsonProperty("address")]
-        private string address;
+        private readonly string address;
 
         [JsonProperty("phone")]
-        private string phoneNum;
+        private readonly string phoneNum;
 
         [JsonProperty("date")]
-        private string bornDate;
+        private readonly string bornDate;
 
-        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate):
+        public SignupRequest(string username, string password, string email, string address, string phoneNum, string bornDate) :
             base(username, password)
         {
             this.email = email;
@@ -98,9 +102,9 @@ namespace Client
     public class RequestWithRoomId : Request
     {
         [JsonProperty("roomId")]
-        private int roomId;
+        private readonly int roomId;
 
-        public RequestWithRoomId(int roomId):
+        public RequestWithRoomId(int roomId) :
             base()
         {
             this.roomId = roomId;
@@ -109,7 +113,7 @@ namespace Client
 
     public class GetPlayersInRoomRequest : RequestWithRoomId
     {
-        public GetPlayersInRoomRequest(int roomId):
+        public GetPlayersInRoomRequest(int roomId) :
             base(roomId)
         {
 
@@ -129,18 +133,18 @@ namespace Client
     public class CreateRoomRequest : Request
     {
         [JsonProperty("roomName")]
-        private string roomName;
+        private readonly string roomName;
 
         [JsonProperty("maxUsers")]
-        private int maxUsers;
+        private readonly int maxUsers;
 
         [JsonProperty("questionCount")]
-        private int questionCount;
+        private readonly int questionCount;
 
         [JsonProperty("answerTimeout")]
-        private int answerTimeout;
+        private readonly int answerTimeout;
 
-        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout):
+        public CreateRoomRequest(string roomName, int maxUsers, int questionCount, int answerTimeout) :
             base()
         {
             this.roomName = roomName;
@@ -166,5 +170,14 @@ namespace Client
             return this.answerTimeout;
         }
 
+    }
+    public class SubmitAnswerRequest
+    {
+        [JsonProperty("answerId")]
+        private int answerId;
+        public SubmitAnswerRequest(int answerId)
+        {
+            this.answerId = answerId;
+        }
     }
 }

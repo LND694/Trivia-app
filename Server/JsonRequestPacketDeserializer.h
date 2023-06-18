@@ -22,6 +22,7 @@ public:
 	static GetPlayersInRoomRequest& desrializeGetPlayersRequest(const Buffer& buffer);
 	static JoinRoomRequest& desrializeJoinRoomRequest(const Buffer& buffer);
 	static CreateRoomRequest& desrializeCreateRoomRequest(const Buffer& buffer);
+	static SubmitAnswerRequest& desrializeSubmitAnswerRequest(const Buffer& buffer);
 protected:
 	JsonRequestPacketDeserializer() = default;
 	//Singleton fields
