@@ -31,6 +31,8 @@ namespace Client
         private int questionsLeft;
         private bool wasClicked = false;
         private bool isRight = false;
+        private object control;
+
         public Form1()
         {
             Thread autoUpdateThread = new Thread(new ThreadStart(AutoUpdate));
@@ -681,7 +683,7 @@ namespace Client
                     // Update the ListBox with the modified item
                     if (this.listBox3.InvokeRequired)
                     {
-                        control.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
                     }
                     else
                     {
@@ -719,7 +721,7 @@ namespace Client
                     // Update the ListBox with the modified item
                     if (this.listBox3.InvokeRequired)
                     {
-                        control.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
+                        listBox3.Invoke((MethodInvoker)(() => this.listBox3.Items[i] += " 0"));
                     }
                     else
                     {
