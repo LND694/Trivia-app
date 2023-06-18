@@ -1009,7 +1009,7 @@ namespace Client
                 try
                 {
                     resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                    if(resp.GetStatus() != Constants.OK_STATUS_CODE)
+                    if (resp.GetStatus() != Constants.OK_STATUS_CODE)
                     {
                         throw new Exception("You finished all your questions");
                     }
@@ -1034,22 +1034,23 @@ namespace Client
                     updateScore(this.textBox20.Text);
                     this.isRight = false;
                 }
-                this.questionsLeft--;
                 seconds = this.roomData.GetAnswerTimeOut();
                 this.wasClicked = false;
+                this.questionsLeft--;
             }
             if(this.questionsLeft == 0) //there are no more questions left
             {
                 this.timer1.Stop();
                 Thread.Sleep(5000);
                 Queue<string> results = new Queue<string>();
-                response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+
+                
                 //Waiting for the game to be over
-                //while(Constants.OK_STATUS_CODE != response.GetStatus())
-                //{
-                //    Thread.Sleep(5000);
-                //    response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
-                //}
+                do
+                {
+                    Thread.Sleep(5000);
+                    response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
+                }while(Constants.OK_STATUS_CODE != response.GetStatus());
                 foreach (var i in response.GetPlayerResults())
                 {
                     results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());

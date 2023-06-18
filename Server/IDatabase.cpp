@@ -27,15 +27,15 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
         }));
     // Perform the request
     request.perform();
-
+    response = eraseSubString(response, SUBSTR1);
+    response = eraseSubString(response, SUBSTR2);
     auto apiResponse = json::parse(response);//parse to json
     if (apiResponse["response_code"].get<int>() == 0) {
         for (const auto& result : apiResponse["results"])
         {
             category = result["category"].get<string>();
             question = result["question"].get<string>();
-            question = eraseSubString(question, SUBSTR1);//erase common "&quot;"
-            question = eraseSubString(question, SUBSTR2);//erase common "&#039;"
+            std::cout << question << std::endl;
             correctAnswer = result["correct_answer"].get<string>();
             difficulty = result["difficulty"].get<string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
@@ -142,8 +142,8 @@ string IDatabase::eraseSubString(string str, const string substr)
     ind = str.find(substr);
     while (ind != string::npos)
     {
-        str.erase(ind, SUBSTR1.length());
-        ind = str.find(SUBSTR1);
+        str.erase(ind, substr.length());
+        ind = str.find(substr);
     }
     return str;
 }

@@ -144,9 +144,9 @@ vector<LoggedUser>& Game::getGameUsers() const
 	vector<LoggedUser>* users = new vector<LoggedUser>();
 
 	//Going over the map of the players
-	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	for (const auto& i : this->m_players)
 	{
-		users->push_back(i->first);
+		users->push_back(i.first);
 	}
 	return *users;
 }

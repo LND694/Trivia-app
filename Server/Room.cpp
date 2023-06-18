@@ -44,7 +44,7 @@ void Room::removeUser(LoggedUser& user)
 vector<string>& Room::getAllUsers() const
 {
 	vector<string>* res = new vector<string>();
-	for (auto i : this->m_users)
+	for (const auto& i : this->m_users)
 	{
 		res->push_back(i.getUsername());
 	}
