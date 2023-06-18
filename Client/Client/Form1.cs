@@ -665,19 +665,17 @@ namespace Client
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox1);
 
             AddTextsToListBox(this.roomData.GetPlayers(), this.listBox3);
-            // Assuming you have a ListBox named "myListBox"
+
 
             // Iterate through the ListBox items
             for (int i = 0; i < this.listBox3.Items.Count; i++)
             {
-                // Retrieve the current item
-                string currentItem = this.listBox3.Items[i].ToString();
-
-                // Append zero to the current item
-                string updatedItem = currentItem + " 0";
-
-                // Update the ListBox with the modified item
-                this.listBox3.Items[i] = updatedItem;
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    this.listBox3.Items[i] += " 0";
+                }
             }
             this.roomDataLock.ReleaseMutex();
         }
@@ -700,16 +698,15 @@ namespace Client
             // Assuming you have a ListBox named "myListBox"
 
             // Iterate through the ListBox items
+            // Iterate through the ListBox items
             for (int i = 0; i < this.listBox3.Items.Count; i++)
             {
-                // Retrieve the current item
-                string currentItem = this.listBox3.Items[i].ToString();
-
-                // Append zero to the current item
-                string updatedItem = currentItem + " 0";
-
-                // Update the ListBox with the modified item
-                this.listBox3.Items[i] = updatedItem;
+                string playerEntry = this.listBox3.Items[i].ToString();
+                if (playerEntry.StartsWith(this.textBox20.Text))
+                {
+                    // Update the ListBox with the modified item
+                    this.listBox3.Items[i] += " 0";
+                }
             }
             this.roomDataLock.ReleaseMutex();
         }
