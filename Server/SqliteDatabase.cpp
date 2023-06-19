@@ -469,7 +469,7 @@ list<T>* SqliteDatabase::runSqlCommand(const string command)
 template<class T>
 T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 {
-	T data;
+	T data{};//initialize immdiately
 	char* errMsg = nullptr;
 	int result = 0;
 
