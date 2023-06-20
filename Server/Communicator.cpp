@@ -12,6 +12,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	this->algo = new OTPCryptoAlgorithm();
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
 }
@@ -111,6 +112,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	Buffer* data;
 	time_t sendingTime{};
 	string key;
+	string plainText;
 	this->m_keys.insert({ socket,getKey(socket, buffer) });//init a new pair of socket and key recived by the client
 	cout << this->m_keys.at(socket) << endl;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
@@ -126,11 +128,12 @@ void Communicator::handleNewClient(SOCKET socket)
 				throw std::exception("The client disconnected");
 			}
 			key = this->m_keys.at(socket);
-			cout << this->algo->decrypt(buffer, key) << endl;
-			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
-			Buffer charVector(buffer, buffer + MAX_SIZE);
-			charVector[len] = '\0';//add null terminator
+			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
+			plainText = this->algo->decrypt(buffer, key);
+			cout << this->algo->decrypt(this->algo->encrypt(plainText, key),key);
+			Buffer charVector = this->algo->convertToBuffer(plainText);
+
 
 			data = getDataFromBuffer(charVector);
 
@@ -147,7 +150,7 @@ void Communicator::handleNewClient(SOCKET socket)
 				//saving the username
 				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
 			}
-
+			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 
@@ -208,3 +211,4 @@ int Communicator::getCode(const Buffer& buffer)
 	}
 	return atoi(code.c_str());
 }
+

@@ -27,13 +27,13 @@ namespace Client
         public string Encrypt(string plainText, string otpKey)
         {
             // Convert the plaintext and OTP key to byte arrays
-            byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
-            byte[] keyBytes = Encoding.UTF8.GetBytes(otpKey);
+            byte[] plainBytes = Encoding.ASCII.GetBytes(plainText);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(otpKey);
 
             // Ensure that the key length matches the plaintext length
-            if (plainBytes.Length != keyBytes.Length)
+            if (plainBytes.Length > keyBytes.Length)
             {
-                throw new ArgumentException("Plaintext and OTP key must have the same length.");
+                throw new ArgumentException("Plaintext must be smaller or equal to OTP key");
             }
 
             // Perform XOR operation between the plaintext and OTP key
@@ -43,10 +43,21 @@ namespace Client
                 encryptedBytes[i] = (byte)(plainBytes[i] ^ keyBytes[i]);
             }
 
-            // Convert the encrypted bytes to a base64 string
-            string encryptedText = Convert.ToBase64String(encryptedBytes);
-            return encryptedText;
+            return System.Text.Encoding.ASCII.GetString(encryptedBytes);
         }
+        public string Decrypt(string ciphertext, string otpKey)
+        {
+            byte[] ciphertextBytes = Encoding.ASCII.GetBytes(ciphertext);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(otpKey);
 
+            byte[] decryptedBytes = new byte[ciphertextBytes.Length];
+
+            for (int i = 0; i < ciphertextBytes.Length; i++)
+            {
+                decryptedBytes[i] = (byte)(ciphertextBytes[i] ^ keyBytes[i % keyBytes.Length]);
+            }
+
+            return Encoding.ASCII.GetString(decryptedBytes);
+        }
     }
 }

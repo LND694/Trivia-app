@@ -59,9 +59,11 @@ namespace Client
         /// <returns> The last message from the server.</returns>
         public string GetResponseFromServer()
         {
+            string text;
             byte[] buffer = new byte[Constants.BUFFER_SIZE];
             socket.Receive(buffer);
-            return System.Text.Encoding.Default.GetString(buffer);
+            text = otp.Decrypt(Encoding.ASCII.GetString(buffer), otpKey);
+            return text;
         }
 
         public void SendKey(string key)

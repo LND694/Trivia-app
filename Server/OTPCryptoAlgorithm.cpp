@@ -1,68 +1,33 @@
 #include "OTPCryptoAlgorithm.h"
 
-string OTPCryptoAlgorithm::encrypt(string message)
+string OTPCryptoAlgorithm::encrypt(std::string message, std::string key) const
 {
-    string key;
-    // Convert plaintext and key to byte arrays
+    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
     CryptoPP::SecByteBlock plaintextBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
-    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
-    // Ensure key length matches plaintext length
-    if (keyBytes.size() < plaintextBytes.size())
-    {
-        throw std::exception("Error: Key length must be at least as long as the plaintext!");
-    }
 
-    // Perform OTP encryption
-    for (size_t i = 0; i < plaintextBytes.size(); i++)
-    {
-        plaintextBytes[i] ^= keyBytes[i];
-    }
+    CryptoPP::SecByteBlock encryptedBytes(plaintextBytes.size());
+    CryptoPP::xorbuf(encryptedBytes, plaintextBytes, keyBytes, plaintextBytes.size());
 
-    // Convert ciphertext to hex string
-    std::string ciphertext;
-    CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(ciphertext));
-    encoder.Put(plaintextBytes.data(), plaintextBytes.size());
-    encoder.MessageEnd();
+    string encryptedText(encryptedBytes.begin(),encryptedBytes.end());
 
-    // Print the ciphertext
-    std::cout << "Ciphertext: " << ciphertext << std::endl;
 
-    return ciphertext;
+    return encryptedText;
 }
 
-string OTPCryptoAlgorithm::decrypt(string message, string key)
+string OTPCryptoAlgorithm::decrypt(std::string message, std::string key) const
 {
-
-    // Convert ciphertext and key to byte arrays
-    CryptoPP::SecByteBlock ciphertextBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
     CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock encryptedBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
 
-    // Perform OTP decryption
-    for (size_t i = 0; i < ciphertextBytes.size(); i++)
-    {
-        ciphertextBytes[i] ^= keyBytes[i];
-    }
+    CryptoPP::SecByteBlock decryptedBytes(encryptedBytes.size());
+    CryptoPP::xorbuf(decryptedBytes, encryptedBytes, keyBytes, encryptedBytes.size());
 
-    // Retrieve the decrypted plaintext
-    string plaintext(reinterpret_cast<const char*>(ciphertextBytes.data()), ciphertextBytes.size());
+    string decryptedText(decryptedBytes.begin(), decryptedBytes.end());
 
-    // Print the decrypted plaintext
-    std::cout << "Decrypted plaintext: " << plaintext << std::endl;
-
-    return plaintext;
+    return decryptedText;
 }
 
-string OTPCryptoAlgorithm::GenerateKey()
+OTPCryptoAlgorithm::OTPCryptoAlgorithm()
 {
-    CryptoPP::AutoSeededRandomPool rng;
-    CryptoPP::SecByteBlock key(KEY_SIZE);
-    rng.GenerateBlock(key, key.size());
-
-    // encode to hex format
-    std::string encodedKey;
-    CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(encodedKey));
-    encoder.Put(key, key.size());
-    encoder.MessageEnd();
-
-    return encodedKey;
 }
+

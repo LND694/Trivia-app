@@ -53,7 +53,8 @@ namespace Client
         public static T DeserializeResponse<T>(string buffer)
         {
             string data = JsonResponsePacketDeserializer.GetDataFromBuffer(buffer);
-            if(CheckIfErrorResp(buffer))
+            data = data.Substring(0, data.Length - 998);
+            if (CheckIfErrorResp(buffer))
             {
                 throw new Exception(JsonConvert.DeserializeObject<ErrorResopnse>(data).GetMessage());
             }
