@@ -72,6 +72,10 @@ bool SqliteDatabase::open()
 		return false;
 	}
 
+	//Deleting all the questions from the website which stayed from the last time
+	command = "DELETE FROM QUESTIONS WHERE IS_FROM_USER == 0;";
+	this->runSqlCommand(command);
+
 	//Inserting the questions into the database
 	//Going over the vector of the questions
 	for (auto i = vecQuest.begin(); i != vecQuest.end(); i++)

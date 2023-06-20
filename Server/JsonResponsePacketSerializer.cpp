@@ -323,7 +323,7 @@ void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
     //Going over the string
     for (const auto& i : str)
     {
-        buf->push_back(str[i]);
+        buf->push_back(i);
     }
 }
 
