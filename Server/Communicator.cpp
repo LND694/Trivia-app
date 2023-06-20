@@ -144,6 +144,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
 			encryptedText = string(reinterpret_cast<char*>(buffer1), sizeof(buffer1));//byte array to string
+			encryptedText.resize(len);
 			plainText = this->algo->decrypt(encryptedText, key);
 			cout << "decrypted: " << plainText << endl;
 			Buffer charVector = this->algo->convertToBuffer(plainText);

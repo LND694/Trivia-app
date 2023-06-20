@@ -21,6 +21,7 @@
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 constexpr int SIZE_CODE_FIELD = 3;
+constexpr int MAX_SIZE = 1024;
 
 using std::vector;
 using std::to_string;

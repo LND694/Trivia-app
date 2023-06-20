@@ -13,7 +13,7 @@
 using std::map;
 using std::cout;
 using std::endl;
-constexpr int MAX_SIZE = 1024;
+
 constexpr int PORT = 8265;
 constexpr int IFACE = 0;
 

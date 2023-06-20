@@ -7,13 +7,14 @@
 #include <cryptopp/osrng.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/base64.h>
+#include <cryptopp/files.h>
 
 using std::ofstream;
 using std::filesystem::remove_all;
 
-constexpr int MAX_SIZE_KEY = 32;
+constexpr int MAX_SIZE_KEY = 2048;
 const string DIRECTORY_PATH = "C:/Keys";
-const string SERVER_KEY_FILE = "ServerKey.txt";
+const string SERVER_KEY_FILE = "ServerKey.pem";
 
 class RSACryptoAlgorithm : public CryptoAlgorithm
 {
@@ -28,4 +29,7 @@ private:
 
 	//Help function
 	static void deletePreviousFile(const string filename);
+	string publicKeyToString();
+	static CryptoPP::RSA::PublicKey& loadPublicKeyFromPEM(const string pemPublicKey);
+
 };
