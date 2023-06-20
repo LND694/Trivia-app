@@ -149,6 +149,7 @@ void Communicator::handleNewClient(SOCKET socket)
 				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
 			}
 			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));
+			cout << "encoded: " << res.response.data() << endl;
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 

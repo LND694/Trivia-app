@@ -35,11 +35,11 @@ namespace Client
             {
                 currentChar = buffer[i];
                 //if the character is not a letter or a scope
-                if(currentChar == Constants.END_STR_SYMBOL)
+                if(currentChar == Constants.END_STR_SYMBOL)//if there is null terminator so get out of the loop
                 {
                     break;
                 }
-                if (currentChar != Constants.NEW_LINE && currentChar != Constants.END_STR_SYMBOL)
+                if (currentChar != Constants.NEW_LINE)
                 {
                     data += currentChar;
                 }
