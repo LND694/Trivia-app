@@ -48,6 +48,14 @@ typedef struct CreateRoomRequest
 
 }CreateRoomRequest;
 
+typedef struct AddQuestionRequest
+{
+	string question;
+	string rightAnswer;
+	string difficulty;
+	vector<string> wrongAnswers;
+} AddQuestionRequest;
+
 
 typedef struct SubmitAnswerRequest {
 	unsigned int answerId;
