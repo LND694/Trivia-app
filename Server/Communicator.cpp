@@ -114,7 +114,6 @@ void Communicator::handleNewClient(SOCKET socket)
 	string key;
 	string plainText;
 	this->m_keys.insert({ socket,getKey(socket, buffer) });//init a new pair of socket and key recived by the client
-	cout << this->m_keys.at(socket) << endl;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
@@ -131,7 +130,6 @@ void Communicator::handleNewClient(SOCKET socket)
 
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 			plainText = this->algo->decrypt(buffer, key);
-			cout << this->algo->decrypt(this->algo->encrypt(plainText, key),key);
 			Buffer charVector = this->algo->convertToBuffer(plainText);
 
 

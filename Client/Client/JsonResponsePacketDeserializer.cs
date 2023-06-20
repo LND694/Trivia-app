@@ -35,6 +35,10 @@ namespace Client
             {
                 currentChar = buffer[i];
                 //if the character is not a letter or a scope
+                if(currentChar == Constants.END_STR_SYMBOL)
+                {
+                    break;
+                }
                 if (currentChar != Constants.NEW_LINE && currentChar != Constants.END_STR_SYMBOL)
                 {
                     data += currentChar;
@@ -53,7 +57,6 @@ namespace Client
         public static T DeserializeResponse<T>(string buffer)
         {
             string data = JsonResponsePacketDeserializer.GetDataFromBuffer(buffer);
-            data = data.Substring(0, data.Length - 998);
             if (CheckIfErrorResp(buffer))
             {
                 throw new Exception(JsonConvert.DeserializeObject<ErrorResopnse>(data).GetMessage());
