@@ -49,7 +49,6 @@ namespace Client
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.button_WOC4 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox83 = new System.Windows.Forms.TextBox();
             this.menuPanel = new System.Windows.Forms.Panel();
@@ -183,6 +182,7 @@ namespace Client
             this.textBox85 = new System.Windows.Forms.TextBox();
             this.textBox84 = new System.Windows.Forms.TextBox();
             this.textBox82 = new System.Windows.Forms.TextBox();
+            this.button_WOC4 = new ePOSOne.btnProduct.Button_WOC();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -206,6 +206,7 @@ namespace Client
             // signUpPanel
             // 
             this.signUpPanel.BackColor = System.Drawing.Color.Aquamarine;
+            this.signUpPanel.Controls.Add(this.button_WOC4);
             this.signUpPanel.Controls.Add(this.textBox17);
             this.signUpPanel.Controls.Add(this.textBox16);
             this.signUpPanel.Controls.Add(this.numericUpDown1);
@@ -225,7 +226,6 @@ namespace Client
             this.signUpPanel.Controls.Add(this.textBox6);
             this.signUpPanel.Controls.Add(this.textBox4);
             this.signUpPanel.Controls.Add(this.textBox3);
-            this.signUpPanel.Controls.Add(this.button_WOC4);
             this.signUpPanel.Controls.Add(this.textBox2);
             this.signUpPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.signUpPanel.Location = new System.Drawing.Point(0, 0);
@@ -308,7 +308,7 @@ namespace Client
             // 
             this.textBox11.BackColor = System.Drawing.Color.White;
             this.textBox11.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox11.Location = new System.Drawing.Point(1740, 557);
+            this.textBox11.Location = new System.Drawing.Point(1067, 373);
             this.textBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(188, 31);
@@ -323,7 +323,7 @@ namespace Client
             "054",
             "052",
             "058"});
-            this.comboBox1.Location = new System.Drawing.Point(1078, 370);
+            this.comboBox1.Location = new System.Drawing.Point(973, 381);
             this.comboBox1.MaximumSize = new System.Drawing.Size(99, 0);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(76, 21);
@@ -338,7 +338,7 @@ namespace Client
             this.button_WOC3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC3.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC3.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC3.Location = new System.Drawing.Point(46, 855);
+            this.button_WOC3.Location = new System.Drawing.Point(31, 539);
             this.button_WOC3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC3.Name = "button_WOC3";
             this.button_WOC3.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -355,7 +355,7 @@ namespace Client
             // 
             this.textBox10.BackColor = System.Drawing.Color.RoyalBlue;
             this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox10.Location = new System.Drawing.Point(922, 136);
+            this.textBox10.Location = new System.Drawing.Point(817, 119);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
             this.textBox10.Size = new System.Drawing.Size(129, 31);
@@ -364,7 +364,7 @@ namespace Client
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(1063, 136);
+            this.monthCalendar1.Location = new System.Drawing.Point(958, 119);
             this.monthCalendar1.MaxDate = new System.DateTime(2023, 5, 25, 0, 0, 0, 0);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.ShowToday = false;
@@ -374,10 +374,10 @@ namespace Client
             // 
             this.textBox9.BackColor = System.Drawing.Color.RoyalBlue;
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox9.Location = new System.Drawing.Point(922, 362);
+            this.textBox9.Location = new System.Drawing.Point(790, 373);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(129, 31);
+            this.textBox9.Size = new System.Drawing.Size(156, 31);
             this.textBox9.TabIndex = 8;
             this.textBox9.Text = "Phone Number:";
             // 
@@ -444,28 +444,6 @@ namespace Client
             this.textBox3.TabIndex = 2;
             this.textBox3.Text = "Username:";
             // 
-            // button_WOC4
-            // 
-            this.button_WOC4.BackColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC4.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC4.ButtonColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_WOC4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_WOC4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_WOC4.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC4.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC4.Location = new System.Drawing.Point(927, 855);
-            this.button_WOC4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button_WOC4.Name = "button_WOC4";
-            this.button_WOC4.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC4.OnHoverButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC4.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC4.Size = new System.Drawing.Size(154, 47);
-            this.button_WOC4.TabIndex = 1;
-            this.button_WOC4.Text = "Sign up";
-            this.button_WOC4.TextColor = System.Drawing.Color.Black;
-            this.button_WOC4.UseVisualStyleBackColor = false;
-            this.button_WOC4.Click += new System.EventHandler(this.button_WOC4_Click);
-            // 
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.Color.Aquamarine;
@@ -513,15 +491,16 @@ namespace Client
             this.button_WOC25.BackColor = System.Drawing.SystemColors.Highlight;
             this.button_WOC25.BorderColor = System.Drawing.Color.Black;
             this.button_WOC25.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC25.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC25.ForeColor = System.Drawing.Color.Lime;
-            this.button_WOC25.Location = new System.Drawing.Point(1562, 622);
+            this.button_WOC25.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC25.Location = new System.Drawing.Point(529, 169);
             this.button_WOC25.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC25.Name = "button_WOC25";
             this.button_WOC25.OnHoverBorderColor = System.Drawing.Color.Gray;
             this.button_WOC25.OnHoverButtonColor = System.Drawing.Color.HotPink;
             this.button_WOC25.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC25.Size = new System.Drawing.Size(416, 162);
+            this.button_WOC25.Size = new System.Drawing.Size(277, 105);
             this.button_WOC25.TabIndex = 6;
             this.button_WOC25.Text = "Add Question";
             this.button_WOC25.TextColor = System.Drawing.Color.Black;
@@ -536,7 +515,7 @@ namespace Client
             this.button_WOC10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC10.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC10.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC10.Location = new System.Drawing.Point(880, 255);
+            this.button_WOC10.Location = new System.Drawing.Point(926, 171);
             this.button_WOC10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC10.Name = "button_WOC10";
             this.button_WOC10.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -557,7 +536,7 @@ namespace Client
             this.button_WOC9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC9.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC9.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC9.Location = new System.Drawing.Point(159, 255);
+            this.button_WOC9.Location = new System.Drawing.Point(70, 171);
             this.button_WOC9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC9.Name = "button_WOC9";
             this.button_WOC9.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -578,7 +557,7 @@ namespace Client
             this.button_WOC8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC8.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC8.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC8.Location = new System.Drawing.Point(1562, 255);
+            this.button_WOC8.Location = new System.Drawing.Point(70, 397);
             this.button_WOC8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC8.Name = "button_WOC8";
             this.button_WOC8.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -596,7 +575,7 @@ namespace Client
             this.textBox23.BackColor = System.Drawing.SystemColors.Highlight;
             this.textBox23.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox23.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox23.Location = new System.Drawing.Point(568, 44);
+            this.textBox23.Location = new System.Drawing.Point(458, 34);
             this.textBox23.Multiline = true;
             this.textBox23.Name = "textBox23";
             this.textBox23.ReadOnly = true;
@@ -614,7 +593,7 @@ namespace Client
             this.button_WOC11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC11.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC11.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC11.Location = new System.Drawing.Point(880, 637);
+            this.button_WOC11.Location = new System.Drawing.Point(529, 395);
             this.button_WOC11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC11.Name = "button_WOC11";
             this.button_WOC11.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -649,7 +628,7 @@ namespace Client
             this.button_WOC5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC5.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC5.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC5.Location = new System.Drawing.Point(896, 860);
+            this.button_WOC5.Location = new System.Drawing.Point(596, 465);
             this.button_WOC5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC5.Name = "button_WOC5";
             this.button_WOC5.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -671,7 +650,7 @@ namespace Client
             this.button_WOC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC2.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC2.Location = new System.Drawing.Point(896, 709);
+            this.button_WOC2.Location = new System.Drawing.Point(596, 371);
             this.button_WOC2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC2.Name = "button_WOC2";
             this.button_WOC2.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -693,7 +672,7 @@ namespace Client
             this.button_WOC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC1.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC1.Location = new System.Drawing.Point(896, 543);
+            this.button_WOC1.Location = new System.Drawing.Point(596, 270);
             this.button_WOC1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC1.Name = "button_WOC1";
             this.button_WOC1.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -743,7 +722,7 @@ namespace Client
             this.button_WOC14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC14.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC14.Location = new System.Drawing.Point(1552, 346);
+            this.button_WOC14.Location = new System.Drawing.Point(876, 194);
             this.button_WOC14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC14.Name = "button_WOC14";
             this.button_WOC14.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -765,7 +744,7 @@ namespace Client
             this.button_WOC13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC13.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC13.Location = new System.Drawing.Point(60, 818);
+            this.button_WOC13.Location = new System.Drawing.Point(529, 465);
             this.button_WOC13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC13.Name = "button_WOC13";
             this.button_WOC13.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -783,7 +762,7 @@ namespace Client
             this.textBox24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox24.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox24.Location = new System.Drawing.Point(574, 57);
+            this.textBox24.Location = new System.Drawing.Point(510, 44);
             this.textBox24.Multiline = true;
             this.textBox24.Name = "textBox24";
             this.textBox24.ReadOnly = true;
@@ -801,7 +780,7 @@ namespace Client
             this.button_WOC12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC12.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC12.Location = new System.Drawing.Point(302, 346);
+            this.button_WOC12.Location = new System.Drawing.Point(149, 196);
             this.button_WOC12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC12.Name = "button_WOC12";
             this.button_WOC12.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -839,7 +818,7 @@ namespace Client
             this.button_WOC7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC7.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC7.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC7.Location = new System.Drawing.Point(75, 851);
+            this.button_WOC7.Location = new System.Drawing.Point(52, 539);
             this.button_WOC7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC7.Name = "button_WOC7";
             this.button_WOC7.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -917,7 +896,7 @@ namespace Client
             this.button_WOC6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC6.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC6.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC6.Location = new System.Drawing.Point(1014, 851);
+            this.button_WOC6.Location = new System.Drawing.Point(685, 539);
             this.button_WOC6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC6.Name = "button_WOC6";
             this.button_WOC6.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -969,7 +948,7 @@ namespace Client
             // 
             this.textBox33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox33.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox33.Location = new System.Drawing.Point(1118, 298);
+            this.textBox33.Location = new System.Drawing.Point(1031, 297);
             this.textBox33.Multiline = true;
             this.textBox33.Name = "textBox33";
             this.textBox33.ReadOnly = true;
@@ -995,7 +974,7 @@ namespace Client
             // 
             this.textBox32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox32.Font = new System.Drawing.Font("Yu Gothic UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox32.Location = new System.Drawing.Point(1118, 154);
+            this.textBox32.Location = new System.Drawing.Point(1031, 153);
             this.textBox32.Multiline = true;
             this.textBox32.Name = "textBox32";
             this.textBox32.ReadOnly = true;
@@ -1034,7 +1013,7 @@ namespace Client
             // 
             this.textBox29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox29.Location = new System.Drawing.Point(727, 296);
+            this.textBox29.Location = new System.Drawing.Point(640, 295);
             this.textBox29.Multiline = true;
             this.textBox29.Name = "textBox29";
             this.textBox29.ReadOnly = true;
@@ -1047,7 +1026,7 @@ namespace Client
             // 
             this.textBox28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox28.Location = new System.Drawing.Point(727, 154);
+            this.textBox28.Location = new System.Drawing.Point(640, 153);
             this.textBox28.Multiline = true;
             this.textBox28.Name = "textBox28";
             this.textBox28.ReadOnly = true;
@@ -1091,7 +1070,7 @@ namespace Client
             this.button_WOC16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC16.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC16.Location = new System.Drawing.Point(824, 809);
+            this.button_WOC16.Location = new System.Drawing.Point(505, 481);
             this.button_WOC16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC16.Name = "button_WOC16";
             this.button_WOC16.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1109,7 +1088,7 @@ namespace Client
             this.textBox25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox25.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox25.Location = new System.Drawing.Point(492, 49);
+            this.textBox25.Location = new System.Drawing.Point(394, 24);
             this.textBox25.Multiline = true;
             this.textBox25.Name = "textBox25";
             this.textBox25.ReadOnly = true;
@@ -1296,7 +1275,7 @@ namespace Client
             this.textBox42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.textBox42.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox42.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox42.Location = new System.Drawing.Point(458, 34);
+            this.textBox42.Location = new System.Drawing.Point(451, 36);
             this.textBox42.Multiline = true;
             this.textBox42.Name = "textBox42";
             this.textBox42.ReadOnly = true;
@@ -1314,7 +1293,7 @@ namespace Client
             this.button_WOC15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC15.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.button_WOC15.Location = new System.Drawing.Point(824, 754);
+            this.button_WOC15.Location = new System.Drawing.Point(545, 481);
             this.button_WOC15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC15.Name = "button_WOC15";
             this.button_WOC15.OnHoverBorderColor = System.Drawing.Color.Transparent;
@@ -1495,7 +1474,7 @@ namespace Client
             this.button_WOC18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC18.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC18.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC18.Location = new System.Drawing.Point(852, 738);
+            this.button_WOC18.Location = new System.Drawing.Point(555, 465);
             this.button_WOC18.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC18.Name = "button_WOC18";
             this.button_WOC18.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1530,7 +1509,7 @@ namespace Client
             this.button_WOC20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC20.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC20.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC20.Location = new System.Drawing.Point(62, 738);
+            this.button_WOC20.Location = new System.Drawing.Point(85, 465);
             this.button_WOC20.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC20.Name = "button_WOC20";
             this.button_WOC20.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1616,7 +1595,7 @@ namespace Client
             this.button_WOC17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC17.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC17.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC17.Location = new System.Drawing.Point(852, 738);
+            this.button_WOC17.Location = new System.Drawing.Point(545, 436);
             this.button_WOC17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC17.Name = "button_WOC17";
             this.button_WOC17.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1634,7 +1613,7 @@ namespace Client
             this.textBox62.BackColor = System.Drawing.SystemColors.Highlight;
             this.textBox62.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox62.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox62.Location = new System.Drawing.Point(568, 44);
+            this.textBox62.Location = new System.Drawing.Point(520, 44);
             this.textBox62.Multiline = true;
             this.textBox62.Name = "textBox62";
             this.textBox62.ReadOnly = true;
@@ -1652,7 +1631,7 @@ namespace Client
             this.button_WOC19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC19.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC19.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button_WOC19.Location = new System.Drawing.Point(62, 738);
+            this.button_WOC19.Location = new System.Drawing.Point(48, 436);
             this.button_WOC19.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC19.Name = "button_WOC19";
             this.button_WOC19.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1818,7 +1797,7 @@ namespace Client
             this.button_WOC21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC21.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC21.Location = new System.Drawing.Point(1161, 574);
+            this.button_WOC21.Location = new System.Drawing.Point(926, 381);
             this.button_WOC21.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC21.Name = "button_WOC21";
             this.button_WOC21.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -1886,7 +1865,7 @@ namespace Client
             this.button_WOC23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC23.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC23.Location = new System.Drawing.Point(1162, 637);
+            this.button_WOC23.Location = new System.Drawing.Point(790, 346);
             this.button_WOC23.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC23.Name = "button_WOC23";
             this.button_WOC23.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -2008,7 +1987,7 @@ namespace Client
             this.button_WOC22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC22.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button_WOC22.Location = new System.Drawing.Point(638, 522);
+            this.button_WOC22.Location = new System.Drawing.Point(394, 337);
             this.button_WOC22.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC22.Name = "button_WOC22";
             this.button_WOC22.OnHoverBorderColor = System.Drawing.Color.Gray;
@@ -2185,7 +2164,7 @@ namespace Client
             this.button_WOC24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_WOC24.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_WOC24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button_WOC24.Location = new System.Drawing.Point(783, 754);
+            this.button_WOC24.Location = new System.Drawing.Point(529, 501);
             this.button_WOC24.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button_WOC24.Name = "button_WOC24";
             this.button_WOC24.OnHoverBorderColor = System.Drawing.Color.Transparent;
@@ -2426,26 +2405,48 @@ namespace Client
             this.textBox82.Text = "Enter a question here:";
             this.textBox82.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // button_WOC4
+            // 
+            this.button_WOC4.BackColor = System.Drawing.Color.Aquamarine;
+            this.button_WOC4.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC4.ButtonColor = System.Drawing.Color.DeepSkyBlue;
+            this.button_WOC4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_WOC4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC4.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC4.ForeColor = System.Drawing.Color.Aquamarine;
+            this.button_WOC4.Location = new System.Drawing.Point(580, 539);
+            this.button_WOC4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button_WOC4.Name = "button_WOC4";
+            this.button_WOC4.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC4.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC4.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC4.Size = new System.Drawing.Size(154, 47);
+            this.button_WOC4.TabIndex = 1;
+            this.button_WOC4.Text = "Sign up";
+            this.button_WOC4.TextColor = System.Drawing.Color.Black;
+            this.button_WOC4.UseVisualStyleBackColor = false;
+            this.button_WOC4.Click += new System.EventHandler(this.button_WOC4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
+            this.Controls.Add(this.enterRoomPanel);
+            this.Controls.Add(this.bestPlayersPanel);
+            this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.personalStatsPanel);
+            this.Controls.Add(this.roomAdminPanel);
+            this.Controls.Add(this.roomMemberPanel);
+            this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.results);
+            this.Controls.Add(this.createRoomPanel);
             this.Controls.Add(this.questionPanel);
             this.Controls.Add(this.menuPanel);
-            this.Controls.Add(this.signUpPanel);
-            this.Controls.Add(this.gamePanel);
-            this.Controls.Add(this.roomMemberPanel);
-            this.Controls.Add(this.createRoomPanel);
-            this.Controls.Add(this.roomAdminPanel);
-            this.Controls.Add(this.results);
-            this.Controls.Add(this.personalStatsPanel);
-            this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.loginPanel);
+            this.Controls.Add(this.signUpPanel);
             this.Controls.Add(this.openPanel);
-            this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.enterRoomPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);
@@ -2486,7 +2487,6 @@ namespace Client
 
         #endregion
         private System.Windows.Forms.Panel signUpPanel;
-        private ePOSOne.btnProduct.Button_WOC button_WOC4;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox4;
@@ -2639,6 +2639,7 @@ namespace Client
         private System.Windows.Forms.TextBox textBox89;
         private System.Windows.Forms.TextBox textBox90;
         private ePOSOne.btnProduct.Button_WOC button_WOC27;
+        private ePOSOne.btnProduct.Button_WOC button_WOC4;
     }
 }
 

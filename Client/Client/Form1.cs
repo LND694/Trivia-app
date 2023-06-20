@@ -1023,7 +1023,7 @@ namespace Client
                 {
                     //Getting the current question from the server
                     resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                    if (resp.GetStatus() != Constants.OK_STATUS_CODE)
+                    if (resp.GetStatus() != Constants.OK_STATUS_CODE && this.seconds == 0)
                     {
                         throw new Exception("You finished all your questions");
                     }
