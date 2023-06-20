@@ -6,7 +6,7 @@ Buffer& CryptoAlgorithm::convertToBuffer(string str)
     return *buf;
 }
 
-string CryptoAlgorithm::convertToString(Buffer& buf)
+string CryptoAlgorithm::convertToString(const Buffer& buf)
 {
     string str = "";
     for (const auto& i : buf)
