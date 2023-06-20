@@ -10,6 +10,7 @@ namespace Client
     {
         public const int OK_STATUS_CODE = 1;
         public const int ROOM_NOT_FOUND_ID = -1;
+        public const int NO_ANSWER_ID = -1;
         public const int BUFFER_SIZE = 1024;
         public const int SIZE_CODE_FIELD = 3;
         public const int SIZE_LENGTH_DATA_FIELD = 10;

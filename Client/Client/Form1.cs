@@ -31,6 +31,7 @@ namespace Client
         private int questionsLeft;
         private bool wasClicked = false;
         private bool isRight = false;
+        private bool isAnswered = false;
 
         public Form1()
         {
@@ -606,27 +607,27 @@ namespace Client
 
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox44.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox44, theHighScores.Dequeue());
             }
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox39.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox39, theHighScores.Dequeue());
             }
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox45.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox45, theHighScores.Dequeue());
             }
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox41.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox41, theHighScores.Dequeue());
             }
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox46.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox46, theHighScores.Dequeue());
             }
             if (theHighScores != null && theHighScores.Count > 0)
             {
-                textBox43.Text = theHighScores.Dequeue();
+                UpdateControlText(textBox43, theHighScores.Dequeue());
             }
         }
 
@@ -1045,10 +1046,15 @@ namespace Client
             UpdateControlText(this.label1, seconds--.ToString());
             if (seconds == 0)
             {
+                if(!this.isAnswered)
+                {
+                    SendAnswer(-1);
+                }
                 if(this.isRight)
                 {
                     updateScore(this.textBox20.Text);
                     this.isRight = false;
+                    this.isAnswered = false;
                 }
                 seconds = this.roomData.GetAnswerTimeOut();
                 this.wasClicked = false;
@@ -1057,7 +1063,6 @@ namespace Client
             if(this.questionsLeft == 0) //there are no more questions left
             {
                 this.timer1.Stop();
-                Thread.Sleep(5000);
                 Queue<string> results = new Queue<string>();
 
                 
@@ -1108,6 +1113,7 @@ namespace Client
                 if(response.GetCorrectAnswerId() == id)
                 {
                     this.isRight = true;
+                    this.isAnswered = true;
                 }
             }
             catch (Exception ex)
