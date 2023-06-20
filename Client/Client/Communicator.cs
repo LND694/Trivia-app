@@ -14,7 +14,7 @@ namespace Client
         private static Socket socket;
         static private readonly IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
         static private readonly int  port = 8265;
-        static private readonly OTP otp = new OTP();
+        static private readonly CryptoAlgoritm crypto = new OTP();
         static private string otpKey;
         /// <summary>
         /// connect to the server
@@ -25,7 +25,7 @@ namespace Client
             // Specify the IP address and port number to connect
             // Connect to the server
             socket.Connect(ipAddress, port);
-            otpKey = otp.GenerateKey();
+            otpKey = crypto.GenerateKey();
             SendKey(otpKey);
             if(socket.Connected)
             {
@@ -50,7 +50,7 @@ namespace Client
         /// <param name="data"> The data to send</param>
         public void SendRequestToServer(string data)
         {
-            socket.Send(otp.Encrypt(data, otpKey));
+            socket.Send(crypto.Encrypt(data, otpKey));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Client
             string text;
             byte[] buffer = new byte[Constants.BUFFER_SIZE];
             socket.Receive(buffer);
-            text = otp.Decrypt(Encoding.ASCII.GetString(buffer), otpKey);
+            text = crypto.Decrypt(Encoding.ASCII.GetString(buffer), otpKey);
             return text;
         }
 

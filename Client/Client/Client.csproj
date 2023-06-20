@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Communicator.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CryptoAlgoritm.cs" />
     <Compile Include="JsonRequestPacketSerializer.cs" />
     <Compile Include="JsonResponsePacketDeserializer.cs" />
     <Compile Include="OTP.cs" />

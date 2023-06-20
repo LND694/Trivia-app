@@ -6,33 +6,23 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 namespace Client
 {
-    public class OTP
+    public class OTP : CryptoAlgoritm
     {
-        private const int byteLength = 200;
-        public string GenerateKey()
+        public OTP():
+            base()
         {
-            // Create a byte array to hold the generated OTP key
-            byte[] otpKey = new byte[byteLength];
 
-            // Generate the OTP key using RNGCryptoServiceProvider
-            using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetBytes(otpKey);
-            }
-
-            // Convert the byte array to a hexadecimal string representation
-            string otpKeyHex = BitConverter.ToString(otpKey).Replace("-", "");
-            return otpKeyHex;
         }
-        public byte[] Encrypt(string plainText, string otpKey)
+        private const int byteLength = 200;
+        public override byte[] Encrypt(string message, string key)
         {
             // Convert the plaintext and OTP key to byte arrays
-            byte[] plainBytes = Encoding.ASCII.GetBytes(plainText);
-            byte[] keyBytes = Encoding.ASCII.GetBytes(otpKey);
+            byte[] plainBytes = Encoding.ASCII.GetBytes(message);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(key);
             // Ensure that the key length matches the plaintext length
             if (plainBytes.Length > keyBytes.Length)
             {
-                throw new ArgumentException("Plaintext must be smaller or equal to OTP key");
+                throw new Exception("Plaintext must be smaller or equal to OTP key");
             }
 
             // Perform XOR operation between the plaintext and OTP key
@@ -41,13 +31,12 @@ namespace Client
             {
                 encryptedBytes[i] = (byte)(plainBytes[i] ^ keyBytes[i]);
             }
-            string t = Encoding.ASCII.GetString(encryptedBytes);
             return encryptedBytes;
         }
-        public string Decrypt(string ciphertext, string otpKey)
+        public override string Decrypt(string message, string key)
         {
-            byte[] ciphertextBytes = Encoding.ASCII.GetBytes(ciphertext);
-            byte[] keyBytes = Encoding.ASCII.GetBytes(otpKey);
+            byte[] ciphertextBytes = Encoding.ASCII.GetBytes(message);
+            byte[] keyBytes = Encoding.ASCII.GetBytes(key);
 
             byte[] decryptedBytes = new byte[ciphertextBytes.Length];
 
