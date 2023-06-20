@@ -11,6 +11,7 @@ using std::vector;
 #define DIFFICULTY_FIELD "DIFFICULTY"
 #define CORRECT_ANSWER_FIELD "CORRECT_ANSWER"
 #define ANSWER_FIELD "ANSWER"
+#define FROM_USER_FIELD "IS_FROM_USER"
 
 constexpr unsigned int AMOUNT_ANSWERS = 4;
 
@@ -22,11 +23,12 @@ private:
 	string m_category;
 	string m_difficulty;
 	vector<string> m_answers;
+	bool m_isFromUser = false;
 
 public:
 	//C'tor&D'tor
 	Question(const string question, const vector<string>& answers, 
-		const string rightAnswer, const string category, const string difficulty);
+		const string rightAnswer, const string category, const string difficulty, const bool isFromUser = false);
 	Question();
 	Question(const Question& other);
 	~Question();
@@ -38,6 +40,7 @@ public:
 	string getCategory() const;
 	string getDifficulty() const;
 	unsigned int getCorrectAnswerId() const;
+	bool getIfFromUser() const;
 
 	//Setters
 	void setAnswers(const vector<string>& newAnswers);
