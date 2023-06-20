@@ -29,6 +29,7 @@ private:
 	RequestResult& getHighScore(const RequestInfo& requestInfo);
 	RequestResult& joinRoom(const RequestInfo& requestInfo);
 	RequestResult& createRoom(const RequestInfo& requestInfo);
+	RequestResult& addQuestion(const RequestInfo& requestInfo);
 
 	//Fields
 	LoggedUser m_user;

@@ -35,7 +35,8 @@ bool MenuRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 		JOIN_ROOM_REQS_CODE == code ||
 		CREATE_ROOM_REQS_CODE == code ||
 		GET_HIGH_SCORE_REQS_CODE == code ||
-		GET_PERS_STATS_REQS_CODE == code;
+		GET_PERS_STATS_REQS_CODE == code ||
+		ADD_QUESTION_REQS_CODE == code;
 }
 
 /// <summary>
@@ -77,6 +78,8 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 		case GET_PERS_STATS_REQS_CODE:
 			*res =  getPersonalStats(requestInfo);
 			break;
+		case ADD_QUESTION_REQS_CODE:
+			*res = addQuestion(requestInfo);
 		}
 	}
 
@@ -274,5 +277,47 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	req->newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(this->m_user, Room(roomData, this->m_user));
 
 	delete& createRoomReqs;
+	return *req;
+}
+
+RequestResult& MenuRequestHandler::addQuestion(const RequestInfo& requestInfo)
+{
+	RequestResult* req = new RequestResult();
+	AddQuestionResponse addQuestResp = AddQuestionResponse();
+	AddQuestionRequest& addQuestReq = JsonRequestPacketDeserializer::deserializeAddQuestionRequest(requestInfo.buffer);
+	CHECK_QUESTION_RESULTS resultQuestion = QUESTION_IS_LEGAL;
+
+	//Creating the question to insert
+	addQuestReq.wrongAnswers.push_back(addQuestReq.rightAnswer);
+	Question question = Question(addQuestReq.question, addQuestReq.wrongAnswers,
+		addQuestReq.rightAnswer, "Question from user " + this->m_user.getUsername(),
+		addQuestReq.difficulty, true);
+
+	//Making sure that the question is valid
+	resultQuestion = UserInputChecker::isQuestionValid(question.getQuestion(), question.getDifficulty());
+	if (QUESTION_IS_LEGAL != resultQuestion)
+	{
+		switch (resultQuestion)
+		{
+		case NO_QUESTION_MARK:
+			throw std::exception("There should be a question mark in the end of the question.\n");
+			break;
+		case INVALID_DIFFICULTY:
+			throw std::exception("This difficulty is not recognized.\n");
+			break;
+		case NO_QUESTION_WORD:
+			throw std::exception("There should be a question word in the start of the question like who or when\n");
+			break;
+		}
+	}
+
+	//adding the question
+	this->m_statisticsManager.addQuestion(question);
+
+	//Making the RequestResult
+	addQuestResp.status = OK_STATUS_CODE;
+	req->response = JsonResponsePacketSerializer::serializeResponse(addQuestResp);
+	req->newHandler = this;
+
 	return *req;
 }
