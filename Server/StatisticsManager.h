@@ -12,6 +12,7 @@ public:
 	//Functions
 	vector<string>& getHighScore() const;
 	vector<string>& getUserStatistics(const string username) const;
+	void addQuestion(const Question& question);
 private:
 	//Field
 	IDatabase* m_database;

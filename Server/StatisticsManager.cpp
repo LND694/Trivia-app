@@ -43,6 +43,15 @@ vector<string>& StatisticsManager::getUserStatistics(const string username) cons
 
 }
 
+/// <summary>
+/// The function adds a question from the user to the DB.
+/// </summary>
+/// <param name="question"> The question to insert.</param>
+void StatisticsManager::addQuestion(const Question& question)
+{
+    this->m_database->insertQuestionToDB(question);
+}
+
 
 
 
