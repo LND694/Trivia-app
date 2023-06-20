@@ -220,6 +220,12 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse&
     return *makeBuffer(LEAVE_GAME_RESP_CODE, echoJsonFormat(responseData));
 }
 
+Buffer& JsonResponsePacketSerializer::serializeResponse(const AddQuestionResponse& addQuestResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(addQuestResp.status));
+    return *makeBuffer(ADD_QUESTION_RESP_CODE, echoJsonFormat(responseData));
+}
+
 
 /// <summary>
 /// The function add to the number '0' to

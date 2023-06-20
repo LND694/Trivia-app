@@ -106,5 +106,20 @@ SubmitAnswerRequest& JsonRequestPacketDeserializer::desrializeSubmitAnswerReques
     return *req;
 }
 
+AddQuestionRequest& JsonRequestPacketDeserializer::deserializeAddQuestionRequest(const Buffer& buffer)
+{
+    AddQuestionRequest* req = new AddQuestionRequest();
+    string dataToParse(buffer.begin(), buffer.end());
+    dataToParse.erase(0, SIZE_LENGTH_DATA_FIELD + SIZE_CODE_FIELD);
+    auto js = json::parse(dataToParse); //parse into json object
+
+    req->question = js[QUESTION];
+    req->difficulty = js[DIFFICULTY];
+    req->rightAnswer = js[RIGHT_ANSWER];
+    req->wrongAnswers = js[WRONG_ANSWERS];
+
+    return *req;
+}
+
 
 

@@ -34,6 +34,8 @@ public:
 	static Buffer& serializeResponse(const SubmitAnswerResponse& subAnswerResp);
 	static Buffer& serializeResponse(const GetQuestionResponse& getQuestionResp);
 	static Buffer& serializeResponse(const LeaveGameResponse& leaveGameResp);
+	static Buffer& serializeResponse(const AddQuestionResponse& addQuestResp);
+
 protected:
 	JsonResponsePacketSerializer() = default;
 	//Singleton fields

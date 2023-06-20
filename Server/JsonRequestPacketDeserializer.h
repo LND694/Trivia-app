@@ -23,12 +23,10 @@ public:
 	static JoinRoomRequest& desrializeJoinRoomRequest(const Buffer& buffer);
 	static CreateRoomRequest& desrializeCreateRoomRequest(const Buffer& buffer);
 	static SubmitAnswerRequest& desrializeSubmitAnswerRequest(const Buffer& buffer);
+	static AddQuestionRequest& deserializeAddQuestionRequest(const Buffer& buffer);
 protected:
 	JsonRequestPacketDeserializer() = default;
 	//Singleton fields
 	static JsonRequestPacketDeserializer* m_instance;
 	static Lock m_lock;
-private:
-	//Help functions
-	static Buffer* getDataFromBuffer(const Buffer& buf);
 };
