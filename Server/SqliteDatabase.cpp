@@ -221,7 +221,7 @@ int SqliteDatabase::addNewUser(const User& user)
 /// <returns> The list of the questions.</returns>
 list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 {
-	string command = "SELECT * FROM QUESTIONS ORDER BY RAND() LIMIT " + to_string(amountQuestions) + ";";
+	string command = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + to_string(amountQuestions) + ";";
 	list<Question>* questions =  this->runSqlCommand<Question>(command);
 
 	//Going over the questions and randmizing the order of their answers
@@ -238,7 +238,7 @@ list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 /// <param name="command"> The command to run.</param>
 void SqliteDatabase::runSqlCommand(const string command)
 {
-	char* errMsg = nullptr;
+	char* errMsg = nullptr;	
 	int result = sqlite3_exec(this->m_db, command.c_str(), nullptr, nullptr, &errMsg);
 
 	if (result != SQLITE_OK)
@@ -343,15 +343,17 @@ int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** 
 		else if (CORRECT_ANSWER_FIELD == string(azColName[i]))
 		{
 			rightAnswer = argv[i];
+			answers.push_back(rightAnswer);
 		}
-		else if (string(azColName[i]).find(ANSWER_FIELD))
+		if (string(azColName[i]).substr(0, 6) == ANSWER_FIELD)
 		{
 			answers.push_back(argv[i]);
 
-			if (static_cast<unsigned long long>(AMOUNT_ANSWERS) - 1 == answers.size())//support compatibility with wider type
+			if (static_cast<unsigned long long>(AMOUNT_ANSWERS) == answers.size())//support compatibility with wider type
 			{
-				currentQuestion = Question(quesiton, answers, rightAnswer, category, difficulty);
+				currentQuestion = Question(quesiton, IDatabase::randomizeOrderAnswers(answers), rightAnswer, category, difficulty);
 				(static_cast<list<Question>*>(data))->push_back(currentQuestion);
+				answers.clear();
 			}
 		}
 	}
@@ -490,7 +492,7 @@ T SqliteDatabase::runSqlCommandSingleOutput(const string command)
 	{
 		throw std::exception(errMsg);
 	}
-	return T();
+	return data;
 }
 
 /// <summary>
