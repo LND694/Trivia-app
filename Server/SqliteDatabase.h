@@ -22,7 +22,8 @@ DIFFICULTY TEXT NOT NULL, \
 CORRECT_ANSWER TEXT NOT NULL, \
 ANSWER1 TEXT NOT NULL, \
 ANSWER2 TEXT NOT NULL, \
-ANSWER3 TEXT NOT NULL);" ,
+ANSWER3 TEXT NOT NULL, \
+IS_FROM_USER INTEGER NOT NULL);" ,
 
 "CREATE TABLE IF NOT EXISTS STATISTICS(USER_ID INTEGER NOT NULL, \
 HIGH_SCORE INTEGER, \
@@ -54,6 +55,7 @@ public:
 
 	//Question function
 	list<Question>& getQuestions(const int amountQuestions) override;
+	int insertQuestionToDB(const Question& question) override;
 
 	//Statistics functions
 	float getPlayerAverageAnswerTime(const string player) override;
