@@ -261,6 +261,40 @@ CHECK_ADDRESS_RESULTS UserInputChecker::isAddressValid(const string address)
     return ADDRESS_IS_LEGAL;
 }
 
+CHECK_QUESTION_RESULTS UserInputChecker::isQuestionValid(const string question, const string difficultyQuestion)
+{
+    vector<string> suffixQuestion = {QUESTION_MARK};
+    bool isDiffLegal = false;
+    vector<string> questionWords = { "What", "Why", "Where", "When", "How", "Which", "Who", "Whose"};
+
+    //if there is no question mark in the end of the question
+    if (!doesHaveASuffix(question, suffixQuestion))
+    {
+        return NO_QUESTION_MARK;
+    }
+
+    //Going over the difficulties
+    for (int i = 0; i < AMOUNT_DIFFS; i++)
+    {
+        if (DIFFICULTIES[i] == difficultyQuestion)
+        {
+            isDiffLegal = true;
+        }
+    }
+    if (!isDiffLegal)
+    {
+        return INVALID_DIFFICULTY;
+    }
+
+    //if there are no question words in the start of the question
+    if (!doesHaveAPrefix(question, questionWords))
+    {
+        return NO_QUESTION_WORD;
+    }
+
+    return QUESTION_IS_LEGAL;
+}
+
 /// <summary>
 /// The function checks if a date really
 /// exists.
