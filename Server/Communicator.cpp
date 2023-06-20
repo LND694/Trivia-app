@@ -57,6 +57,24 @@ void Communicator::startHandleRequests()
 		handle.detach();
 	}
 }
+string Communicator::getKey(SOCKET socket, char* buffer)
+{
+	int len = 0;
+	string key;
+	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
+	if (len <= 0)
+	{
+		throw std::exception("The client disconnected");
+	}
+	buffer[len] = '\0';//add null terminator
+	key = string(buffer);//convert to string
+	//Reseting the buffer
+	for (int i = 0; i < MAX_SIZE; i++)
+	{
+		buffer[i] = END_STR_SYMBOL;
+	}
+	return key;
+}
 /// <summary>
 /// The function binds the Socket of the server and starts to 
 /// listen to requests.
@@ -92,6 +110,9 @@ void Communicator::handleNewClient(SOCKET socket)
 	string username = "";
 	Buffer* data;
 	time_t sendingTime{};
+	string key;
+	this->m_keys.insert({ socket,getKey(socket, buffer) });//init a new pair of socket and key recived by the client
+	cout << this->m_keys.at(socket) << endl;
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
@@ -104,7 +125,8 @@ void Communicator::handleNewClient(SOCKET socket)
 			{
 				throw std::exception("The client disconnected");
 			}
-
+			key = this->m_keys.at(socket);
+			cout << this->algo->decrypt(buffer, key) << endl;
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
 			Buffer charVector(buffer, buffer + MAX_SIZE);

@@ -30,9 +30,8 @@ string OTPCryptoAlgorithm::encrypt(string message)
     return ciphertext;
 }
 
-string OTPCryptoAlgorithm::decrypt(string message)
+string OTPCryptoAlgorithm::decrypt(string message, string key)
 {
-    std::string key = "randomkey";
 
     // Convert ciphertext and key to byte arrays
     CryptoPP::SecByteBlock ciphertextBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());

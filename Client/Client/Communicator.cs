@@ -14,7 +14,8 @@ namespace Client
         private static Socket socket;
         static private readonly IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
         static private readonly int  port = 8265;
-
+        static private readonly OTP otp = new OTP();
+        static private string otpKey;
         /// <summary>
         /// connect to the server
         /// </summary>
@@ -24,7 +25,8 @@ namespace Client
             // Specify the IP address and port number to connect
             // Connect to the server
             socket.Connect(ipAddress, port);
-
+            otpKey = otp.GenerateKey();
+            SendKey(otpKey);
             if(socket.Connected)
             {
                 Console.WriteLine("connection ssuccessful!");
@@ -48,7 +50,7 @@ namespace Client
         /// <param name="data"> The data to send</param>
         public void SendRequestToServer(string data)
         {
-            socket.Send(Encoding.ASCII.GetBytes(data));
+            socket.Send(Encoding.ASCII.GetBytes(otp.Encrypt(data, otpKey)));
         }
 
         /// <summary>
@@ -60,6 +62,11 @@ namespace Client
             byte[] buffer = new byte[Constants.BUFFER_SIZE];
             socket.Receive(buffer);
             return System.Text.Encoding.Default.GetString(buffer);
+        }
+
+        public void SendKey(string key)
+        {
+            socket.Send(Encoding.ASCII.GetBytes(key));
         }
 
     }

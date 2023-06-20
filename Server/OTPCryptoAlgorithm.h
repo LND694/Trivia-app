@@ -11,7 +11,7 @@ class OTPCryptoAlgorithm : public CryptoAlgorithm
 public:
 	OTPCryptoAlgorithm();
 	string encrypt(string message) override;
-	string decrypt(string message) override;
+	string decrypt(string message, string key) override;
 	string GenerateKey();
 
 private:
