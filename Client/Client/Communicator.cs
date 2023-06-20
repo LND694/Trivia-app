@@ -27,10 +27,6 @@ namespace Client
             socket.Connect(ipAddress, port);
             otpKey = crypto.GenerateKey();
             SendKey(otpKey);
-            if(socket.Connected)
-            {
-                Console.WriteLine("connection ssuccessful!");
-            }
         }
 
         /// <summary>

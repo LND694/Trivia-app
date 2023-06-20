@@ -12,6 +12,10 @@ namespace Client
         public abstract string Decrypt(string message, string key);
         public abstract byte[] Encrypt(string message, string key);
 
+        /// <summary>
+        /// The funciton generates a key for encryption/decryption.
+        /// </summary>
+        /// <returns> The randomized key.</returns>
         public string GenerateKey()
         {
             // Create a byte array to hold the generated OTP key

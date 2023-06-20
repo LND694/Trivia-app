@@ -13,7 +13,15 @@ namespace Client
         {
 
         }
-        private const int byteLength = 200;
+
+        /// <summary>
+        /// The function encryptes the message with the key.
+        /// </summary>
+        /// <param name="message"> the message to encrypt.</param>
+        /// <param name="key"> The key to encrypt with.</param>
+        /// <returns> The encrypted message.</returns>
+        /// <exception cref="Exception"> The message must be smaller than
+        /// the key, unless there is an exception.</exception>
         public override byte[] Encrypt(string message, string key)
         {
             // Convert the plaintext and OTP key to byte arrays
@@ -33,6 +41,15 @@ namespace Client
             }
             return encryptedBytes;
         }
+
+        /// <summary>
+        /// The function decryptes the message with the key.
+        /// </summary>
+        /// <param name="message"> the message to decrypt.</param>
+        /// <param name="key"> The key to decrypt with.</param>
+        /// <returns> The decrypted message.</returns>
+        /// <exception cref="Exception"> The message must be smaller than
+        /// the key, unless there is an exception.</exception>
         public override string Decrypt(string message, string key)
         {
             byte[] ciphertextBytes = Encoding.ASCII.GetBytes(message);
