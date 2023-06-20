@@ -14,7 +14,7 @@ namespace Client
         private static Socket socket;
         static private readonly IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
         static private readonly int  port = 8265;
-        static private readonly CryptoAlgoritm crypto = new AesEncryption();
+        static private readonly CryptoAlgoritm crypto = new OTP();
         static private byte[] aesIV;//in case of aes
         static private byte[] key;
         /// <summary>
