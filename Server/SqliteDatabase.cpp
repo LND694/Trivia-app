@@ -89,9 +89,7 @@ bool SqliteDatabase::open()
 /// <returns> a bool value- if the closing was successful or not.</returns>
 bool SqliteDatabase::close()
 {
-	string command = "DELETE FROM QUESTIONS WHERE IS_FROM USER == 0;";
-	this->runSqlCommand(command);
-	command = "DELETE FROM SCORES;";
+	string command = "DELETE FROM QUESTIONS WHERE IS_FROM_USER == 0;";
 	this->runSqlCommand(command);
 	sqlite3_close(this->m_db);
 	this->m_db = nullptr;
@@ -187,9 +185,6 @@ int SqliteDatabase::addNewUser(const User& user)
 	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0, 0);";
 	this->runSqlCommand(command);
 
-	command = "INSERT INTO SCORES(USER_ID, SCORE) VALUES ((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "'), 0);";
-	this->runSqlCommand(command);
-
 	return OK_CODE;
 }
 
@@ -221,7 +216,7 @@ int SqliteDatabase::insertQuestionToDB(const Question& question)
 	//Preparing the command
 	command += "('" + question.getQuestion() + "', '";
 	command += question.getCategory() + "', '" + question.getDifficulty() + "', '";
-	command += question.getRightAnswer() + "', '";
+	command += question.getRightAnswer() + "', ";
 	
 	//Adding the answers to the colums(the wrong ones)
 	for (int i = 0; i < answers.size(); i++)

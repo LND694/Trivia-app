@@ -19,8 +19,6 @@ public:
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
 	RequestResult& handleRequest(const RequestInfo& requestInfo) override;
 private:
-	//Help functions
-	void createErrorResponse(const string errMsg, RequestResult* reqRes);
 
 	RequestResult& signout(const RequestInfo& requestInfo);
 	RequestResult& getRooms(const RequestInfo& requestInfo);

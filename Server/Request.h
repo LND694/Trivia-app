@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include <vector>
 using std::string;
-
+using std::vector;
 
 /// <summary>
 /// struct for logins
@@ -50,10 +51,10 @@ typedef struct CreateRoomRequest
 
 typedef struct AddQuestionRequest
 {
+	vector<string> wrongAnswers;
 	string question;
 	string rightAnswer;
 	string difficulty;
-	vector<string> wrongAnswers;
 } AddQuestionRequest;
 
 

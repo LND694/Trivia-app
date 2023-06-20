@@ -49,55 +49,34 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
 	RequestResult* res = new RequestResult();
 
-	if (!this->isRequestRelevent(requestInfo))
+	switch (requestInfo.id)
 	{
-		createErrorResponse(ERROR_MSG, res);
-	}
-	else
-	{
-		switch (requestInfo.id)
-		{
-		case LOGOUT_REQS_CODE:
-			*res = signout(requestInfo);
-			break;
-		case GET_ROOMS_REQS_CODE:
-			*res = getRooms(requestInfo);
-			break;
-		case GET_PLAYERS_IN_ROOM_REQS_CODE:
-			*res = getPlayersInRoom(requestInfo);
-			break;
-		case JOIN_ROOM_REQS_CODE:
-			*res = joinRoom(requestInfo);
-			break;
-		case CREATE_ROOM_REQS_CODE:
-			*res = createRoom(requestInfo);
-			break;
-		case GET_HIGH_SCORE_REQS_CODE:
-			*res =  getHighScore(requestInfo);
-			break;
-		case GET_PERS_STATS_REQS_CODE:
-			*res =  getPersonalStats(requestInfo);
-			break;
-		case ADD_QUESTION_REQS_CODE:
-			*res = addQuestion(requestInfo);
-		}
+	case LOGOUT_REQS_CODE:
+		*res = signout(requestInfo);
+		break;
+	case GET_ROOMS_REQS_CODE:
+		*res = getRooms(requestInfo);
+		break;
+	case GET_PLAYERS_IN_ROOM_REQS_CODE:
+		*res = getPlayersInRoom(requestInfo);
+		break;
+	case JOIN_ROOM_REQS_CODE:
+		*res = joinRoom(requestInfo);
+		break;
+	case CREATE_ROOM_REQS_CODE:
+		*res = createRoom(requestInfo);
+		break;
+	case GET_HIGH_SCORE_REQS_CODE:
+		*res = getHighScore(requestInfo);
+		break;
+	case GET_PERS_STATS_REQS_CODE:
+		*res = getPersonalStats(requestInfo);
+		break;
+	case ADD_QUESTION_REQS_CODE:
+		*res = addQuestion(requestInfo);
 	}
 
     return *res;
-}
-
-/// <summary>
-/// The function creates an ErrorResponse struct and saves it in
-/// the RequestResult variable.
-/// </summary>
-/// <param name="errMsg"> The message of the error.</param>
-/// <param name="reqRes"> The RequestResult to put  the ErrorResponse in.</param>
-void MenuRequestHandler::createErrorResponse(const string errMsg, RequestResult* reqRes)
-{
-	ErrorResopnse errResp;
-	errResp.message = errMsg;
-	reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
-	reqRes->newHandler = this;//if there is a error the new handler will be the current
 }
 
 /// <summary>
@@ -226,16 +205,7 @@ RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 	JoinRoomRequest& joinRoomReqs = JsonRequestPacketDeserializer::desrializeJoinRoomRequest(requestInfo.buffer);
 	JoinRoomResponse joinRoomResp = JoinRoomResponse();
 
-	try
-	{
-		this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
-	}
-	catch (const std::exception& excp)
-	{
-		createErrorResponse(excp.what(), req);
-		delete& joinRoomReqs;
-		return *req;
-	}
+	this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
 	
 	//Making the JoinRoomResponse
 	joinRoomResp.status = OK_STATUS_CODE;

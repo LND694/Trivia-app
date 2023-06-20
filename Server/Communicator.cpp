@@ -12,7 +12,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	this->algo = new AesEncryption();
+	this->algo = new OTPCryptoAlgorithm();
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
 }
@@ -123,6 +123,7 @@ void Communicator::handleNewClient(SOCKET socket)
 	string iv = "";
 	string plainText = "";
 	string encryptedText = "";
+	IRequestHandler* currentHandler = nullptr;
 	this->m_keys.insert({ socket,getEncyptionData(socket, buffer) });//init a new pair of socket and key recived by the client
 	this->m_ivs.insert({ socket,getEncyptionData(socket,buffer) });//init iv vector
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
@@ -159,7 +160,22 @@ void Communicator::handleNewClient(SOCKET socket)
 			info.id = static_cast<RequestId>(getCode(*data));
 
 			//get the response
-			res = this->m_clients.at(socket)->handleRequest(info);
+			currentHandler = this->m_clients.at(socket);
+			if (!currentHandler->isRequestRelevent(info))
+			{
+				res = createErrorResponse("Not relevent request", currentHandler);
+			}
+			else
+			{
+				try
+				{
+					res = this->m_clients.at(socket)->handleRequest(info);
+				}
+				catch (const std::exception& excp)
+				{
+					res = createErrorResponse(excp.what(), currentHandler);
+				}
+			}
 			cout << res.response.data() << endl;
 
 			if (LOGIN_RESP_CODE == getCode(res.response)) //if there was a login
@@ -229,3 +245,20 @@ int Communicator::getCode(const Buffer& buffer)
 	return atoi(code.c_str());
 }
 
+
+/*
+The function creates an error response to the user.
+Input: The message to send and the last handler which will keep 
+handle the client.
+Output: a RequestResult reference- the result to send.
+*/
+RequestResult& Communicator::createErrorResponse(const string errorMsg, IRequestHandler* lastHandler)
+{
+	RequestResult* reqRes = new RequestResult();
+	ErrorResopnse errResp;
+	errResp.message = errorMsg;
+	reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
+	reqRes->newHandler = lastHandler;
+
+	return *reqRes;
+}
