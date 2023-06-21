@@ -7,6 +7,6 @@
 class OTPCryptoAlgorithm : public CryptoAlgorithm
 {
 public:
-	string encrypt(string message, string key) const override;
-	string decrypt(string message, string key) const override;
+	string encrypt(const string message, const string key) const override;
+	string decrypt(const string message, const string key) const override;
 };
