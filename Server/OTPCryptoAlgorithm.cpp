@@ -27,7 +27,4 @@ string OTPCryptoAlgorithm::decrypt(std::string message, std::string key) const
     return decryptedText;
 }
 
-OTPCryptoAlgorithm::OTPCryptoAlgorithm()
-{
-}
 

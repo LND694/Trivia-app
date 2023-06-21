@@ -8,7 +8,7 @@ namespace Client
 {
     public class OTP
     {
-        private const int byteLength = 511;
+        private const int byteLength = 200;
         public string GenerateKey()
         {
             // Create a byte array to hold the generated OTP key
@@ -43,7 +43,7 @@ namespace Client
                 encryptedBytes[i] = (byte)(plainBytes[i] ^ keyBytes[i]);
             }
 
-            return System.Text.Encoding.ASCII.GetString(encryptedBytes);
+            return Encoding.ASCII.GetString(encryptedBytes);
         }
         public string Decrypt(string ciphertext, string otpKey)
         {

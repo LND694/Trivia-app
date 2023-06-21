@@ -122,6 +122,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			//Getting the response of the client and checking the respose time
 			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
+			cout << buffer << endl;
 			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
@@ -129,7 +130,12 @@ void Communicator::handleNewClient(SOCKET socket)
 			key = this->m_keys.at(socket);
 
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
-			plainText = this->algo->decrypt(buffer, key);
+			plainText = this->algo->decrypt(string(buffer), key);
+			cout << plainText << endl;
+			if(plainText.find("{") == string::npos)
+			{
+				throw std::exception("cant decrypt that!");
+			}
 			Buffer charVector = this->algo->convertToBuffer(plainText);
 
 

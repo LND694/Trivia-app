@@ -50,5 +50,5 @@ private:
 	map<SOCKET, IRequestHandler*> m_clients;
 	RequestHandlerFactory* m_handlerFactory;
 	map<SOCKET, string> m_keys;
-	OTPCryptoAlgorithm* algo;
+	CryptoAlgorithm* algo;
 };

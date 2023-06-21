@@ -50,7 +50,8 @@ namespace Client
         /// <param name="data"> The data to send</param>
         public void SendRequestToServer(string data)
         {
-            socket.Send(Encoding.ASCII.GetBytes(otp.Encrypt(data, otpKey)));
+            string encoded = otp.Encrypt(data, otpKey);
+            socket.Send(Encoding.ASCII.GetBytes(encoded));
         }
 
         /// <summary>
