@@ -113,13 +113,15 @@ void Communicator::handleNewClient(SOCKET socket)
 {
 	int len = 0;
 	char buffer[MAX_SIZE] = { 0 };
+	byte buffer1[MAX_SIZE] = { 0 };
 	RequestResult res;
 	RequestInfo info;
 	string username = "";
-	Buffer* data;
+	Buffer* data = nullptr;
 	time_t sendingTime{};
-	string key;
-	string plainText;
+	string key = "";
+	string plainText = "";
+	string encryptedText = "";
 	this->m_keys.insert({ socket,getKey(socket, buffer) });//init a new pair of socket and key recived by the client
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
@@ -129,7 +131,10 @@ void Communicator::handleNewClient(SOCKET socket)
 			//Getting the response of the client and checking the respose time
 			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			cout << buffer << endl;
+			for (int i = 0; i < len; i++)
+			{
+				buffer1[i] = buffer[i];
+			}
 			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
@@ -137,12 +142,10 @@ void Communicator::handleNewClient(SOCKET socket)
 			key = this->m_keys.at(socket);
 
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
-			plainText = this->algo->decrypt(string(buffer), key);
-			cout << plainText << endl;
-			if(plainText.find("{") == string::npos)
-			{
-				throw std::exception("cant decrypt that!");
-			}
+
+			encryptedText = string(reinterpret_cast<char*>(buffer1), sizeof(buffer1));//byte array to string
+			plainText = this->algo->decrypt(encryptedText, key);
+			cout << "decrypted: " << plainText << endl;
 			Buffer charVector = this->algo->convertToBuffer(plainText);
 
 
@@ -162,7 +165,7 @@ void Communicator::handleNewClient(SOCKET socket)
 				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
 			}
 			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));//encrypt the response
-			cout << "encoded: " << res.response.data() << endl;
+			cout << "encrypted: " << res.response.data() << endl;
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 

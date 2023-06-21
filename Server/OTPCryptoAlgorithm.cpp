@@ -16,6 +16,7 @@ string OTPCryptoAlgorithm::encrypt(std::string message, std::string key) const
 
 string OTPCryptoAlgorithm::decrypt(std::string message, std::string key) const
 {
+    string realText;
     CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
     CryptoPP::SecByteBlock encryptedBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
 
@@ -24,7 +25,16 @@ string OTPCryptoAlgorithm::decrypt(std::string message, std::string key) const
 
     string decryptedText(decryptedBytes.begin(), decryptedBytes.end());
 
-    return decryptedText;
+    for (const auto& i : decryptedText)//delete the hex chars after the message
+    {
+        realText += i;
+        if (i == '}')
+        {
+            break;
+        }
+
+    }
+    return realText;//the text without the hex chars
 }
 
 

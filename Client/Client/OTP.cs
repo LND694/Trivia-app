@@ -24,12 +24,11 @@ namespace Client
             string otpKeyHex = BitConverter.ToString(otpKey).Replace("-", "");
             return otpKeyHex;
         }
-        public string Encrypt(string plainText, string otpKey)
+        public byte[] Encrypt(string plainText, string otpKey)
         {
             // Convert the plaintext and OTP key to byte arrays
             byte[] plainBytes = Encoding.ASCII.GetBytes(plainText);
             byte[] keyBytes = Encoding.ASCII.GetBytes(otpKey);
-
             // Ensure that the key length matches the plaintext length
             if (plainBytes.Length > keyBytes.Length)
             {
@@ -42,8 +41,8 @@ namespace Client
             {
                 encryptedBytes[i] = (byte)(plainBytes[i] ^ keyBytes[i]);
             }
-
-            return Encoding.ASCII.GetString(encryptedBytes);
+            string t = Encoding.ASCII.GetString(encryptedBytes);
+            return encryptedBytes;
         }
         public string Decrypt(string ciphertext, string otpKey)
         {
@@ -57,7 +56,7 @@ namespace Client
                 decryptedBytes[i] = (byte)(ciphertextBytes[i] ^ keyBytes[i % keyBytes.Length]);
             }
 
-            return Encoding.ASCII.GetString(decryptedBytes);
+            return Encoding.Default.GetString(decryptedBytes);
         }
     }
 }
