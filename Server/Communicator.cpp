@@ -58,7 +58,14 @@ void Communicator::startHandleRequests()
 		handle.detach();
 	}
 }
-string Communicator::getKey(SOCKET socket, char* buffer)
+
+/// <summary>
+/// get the key from the client
+/// </summary>
+/// <param name="socket"> the socket of the connection </param>
+/// <param name="buffer"> the buffer to read from</param>
+/// <returns> the key in hex as string</returns>
+string Communicator::getKey(SOCKET socket, char* buffer) const
 {
 	int len = 0;
 	string key;
@@ -154,7 +161,7 @@ void Communicator::handleNewClient(SOCKET socket)
 				//saving the username
 				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
 			}
-			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));
+			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));//encrypt the response
 			cout << "encoded: " << res.response.data() << endl;
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);

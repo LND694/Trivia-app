@@ -30,7 +30,7 @@ public:
 	static Communicator* getInstance(RequestHandlerFactory* handlerFactory);
 	//Function
 	void startHandleRequests();
-	string getKey(SOCKET socket, char* buffer );
+	string getKey(SOCKET socket, char* buffer ) const;
 
 protected:
 	//C'tor
