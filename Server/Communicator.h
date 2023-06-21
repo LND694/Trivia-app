@@ -8,7 +8,7 @@
 #include <iostream>
 #include <thread>
 #include <string>
-
+#include "OTPCryptoAlgorithm.h"
 using std::map;
 using std::cout;
 using std::endl;
@@ -30,6 +30,7 @@ public:
 	static Communicator* getInstance(RequestHandlerFactory* handlerFactory);
 	//Function
 	void startHandleRequests();
+	string getKey(SOCKET socket, char* buffer ) const;
 
 protected:
 	//C'tor
@@ -48,5 +49,6 @@ private:
 	SOCKET m_serverSocket;
 	map<SOCKET, IRequestHandler*> m_clients;
 	RequestHandlerFactory* m_handlerFactory;
-
+	map<SOCKET, string> m_keys;
+	CryptoAlgorithm* algo;
 };

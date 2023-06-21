@@ -31,7 +31,6 @@ namespace Client
         private int questionsLeft;
         private bool wasClicked = false;
         private bool isRight = false;
-        private object control;
 
         public Form1()
         {
