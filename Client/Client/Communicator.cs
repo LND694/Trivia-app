@@ -67,6 +67,10 @@ namespace Client
             return text;
         }
 
+        /// <summary>
+        /// send the otp key to the server before encrypt the messages
+        /// </summary>
+        /// <param name="key"> the generated key </param>
         public void SendKey(string key)
         {
             socket.Send(Encoding.ASCII.GetBytes(key));
