@@ -35,7 +35,6 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
         {
             category = result["category"].get<string>();
             question = result["question"].get<string>();
-            std::cout << question << std::endl;
             correctAnswer = result["correct_answer"].get<string>();
             difficulty = result["difficulty"].get<string>();
             for (const auto& incorrectAnswer : result["incorrect_answers"]) {
