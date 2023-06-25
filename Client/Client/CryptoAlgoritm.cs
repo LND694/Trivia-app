@@ -16,7 +16,7 @@ namespace Client
         /// The funciton generates a key for encryption/decryption.
         /// </summary>
         /// <returns> The randomized key.</returns>
-        public string GenerateKey()
+        public virtual string GenerateKey()
         {
             // Create a byte array to hold the generated OTP key
             byte[] otpKey = new byte[OTPHelpers.BYTE_LENGTH];
