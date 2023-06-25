@@ -9,14 +9,14 @@ namespace Client
 {
     public abstract class CryptoAlgoritm
     {
-        public abstract string Decrypt(string message, string key);
-        public abstract byte[] Encrypt(string message, string key);
+        public abstract string Decrypt(byte[] message, byte[] key);
+        public abstract byte[] Encrypt(string message, byte[] key);
 
         /// <summary>
         /// The funciton generates a key for encryption/decryption.
         /// </summary>
         /// <returns> The randomized key.</returns>
-        public string GenerateKey()
+        public virtual byte[] GenerateKey()
         {
             // Create a byte array to hold the generated OTP key
             byte[] otpKey = new byte[OTPHelpers.BYTE_LENGTH];
@@ -26,10 +26,11 @@ namespace Client
             {
                 rngCsp.GetBytes(otpKey);
             }
-
-            // Convert the byte array to a hexadecimal string representation
-            string otpKeyHex = BitConverter.ToString(otpKey).Replace("-", "");
-            return otpKeyHex;
+            return otpKey;
+        }
+        public virtual byte[] GetIV()
+        {
+            return null;
         }
     }
 }

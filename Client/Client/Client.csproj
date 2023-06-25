@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AesEncryption.cs" />
     <Compile Include="Button_WOC.cs">
       <SubType>Component</SubType>
     </Compile>

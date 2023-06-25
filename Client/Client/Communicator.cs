@@ -14,8 +14,9 @@ namespace Client
         private static Socket socket;
         static private readonly IPAddress ipAddress = IPAddress.Parse("127.0.0.1"); // Replace with your desired IP address
         static private readonly int  port = 8265;
-        static private readonly CryptoAlgoritm crypto = new OTP();
-        static private string otpKey;
+        static private readonly CryptoAlgoritm crypto = new AesEncryption();
+        static private byte[] aesIV;//in case of aes
+        static private byte[] key;
         /// <summary>
         /// connect to the server
         /// </summary>
@@ -25,8 +26,11 @@ namespace Client
             // Specify the IP address and port number to connect
             // Connect to the server
             socket.Connect(ipAddress, port);
-            otpKey = crypto.GenerateKey();
-            SendKey(otpKey);
+            key = crypto.GenerateKey();
+            aesIV = crypto.GetIV();
+            SendEncryptionData(key);
+            System.Threading.Thread.Sleep(1000);
+            SendEncryptionData(aesIV);
         }
 
         /// <summary>
@@ -46,7 +50,7 @@ namespace Client
         /// <param name="data"> The data to send</param>
         public void SendRequestToServer(string data)
         {
-            socket.Send(crypto.Encrypt(data, otpKey));
+            socket.Send(crypto.Encrypt(data,key));
         }
 
         /// <summary>
@@ -57,19 +61,21 @@ namespace Client
         {
             string text;
             byte[] buffer = new byte[Constants.BUFFER_SIZE];
-            socket.Receive(buffer);
-            text = crypto.Decrypt(Encoding.ASCII.GetString(buffer), otpKey);
+            int len = socket.Receive(buffer);
+            Array.Resize(ref buffer, len);//resize the buffer to its actual length and not 1024
+            text = crypto.Decrypt(buffer, key);
             return text;
         }
 
         /// <summary>
-        /// send the otp key to the server before encrypt the messages
+        /// send the Encrpytion data such as key or IV
         /// </summary>
-        /// <param name="key"> the generated key </param>
-        public void SendKey(string key)
+        /// <param name="data"> the encryption data to Send </param>
+        public void SendEncryptionData(byte[] data)
         {
-            socket.Send(Encoding.ASCII.GetBytes(key));
+            socket.Send(data);
         }
+
 
     }
 }
