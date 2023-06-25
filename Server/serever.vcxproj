@@ -157,6 +157,7 @@
     <ClInclude Include="RoomAdminRequestHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="RSACryptoAlgorithm.h" />
     <ClInclude Include="ScoreCalculator.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Singleton.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RSACryptoAlgorithm.cpp" />
     <ClCompile Include="ScoreCalculator.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />

@@ -12,7 +12,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	this->algo = new OTPCryptoAlgorithm();
+	this->algo = new RSACryptoAlgorithm();
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
 }

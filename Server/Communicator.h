@@ -2,6 +2,7 @@
 #include "Singleton.h"
 #include "LoginRequestHandler.h"
 #include "global.h"
+#include "RSACryptoAlgorithm.h"
 #include <WinSock2.h>
 #include <map>
 #include <exception>
