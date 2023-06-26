@@ -65,9 +65,9 @@ namespace Client
                 {
                     using (CryptoStream cs = new CryptoStream(ms, encryption, CryptoStreamMode.Write))
                     {
-                        cs.Write(plaintextBytes, 0, plaintextBytes.Length);
+                        cs.Write(plaintextBytes, 0, plaintextBytes.Length);//write the crypto stream the plain text bytes
                     }
-                    ciphertext = ms.ToArray();
+                    ciphertext = ms.ToArray();//write to the byte array
                 }
 
                 return ciphertext;
@@ -97,10 +97,10 @@ namespace Client
                 {
                     using (CryptoStream cs = new CryptoStream(ms, decryption, CryptoStreamMode.Write))
                     {
-                        cs.Write(ciphertext, 0, ciphertext.Length);
+                        cs.Write(ciphertext, 0, ciphertext.Length);//write the ciphertext to the crypto stream
                     }
 
-                    plaintextBytes = ms.ToArray();
+                    plaintextBytes = ms.ToArray();//convert the stream to bytes array
                 }
 
                 string plaintext = Encoding.UTF8.GetString(plaintextBytes);
