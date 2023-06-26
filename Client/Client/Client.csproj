@@ -49,13 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AesEncryption.cs" />
     <Compile Include="Button_WOC.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Communicator.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CryptoAlgoritm.cs" />
     <Compile Include="JsonRequestPacketSerializer.cs" />
     <Compile Include="JsonResponsePacketDeserializer.cs" />
+    <Compile Include="OTP.cs" />
+    <Compile Include="OTPHelpers.cs" />
     <Compile Include="PlayerResults.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Response.cs" />

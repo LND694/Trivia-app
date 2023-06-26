@@ -131,7 +131,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AesEncryption.h" />
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="CryptoAlgorithm.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="MongoDatabase.h" />
+    <ClInclude Include="OTPCryptoAlgorithm.h" />
     <ClInclude Include="PlayerResults.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Request.h" />
@@ -167,7 +170,9 @@
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AesEncryption.cpp" />
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="CryptoAlgorithm.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRequestHandler.cpp" />
@@ -180,6 +185,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="MongoDatabase.cpp" />
+    <ClCompile Include="OTPCryptoAlgorithm.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
