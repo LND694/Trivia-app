@@ -28,7 +28,7 @@ string RSACryptoAlgorithm::encrypt(const string message, const string key) const
 {
 	string encryptedText = "";
     CryptoPP::RSA::PublicKey& clientKey = loadPublicKeyFromPEM(key);
-    CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(clientKey);
+    CryptoPP::RSAES_PKCS1v15_Encryptor encryptor(clientKey);
     CryptoPP::AutoSeededRandomPool rng;
 
     CryptoPP::StringSource strSrc(message, true, 
@@ -88,27 +88,33 @@ string RSACryptoAlgorithm::publicKeyToString()
 
 CryptoPP::RSA::PublicKey& RSACryptoAlgorithm::loadPublicKeyFromPEM(const string pemPublicKey)
 {
-    std::istringstream iss(pemPublicKey);
-    std::string base64EncodedKey;
-
-    // Skip the PEM header
-    std::getline(iss, base64EncodedKey);
-
-    // Read the base64 encoded key
-    std::getline(iss, base64EncodedKey);
-
-    // Skip the PEM footer
-    std::string line;
-    while (std::getline(iss, line) && line != "-----END PUBLIC KEY-----");
-
-    // Decode the base64 encoded key
-    std::string derPublicKey;
-    CryptoPP::StringSource ss(base64EncodedKey, true,
-        new CryptoPP::Base64Decoder(new CryptoPP::StringSink(derPublicKey)));
-
-    //Making the public key
     CryptoPP::RSA::PublicKey* publicKey = new CryptoPP::RSA::PublicKey();
-    publicKey->Load(CryptoPP::FileSource(derPublicKey.c_str(), true).Ref());
+
+    // Load the XML string into a pugixml document
+    pugi::xml_document doc;
+    if (!doc.load_string(pemPublicKey.c_str()))
+    {
+        throw std::exception("Failed to parse XML string.");
+    }
+
+    // Extract modulus and exponent values from the XML
+    pugi::xml_node rsaKeyValueNode = doc.child("RSAKeyValue");
+    pugi::xml_node modulusNode = rsaKeyValueNode.child("Modulus");
+    pugi::xml_node exponentNode = rsaKeyValueNode.child("Exponent");
+
+    if (!modulusNode || !exponentNode)
+    {
+        throw std::exception("Modulus or exponent node not found in XML.");
+    }
+
+    std::string modulusValue = modulusNode.child_value();
+    std::string exponentValue = exponentNode.child_value();
+
+    // Convert the byte arrays to CryptoPP::Integer
+    CryptoPP::Integer modulus(reinterpret_cast<const unsigned char*>(modulusValue.c_str()), modulusValue.length());
+    CryptoPP::Integer exponent(reinterpret_cast<const unsigned char*>(exponentValue.c_str()), exponentValue.length());
+
+    publicKey->Initialize(exponent, modulus);
 
     return *publicKey;
 }

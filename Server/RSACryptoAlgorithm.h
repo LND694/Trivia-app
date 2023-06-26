@@ -3,11 +3,18 @@
 #include <filesystem>
 #include <Windows.h>
 #include "CryptoAlgorithm.h"
+#include "pugixml.hpp"
 #include <cryptopp/rsa.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/base64.h>
 #include <cryptopp/files.h>
+#include <cryptopp/asn.h>
+#include <cryptopp/filters.h>
+#include <cryptopp/queue.h>
+#include <cryptopp/integer.h>
+#include <cryptopp/sha.h>
+
 
 using std::ofstream;
 using std::filesystem::remove_all;
