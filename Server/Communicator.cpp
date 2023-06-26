@@ -12,7 +12,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 	m_handlerFactory(handlerFactory)
 {
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	this->algo = new OTPCryptoAlgorithm();
+	this->algo = new AesEncryption();
 	if (this->m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - init socket");
 }
@@ -60,12 +60,12 @@ void Communicator::startHandleRequests()
 }
 
 /// <summary>
-/// get the key from the client
+/// get the encryption data from the client
 /// </summary>
 /// <param name="socket"> the socket of the connection </param>
 /// <param name="buffer"> the buffer to read from</param>
 /// <returns> the key in hex as string</returns>
-string Communicator::getKey(SOCKET socket, char* buffer) const
+string Communicator::getEncyptionData(SOCKET socket, char* buffer) const
 {
 	int len = 0;
 	string key;
@@ -120,9 +120,11 @@ void Communicator::handleNewClient(SOCKET socket)
 	Buffer* data = nullptr;
 	time_t sendingTime{};
 	string key = "";
+	string iv = "";
 	string plainText = "";
 	string encryptedText = "";
-	this->m_keys.insert({ socket,getKey(socket, buffer) });//init a new pair of socket and key recived by the client
+	this->m_keys.insert({ socket,getEncyptionData(socket, buffer) });//init a new pair of socket and key recived by the client
+	this->m_ivs.insert({ socket,getEncyptionData(socket,buffer) });//init iv vector
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
@@ -140,10 +142,11 @@ void Communicator::handleNewClient(SOCKET socket)
 				throw std::exception("The client disconnected");
 			}
 			key = this->m_keys.at(socket);
-
+			iv = this->m_ivs.at(socket);
+			this->algo->setIv(iv);
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
-			encryptedText = string(reinterpret_cast<char*>(buffer1), sizeof(buffer1));//byte array to string
+			encryptedText = string(reinterpret_cast<char*>(buffer1), len);//byte array to string
 			plainText = this->algo->decrypt(encryptedText, key);
 			cout << "decrypted: " << plainText << endl;
 			Buffer charVector = this->algo->convertToBuffer(plainText);
@@ -165,7 +168,6 @@ void Communicator::handleNewClient(SOCKET socket)
 				username = JsonRequestPacketDeserializer::deserializeLoginRequest(*data).username;
 			}
 			res.response = this->algo->convertToBuffer(this->algo->encrypt(this->algo->convertToString(res.response), key));//encrypt the response
-			cout << "encrypted: " << res.response.data() << endl;
 			//send the response
 			send(socket, reinterpret_cast<char*>(res.response.data()), static_cast<int>(res.response.size()), NULL);
 

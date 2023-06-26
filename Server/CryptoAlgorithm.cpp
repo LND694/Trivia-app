@@ -1,5 +1,9 @@
 #include "CryptoAlgorithm.h"
 
+void CryptoAlgorithm::setIv(const string iv)
+{
+}
+
 Buffer& CryptoAlgorithm::convertToBuffer(string str)
 {
     Buffer* buf = new Buffer(str.begin(), str.end());
