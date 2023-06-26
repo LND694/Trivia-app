@@ -64,28 +64,10 @@ namespace Client
 
         public override string GenerateKey()
         {
-            ////Getting the string of the public key
-            //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            //rsa.ImportParameters(this.publicKey);
-            //return rsa.ToXmlString(false);
-
-            StringBuilder sb = new StringBuilder();
-
-            // Add the PEM header
-            sb.AppendLine("-----BEGIN PUBLIC KEY-----");
-
-            // Encode the modulus and exponent in base64
-            string modulusBase64 = Convert.ToBase64String(publicKey.Modulus);
-            string exponentBase64 = Convert.ToBase64String(publicKey.Exponent);
-
-            // Add the modulus and exponent lines
-            sb.AppendLine(modulusBase64);
-            sb.AppendLine(exponentBase64);
-
-            // Add the PEM footer
-            sb.AppendLine("-----END PUBLIC KEY-----");
-
-            return sb.ToString();
+            //Getting the string of the public key
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.ImportParameters(this.publicKey);
+            return rsa.ToXmlString(false);
         }
 
         private static RSAParameters ReadPublicKeyFromFile(string filePath)
