@@ -24,6 +24,14 @@ namespace Client
             }
             return req;
         }
+
+        /// <summary>
+        /// The function padds a number with zeros.
+        /// </summary>
+        /// <param name="num"> The number to pad.</param>
+        /// <param name="length"> The length it should be in the
+        /// end of the padding.</param>
+        /// <returns> The paddded number as a string.</returns>
         private static string GetPaddedNum(int num, int length)
         {
             string numStr = "" + num;
