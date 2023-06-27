@@ -41,7 +41,7 @@ vector<RoomData>& RoomManager::getRooms() const
 	vector<RoomData>* roomsData = new vector<RoomData>();
 
 	//Going over the rooms
-	for (auto i : this->m_rooms)
+	for (const auto& i : this->m_rooms)
 	{
 		if (!i.second.getRoomData().isActive)
 		{

@@ -18,9 +18,9 @@ Question::Question(const string question, const vector<string>& answers,
 		throw std::exception("The amount of incorrect answers should be " + AMOUNT_ANSWERS);
 	}
 	//Copying the answers to the object
-	for (auto i = answers.begin(); i != answers.end(); i++)
+	for (const auto& i : answers)
 	{
-		this->m_answers.push_back(*i);
+		this->m_answers.push_back(i);
 	}
 }
 
@@ -45,9 +45,9 @@ Question::Question(const Question& other)
 	this->m_rightAnswer = other.m_rightAnswer;
 
 	//Copying the possibole answers
-	for (auto i = other.m_answers.begin(); i != other.m_answers.end(); i++)
+	for (const auto& i : other.m_answers)
 	{
-		this->m_answers.push_back(*i);
+		this->m_answers.push_back(i);
 	}
 }
 
@@ -68,9 +68,9 @@ vector<string>& Question::getAnswers() const
 	vector<string>* answers = new vector<string>();
 
 	//Copying the answers
-	for (auto i = this->m_answers.begin(); i != this->m_answers.end();i++)
+	for (const auto& i : this->m_answers)
 	{
-		answers->push_back(*i);
+		answers->push_back(i);
 	}
 	return *answers;
 }
@@ -99,9 +99,9 @@ unsigned int Question::getCorrectAnswerId() const
 	unsigned int id = 0;
 
 	//Going over the answers
-	for (auto i = this->m_answers.begin(); i != this->m_answers.end(); i++)
+	for (const auto& i : this->m_answers)
 	{
-		if (*i == this->m_rightAnswer)
+		if (i == this->m_rightAnswer)
 		{
 			return id;
 		}

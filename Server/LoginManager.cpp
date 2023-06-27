@@ -21,9 +21,9 @@ LoginManager::LoginManager(IDatabase* db) :
 bool LoginManager::isUserAlreadyLoggedIn(string username)
 {
     //Going over the Logged Users
-    for (auto i = this->m_loggedUsers.begin(); i != this->m_loggedUsers.end(); i++)
+    for (const auto& i : this->m_loggedUsers)
     {
-        if (i->getUsername() == username)
+        if (i.getUsername() == username)
         {
             return true;
         }

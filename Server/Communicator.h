@@ -1,13 +1,10 @@
 #pragma once
-#include "Singleton.h"
 #include "LoginRequestHandler.h"
-#include "global.h"
 #include <WinSock2.h>
 #include <map>
 #include <exception>
 #include <iostream>
 #include <thread>
-#include <string>
 #include "OTPCryptoAlgorithm.h"
 #include "AesEncryption.h"
 using std::map;
