@@ -1282,6 +1282,51 @@ namespace Client
                 }
             }
         }
+
+        private void button_WOC28_Click(object sender, EventArgs e)
+        {
+            //EnterHeadVsHeadResponse resp = null;
+            //GetHeadVsHeadStateResponse resp2 = null;
+            //resp = SendRequestToServer<NullableConverter, EnterHeadVsHeadResponse>(null, REQUEST_CODES.HEAD_MODE_REQS_CODE);
+            //try
+            //{
+            //    if(resp.GetStatus() == Constants.OK_STATUS_CODE)
+            //    {
+
+            //        MoveTab(this.menuPanel, this.WaitHead);
+            //    }
+            //    else
+            //    {
+            //        ShowErrorMessage("Cannot enter 1v1!", "ERROR");
+            //    }
+            //}
+            //catch (Exception excp)
+            //{
+            //    ShowErrorMessage(excp.Message, "ERROR Send Request");
+            //}
+            //resp2 = SendRequestToServer<NullableConverter, GetHeadVsHeadStateResponse>(null, REQUEST_CODES.GET_STATE_HEAD_REQS_CODE);
+            //while(resp2.GetAmountPlayers() < 2)
+            //{
+            //    Thread.Sleep(100);
+            //    resp2 = SendRequestToServer<NullableConverter, GetHeadVsHeadStateResponse>(null, REQUEST_CODES.GET_STATE_HEAD_REQS_CODE);
+            //}
+            MoveTab(this.menuPanel, this.WaitHead);
+            timer2 = new System.Windows.Forms.Timer();
+            timer2.Start();
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            int seconds = 5;
+            UpdateControlText(textBox95, seconds--.ToString()); 
+            if(seconds <= 0 )
+            {
+                timer2.Stop();
+                timer2.Enabled=false;
+                MoveTab(this.WaitHead, this.gamePanel);
+            }
+        }
     }
 }
 

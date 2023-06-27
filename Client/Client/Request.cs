@@ -31,6 +31,8 @@ namespace Client
         public const int SUBMIT_ANSWER_REQS_CODE = 116;
         public const int GET_GAME_RESULT_REQS_CODE = 117;
         public const int ADD_QUESTION_REQS_CODE = 118;
+        public const int HEAD_MODE_REQS_CODE = 119;
+        public const int GET_STATE_HEAD_REQS_CODE = 120;
         public const int ERROR_REQS_CODE = 255;
     }
     public class LoginRequest : Request

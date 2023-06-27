@@ -31,6 +31,8 @@ namespace Client
         public const int SUBMIT_ANSWER_RESP_CODE = 216;
         public const int GET_GAME_RES_RESP_CODE = 217;
         public const int ADD_QUESTION_RESP_CODE = 218;
+        public const int HEAD_MODE_RESP_CODE = 219;
+        public const int GET_STATE_HEAD_RESP_CODE = 220;
         public const int ERROR_RESP_CODE = 255;
     }
 
@@ -344,6 +346,24 @@ namespace Client
         public string GetMessage()
         {
             return this.message;
+        }
+    }
+    public class GetHeadVsHeadStateResponse : ResponseWithStatus
+    {
+        [JsonProperty("amountPlayers")]
+        private readonly int amountPlayers;
+        public GetHeadVsHeadStateResponse(int status): base(status)
+        {
+        }
+        public int GetAmountPlayers()
+        {
+            return this.amountPlayers;
+        }
+    }
+    public class EnterHeadVsHeadResponse : ResponseWithStatus
+    {
+        public EnterHeadVsHeadResponse(int status): base(status)
+        {
         }
     }
 }
