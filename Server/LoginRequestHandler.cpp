@@ -29,6 +29,10 @@ bool LoginRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns>a RequestInfo value- the results of the check</returns>
 RequestResult& LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
+    if (!this->isRequestRelevent(requestInfo))
+    {
+        throw std::exception(ERROR_MSG.c_str());
+    }
     //Handling the request
     if (requestInfo.id == SIGN_UP_REQS_CODE)
     {

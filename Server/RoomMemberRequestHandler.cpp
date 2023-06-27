@@ -31,6 +31,10 @@ bool RoomMemberRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> request result</returns>
 RequestResult& RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
+    if (!this->isRequestRelevent(requestInfo))
+    {
+        throw std::exception(ERROR_MSG.c_str());
+    }
     if (requestInfo.id == LEAVE_ROOM_REQS_CODE)
     {
         return leaveRoom(requestInfo);

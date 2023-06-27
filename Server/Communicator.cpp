@@ -161,20 +161,13 @@ void Communicator::handleNewClient(SOCKET socket)
 
 			//get the response
 			currentHandler = this->m_clients.at(socket);
-			if (!currentHandler->isRequestRelevent(info))
+			try
 			{
-				res = createErrorResponse("Not relevent request", currentHandler);
+				res = this->m_clients.at(socket)->handleRequest(info);
 			}
-			else
+			catch (const std::exception& excp)
 			{
-				try
-				{
-					res = this->m_clients.at(socket)->handleRequest(info);
-				}
-				catch (const std::exception& excp)
-				{
-					res = createErrorResponse(excp.what(), currentHandler);
-				}
+				res = createErrorResponse(excp.what(), currentHandler);
 			}
 			cout << res.response.data() << endl;
 

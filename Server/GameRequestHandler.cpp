@@ -36,6 +36,10 @@ bool GameRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> The result of the request.</returns>
 RequestResult& GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
+    if (!this->isRequestRelevent(requestInfo))
+    {
+        throw std::exception(ERROR_MSG.c_str());
+    }
     switch (requestInfo.id)
     {
     case LEAVE_GAME_REQS_CODE:

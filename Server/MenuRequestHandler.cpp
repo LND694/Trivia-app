@@ -49,6 +49,10 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
 	RequestResult* res = new RequestResult();
 
+	if (!this->isRequestRelevent(requestInfo))
+	{
+		throw std::exception(ERROR_MSG.c_str());
+	}
 	switch (requestInfo.id)
 	{
 	case LOGOUT_REQS_CODE:
