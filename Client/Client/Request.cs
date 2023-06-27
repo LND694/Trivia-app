@@ -30,6 +30,7 @@ namespace Client
         public const int GET_QUESTION_REQS_CODE = 115;
         public const int SUBMIT_ANSWER_REQS_CODE = 116;
         public const int GET_GAME_RESULT_REQS_CODE = 117;
+        public const int ADD_QUESTION_REQS_CODE = 118;
         public const int ERROR_REQS_CODE = 255;
     }
     public class LoginRequest : Request
@@ -171,13 +172,38 @@ namespace Client
         }
 
     }
-    public class SubmitAnswerRequest
+    public class SubmitAnswerRequest : Request
     {
         [JsonProperty("answerId")]
         private int answerId;
-        public SubmitAnswerRequest(int answerId)
+        public SubmitAnswerRequest(int answerId) :
+            base()
         {
             this.answerId = answerId;
+        }
+    }
+
+    public class AddQuestionRequest : Request
+    {
+        [JsonProperty("question")]
+        private string question;
+
+        [JsonProperty("rightAnswer")]
+        private string rightAnswer;
+
+        [JsonProperty("difficulty")]
+        private string difficulty;
+
+        [JsonProperty("wrongAnswers")]
+        private Queue<string> wrongAnswers;
+
+        public AddQuestionRequest(string question, string rightAnswer, string difficulty, Queue<string> wrongAnswers):
+            base()
+        {
+            this.question = question;
+            this.rightAnswer = rightAnswer;
+            this.difficulty = difficulty;
+            this.wrongAnswers = new Queue<string>(wrongAnswers);
         }
     }
 }

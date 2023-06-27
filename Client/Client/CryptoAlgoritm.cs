@@ -30,7 +30,7 @@ namespace Client
         }
         public virtual byte[] GetIV()
         {
-            return null;
+            return new byte[5];
         }
     }
 }

@@ -35,7 +35,8 @@ bool MenuRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 		JOIN_ROOM_REQS_CODE == code ||
 		CREATE_ROOM_REQS_CODE == code ||
 		GET_HIGH_SCORE_REQS_CODE == code ||
-		GET_PERS_STATS_REQS_CODE == code;
+		GET_PERS_STATS_REQS_CODE == code ||
+		ADD_QUESTION_REQS_CODE == code;
 }
 
 /// <summary>
@@ -50,51 +51,36 @@ RequestResult& MenuRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 	if (!this->isRequestRelevent(requestInfo))
 	{
-		createErrorResponse(ERROR_MSG, res);
+		throw std::exception(ERROR_MSG.c_str());
 	}
-	else
+	switch (requestInfo.id)
 	{
-		switch (requestInfo.id)
-		{
-		case LOGOUT_REQS_CODE:
-			*res = signout(requestInfo);
-			break;
-		case GET_ROOMS_REQS_CODE:
-			*res = getRooms(requestInfo);
-			break;
-		case GET_PLAYERS_IN_ROOM_REQS_CODE:
-			*res = getPlayersInRoom(requestInfo);
-			break;
-		case JOIN_ROOM_REQS_CODE:
-			*res = joinRoom(requestInfo);
-			break;
-		case CREATE_ROOM_REQS_CODE:
-			*res = createRoom(requestInfo);
-			break;
-		case GET_HIGH_SCORE_REQS_CODE:
-			*res =  getHighScore(requestInfo);
-			break;
-		case GET_PERS_STATS_REQS_CODE:
-			*res =  getPersonalStats(requestInfo);
-			break;
-		}
+	case LOGOUT_REQS_CODE:
+		*res = signout(requestInfo);
+		break;
+	case GET_ROOMS_REQS_CODE:
+		*res = getRooms(requestInfo);
+		break;
+	case GET_PLAYERS_IN_ROOM_REQS_CODE:
+		*res = getPlayersInRoom(requestInfo);
+		break;
+	case JOIN_ROOM_REQS_CODE:
+		*res = joinRoom(requestInfo);
+		break;
+	case CREATE_ROOM_REQS_CODE:
+		*res = createRoom(requestInfo);
+		break;
+	case GET_HIGH_SCORE_REQS_CODE:
+		*res = getHighScore(requestInfo);
+		break;
+	case GET_PERS_STATS_REQS_CODE:
+		*res = getPersonalStats(requestInfo);
+		break;
+	case ADD_QUESTION_REQS_CODE:
+		*res = addQuestion(requestInfo);
 	}
 
     return *res;
-}
-
-/// <summary>
-/// The function creates an ErrorResponse struct and saves it in
-/// the RequestResult variable.
-/// </summary>
-/// <param name="errMsg"> The message of the error.</param>
-/// <param name="reqRes"> The RequestResult to put  the ErrorResponse in.</param>
-void MenuRequestHandler::createErrorResponse(const string errMsg, RequestResult* reqRes)
-{
-	ErrorResopnse errResp;
-	errResp.message = errMsg;
-	reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
-	reqRes->newHandler = this;//if there is a error the new handler will be the current
 }
 
 /// <summary>
@@ -223,16 +209,7 @@ RequestResult& MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
 	JoinRoomRequest& joinRoomReqs = JsonRequestPacketDeserializer::desrializeJoinRoomRequest(requestInfo.buffer);
 	JoinRoomResponse joinRoomResp = JoinRoomResponse();
 
-	try
-	{
-		this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
-	}
-	catch (const std::exception& excp)
-	{
-		createErrorResponse(excp.what(), req);
-		delete& joinRoomReqs;
-		return *req;
-	}
+	this->m_roomManager.getRoom(joinRoomReqs.roomId).addUser(this->m_user);
 	
 	//Making the JoinRoomResponse
 	joinRoomResp.status = OK_STATUS_CODE;
@@ -274,5 +251,52 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	req->newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(this->m_user, Room(roomData, this->m_user));
 
 	delete& createRoomReqs;
+	return *req;
+}
+
+/// <summary>
+/// The function add a question to the DB.
+/// </summary>
+/// <param name="requestInfo"> THe info about the question to add.</param>
+/// <returns> The result of the request</returns>
+RequestResult& MenuRequestHandler::addQuestion(const RequestInfo& requestInfo)
+{
+	RequestResult* req = new RequestResult();
+	AddQuestionResponse addQuestResp = AddQuestionResponse();
+	AddQuestionRequest& addQuestReq = JsonRequestPacketDeserializer::deserializeAddQuestionRequest(requestInfo.buffer);
+	CHECK_QUESTION_RESULTS resultQuestion = QUESTION_IS_LEGAL;
+
+	//Creating the question to insert
+	addQuestReq.wrongAnswers.push_back(addQuestReq.rightAnswer);
+	Question question = Question(addQuestReq.question, addQuestReq.wrongAnswers,
+		addQuestReq.rightAnswer, "Question from user " + this->m_user.getUsername(),
+		addQuestReq.difficulty, true);
+
+	//Making sure that the question is valid
+	resultQuestion = UserInputChecker::isQuestionValid(question.getQuestion(), question.getDifficulty());
+	if (QUESTION_IS_LEGAL != resultQuestion)
+	{
+		switch (resultQuestion)
+		{
+		case NO_QUESTION_MARK:
+			throw std::exception("There should be a question mark in the end of the question.\n");
+			break;
+		case INVALID_DIFFICULTY:
+			throw std::exception("This difficulty is not recognized.\n");
+			break;
+		case NO_QUESTION_WORD:
+			throw std::exception("There should be a question word in the start of the question like who or when\n");
+			break;
+		}
+	}
+
+	//adding the question
+	this->m_statisticsManager.addQuestion(question);
+
+	//Making the RequestResult
+	addQuestResp.status = OK_STATUS_CODE;
+	req->response = JsonResponsePacketSerializer::serializeResponse(addQuestResp);
+	req->newHandler = this;
+
 	return *req;
 }

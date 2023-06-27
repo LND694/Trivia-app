@@ -29,6 +29,4 @@ private:
 	RequestResult& submitAnswer(const RequestInfo& reqInfo);
 	RequestResult& getGameResults(const RequestInfo& reqInfo);
 	RequestResult& leaveGame(const RequestInfo& reqInfo);
-
-	void createErrorResponse(const string errMsg, RequestResult* reqRes);
 };

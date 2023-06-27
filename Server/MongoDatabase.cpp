@@ -9,7 +9,7 @@ MongoDatabase::MongoDatabase()
 	{
 		throw std::exception("Cannot open the database");
 	}
-	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);//insert 10 question everytime
+	insertQuestions(DEFAULT_QUESTIONS_AMOUNT);
 }
 
 /// <summary>
@@ -168,6 +168,34 @@ list<Question>& MongoDatabase::getQuestions(const int amountQuestions)
 		answers.clear();//reset incorrect answers
 	}
 	return *questions;
+}
+
+int MongoDatabase::insertQuestionToDB(const Question& question)
+{
+	// Document with username, password, and email fields
+	auto document = bsoncxx::builder::stream::document{};
+	auto arrayBuilder = document << "category" << question.getCategory()
+		<< "question" << question.getQuestion()
+		<< "correct_answer" << question.getRightAnswer()
+		<< "difficulty" << question.getDifficulty()
+		<< "incorrect_answers" << bsoncxx::builder::stream::open_array;
+
+	for (const auto& incorrectAnswer : question.getAnswers()) {
+		arrayBuilder << incorrectAnswer;
+	}
+
+	arrayBuilder << bsoncxx::builder::stream::close_array
+		<< "fromUser" << question.getIfFromUser();
+
+	try
+	{
+		this->db[QUESTIONS_COLLECTION].insert_one(document.view());
+		return OK_CODE;
+	}
+	catch (...)
+	{
+		return ERROR_CODE;
+	}
 }
 
 /// <summary>
@@ -380,26 +408,16 @@ void MongoDatabase::insertQuestions(const int numOfQuestions)
 		this->db.create_collection(QUESTIONS_COLLECTION);
 	}
 	auto coll = this->db[QUESTIONS_COLLECTION];
-	// Delete all prev documents in the collection
-	coll.delete_many({});
+
+
+	// Delete all prev documents in the collection which are not from the users
+	auto delete_many_result =
+		coll.delete_many(make_document(kvp("fromUser", false)));
+
+
 	// Insert the questions into MongoDB
 	for (const auto& question : questions) {
-		// Create a BSON document with an array
-		auto document = bsoncxx::builder::stream::document{};
-		auto arrayBuilder = document << "category" << question.getCategory()
-			<< "question" << question.getQuestion()
-			<< "correct_answer" << question.getRightAnswer()
-			<< "difficulty" << question.getDifficulty()
-			<< "incorrect_answers" << bsoncxx::builder::stream::open_array;
-
-		for (const auto& incorrectAnswer : question.getAnswers()) {
-			arrayBuilder << incorrectAnswer;
-		}
-
-		arrayBuilder << bsoncxx::builder::stream::close_array;
-
-		// Insert the document into the collection
-		coll.insert_one(document.view());
+		insertQuestionToDB(question);
 	}
 }
 
