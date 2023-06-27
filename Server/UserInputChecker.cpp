@@ -261,6 +261,12 @@ CHECK_ADDRESS_RESULTS UserInputChecker::isAddressValid(const string address)
     return ADDRESS_IS_LEGAL;
 }
 
+/// <summary>
+/// The function checks if the question is valid or not.
+/// </summary>
+/// <param name="question"> The question to check.</param>
+/// <param name="difficultyQuestion"> The difficulty of the question.</param>
+/// <returns> The result of the check.</returns>
 CHECK_QUESTION_RESULTS UserInputChecker::isQuestionValid(const string question, const string difficultyQuestion)
 {
     vector<string> suffixQuestion = {QUESTION_MARK};

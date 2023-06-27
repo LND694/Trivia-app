@@ -250,6 +250,11 @@ RequestResult& MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 	return *req;
 }
 
+/// <summary>
+/// The function add a question to the DB.
+/// </summary>
+/// <param name="requestInfo"> THe info about the question to add.</param>
+/// <returns> The result of the request</returns>
 RequestResult& MenuRequestHandler::addQuestion(const RequestInfo& requestInfo)
 {
 	RequestResult* req = new RequestResult();
