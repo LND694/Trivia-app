@@ -226,6 +226,19 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const AddQuestionRespons
     return *makeBuffer(ADD_QUESTION_RESP_CODE, echoJsonFormat(responseData));
 }
 
+Buffer& JsonResponsePacketSerializer::serializeResponse(const GetStateHeadResponse& stateHeadResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(stateHeadResp.status));
+    responseData += SEPERATOR + getField<unsigned int>("amountPlayers", to_string(stateHeadResp.amountPlayers));
+    return *makeBuffer(ADD_QUESTION_RESP_CODE, echoJsonFormat(responseData));
+}
+
+Buffer& JsonResponsePacketSerializer::serializeResponse(const HeadModeResponse& headModeResp)
+{
+    string responseData = getField<unsigned int>("status", to_string(headModeResp.status));
+    return *makeBuffer(ADD_QUESTION_RESP_CODE, echoJsonFormat(responseData));
+}
+
 
 /// <summary>
 /// The function add to the number '0' to

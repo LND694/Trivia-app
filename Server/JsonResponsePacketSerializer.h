@@ -35,6 +35,8 @@ public:
 	static Buffer& serializeResponse(const GetQuestionResponse& getQuestionResp);
 	static Buffer& serializeResponse(const LeaveGameResponse& leaveGameResp);
 	static Buffer& serializeResponse(const AddQuestionResponse& addQuestResp);
+	static Buffer& serializeResponse(const GetStateHeadResponse& stateHeadResp);
+	static Buffer& serializeResponse(const HeadModeResponse& headModeResp);
 
 protected:
 	JsonResponsePacketSerializer() = default;

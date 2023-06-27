@@ -134,3 +134,13 @@ typedef struct GetGameResultsResponse : ResponseWithStatus
 {
 	vector<PlayerResults> results;
 }GetGameResultsResponse;
+
+typedef struct HeadModeResponse : ResponseWithStatus
+{
+
+}HeadModeResponse;
+
+typedef struct GetStateHeadResponse : ResponseWithStatus
+{
+	unsigned int amountPlayers{};
+}GetStateHeadResponse;
