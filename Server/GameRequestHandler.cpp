@@ -36,34 +36,27 @@ bool GameRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> The result of the request.</returns>
 RequestResult& GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-    RequestResult* reqRes = new RequestResult();
-
-    //If the request is not relevent
-    if (!isRequestRelevent(requestInfo))
+    if (!this->isRequestRelevent(requestInfo))
     {
-        createErrorResponse(ERROR_MSG, reqRes);
-        return *reqRes;
+        throw std::exception(ERROR_MSG.c_str());
     }
     switch (requestInfo.id)
     {
     case LEAVE_GAME_REQS_CODE:
-        delete reqRes;
         return leaveGame(requestInfo);
         break;
     case GET_QUESTION_REQS_CODE:
-        delete reqRes;
         return getQuestion(requestInfo);
         break;
     case SUBMIT_ANSWER_REQS_CODE:
-        delete reqRes;
         return submitAnswer(requestInfo);
         break;
     case GET_GAME_RESULT_REQS_CODE:
-        delete reqRes;
         return getGameResults(requestInfo);
         break;
     }
-    return *reqRes;
+    
+    throw std::exception(ERROR_MSG.c_str());
 }
 
 /// <summary>
@@ -262,18 +255,4 @@ RequestResult& GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
     reqRes->newHandler = this->m_requestHandlerFactory->createMenuRequestHandler(this->m_loggedUser);
 
     return *reqRes;
-}
-
-/// <summary>
-/// The function creates an ErrorResponse struct and saves it in
-/// the RequestResult variable.
-/// </summary>
-/// <param name="errMsg"> The message of the error.</param>
-/// <param name="reqRes"> The RequestResult to put  the ErrorResponse in.</param>
-void GameRequestHandler::createErrorResponse(const string errMsg, RequestResult* reqRes)
-{
-    ErrorResopnse errResp;
-    errResp.message = errMsg;
-    reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
-    reqRes->newHandler = this;//if there is a error the new handler will be the current
 }

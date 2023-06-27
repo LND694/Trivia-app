@@ -42,7 +42,7 @@ vector<Question>& IDatabase::fetchQuestions(const int amountOfQuestions)
             }
             answers.push_back(correctAnswer);
 
-            questions->push_back(Question(question, answers, correctAnswer, category, difficulty));
+            questions->push_back(Question(question, answers, correctAnswer, category, difficulty, false));
             answers.clear();//reset the incorrectAnswers
         }
     }

@@ -3,7 +3,6 @@
 #include <regex>
 #include <ctime>
 
-
 using std::time_t;
 using std::tm;
 
@@ -22,6 +21,10 @@ constexpr int PASSWORD_RIGHT_LEN = 8;
 constexpr int PHONE_NUM_RIGHT_LEN = 11;
 constexpr int STARTING_YEAR = 1900;
 const string SPECIAL_CHARS_PASSWORD = "!@#$%^&*";
+const string QUESTION_MARK = "?";
+
+const string DIFFICULTIES[] = { "easy", "medium", "hard" };
+constexpr int AMOUNT_DIFFS = 3;
 
 enum CHECK_PASSWORD_RESULTS {
 	PASSWORD_IS_LEGAL = 0,
@@ -55,6 +58,14 @@ enum CHECK_ADDRESS_RESULTS
 	WRONG_FORMAT_ADDRESS = 1
 };
 
+enum CHECK_QUESTION_RESULTS
+{
+	QUESTION_IS_LEGAL = 0,
+	NO_QUESTION_MARK = 1,
+	INVALID_DIFFICULTY = 2,
+	NO_QUESTION_WORD = 3,
+};
+
 class UserInputChecker
 {
 public:
@@ -64,6 +75,7 @@ public:
 	static CHECK_PHONE_NUM_RESULTS isPhoneNumberLegal(const string phoneNumber);
 	static CHECK_DATE_RESULTS isDateValid(const string date);
 	static CHECK_ADDRESS_RESULTS isAddressValid(const string address);
+	static CHECK_QUESTION_RESULTS isQuestionValid(const string question, const string difficultyQuestion);
 
 private:
 

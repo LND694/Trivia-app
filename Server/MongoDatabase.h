@@ -29,6 +29,7 @@ public:
 
 	//Question functions
 	list<Question>& getQuestions(const int amountQuestions) override;
+	int insertQuestionToDB(const Question& question) override;
 
 	//Statistics functions
 	float getPlayerAverageAnswerTime(const string player) override;

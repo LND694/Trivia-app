@@ -77,6 +77,11 @@ typedef struct CreateRoomResponse : ResponseWithStatus
 
 } CreateRoomResponse;
 
+typedef struct AddQuestionResponse : ResponseWithStatus
+{
+
+} AddQuestionResponse;
+
 
 
 typedef struct ErrorResopnse : Response

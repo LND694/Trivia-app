@@ -46,9 +46,9 @@ bool SqliteDatabase::open()
 {
 	vector<Question> vecQuest = fetchQuestions(AMOUNT_QUESTIONS);
 	vector<string> answers = vector<string>();
-	list<User>* users = nullptr;
-	string baseCommand = "INSERT INTO QUESTIONS(QUESTION, CATEGORY, DIFFICULTY, CORRECT_ANSWER, ANSWER1, ANSWER2, ANSWER3) VALUES ";
 	string command = "";
+
+
 	//Opening/Creating the database file
 	int res = sqlite3_open(DB_FILE_NAME.c_str(), &this->m_db);
 	if (res != SQLITE_OK)
@@ -76,29 +76,9 @@ bool SqliteDatabase::open()
 	//Going over the vector of the questions
 	for (auto i = vecQuest.begin(); i != vecQuest.end(); i++)
 	{
-		answers = i->getAnswers();
-		command = baseCommand;
-		command += "('" + i->getQuestion() + "', '";
-		command += i->getCategory() + "', '" + i->getDifficulty() + "', '";
-		command += i->getRightAnswer() + "', '" + answers[0] + "', '" + answers[1] + "', '" + answers[2];
-		command += "');";
-
-		this->runSqlCommand(command);
+		insertQuestionToDB(*i);
 	}
 	vecQuest.~vector();
-
-	//Getting all the users to initialize the SCORES table
-	command = "SELECT * FROM USERS;";
-	users = runSqlCommand<User>(command);
-
-	baseCommand = "INSERT INTO SCORES (USER_ID, SCORE) VALUES";
-	//Going over all the users
-	for (auto i = users->begin(); i != users->end(); i++)
-	{
-		command = baseCommand + "(" + to_string(i->getId()) + ", 0);";
-		runSqlCommand(command);
-	}
-	users->~list();
 
 	return true;
 }
@@ -109,9 +89,7 @@ bool SqliteDatabase::open()
 /// <returns> a bool value- if the closing was successful or not.</returns>
 bool SqliteDatabase::close()
 {
-	string command = "DELETE FROM QUESTIONS;";
-	this->runSqlCommand(command);
-	command = "DELETE FROM SCORES;";
+	string command = "DELETE FROM QUESTIONS WHERE IS_FROM_USER == 0;";
 	this->runSqlCommand(command);
 	sqlite3_close(this->m_db);
 	this->m_db = nullptr;
@@ -207,9 +185,6 @@ int SqliteDatabase::addNewUser(const User& user)
 	command += "((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "') , 0, 0, 0, 0, 0);";
 	this->runSqlCommand(command);
 
-	command = "INSERT INTO SCORES(USER_ID, SCORE) VALUES ((SELECT ID FROM USERS WHERE USERNAME LIKE '" + user.getUsername() + "'), 0);";
-	this->runSqlCommand(command);
-
 	return OK_CODE;
 }
 
@@ -230,6 +205,51 @@ list<Question>& SqliteDatabase::getQuestions(const int amountQuestions)
 		i->setAnswers(IDatabase::randomizeOrderAnswers(i->getAnswers()));
 	}
 	return *questions;
+}
+
+int SqliteDatabase::insertQuestionToDB(const Question& question)
+{
+	string command = "INSERT INTO QUESTIONS(QUESTION, CATEGORY, DIFFICULTY, CORRECT_ANSWER, ANSWER1, ANSWER2, ANSWER3, IS_FROM_USER) VALUES ";
+	vector<string>& answers = question.getAnswers();
+	int indexRightAnswer = question.getCorrectAnswerId();
+	
+	//Preparing the command
+	command += "('" + question.getQuestion() + "', '";
+	command += question.getCategory() + "', '" + question.getDifficulty() + "', '";
+	command += question.getRightAnswer() + "', ";
+	
+	//Adding the answers to the colums(the wrong ones)
+	for (int i = 0; i < answers.size(); i++)
+	{
+		if (i != indexRightAnswer)
+		{
+			command += "'" + answers[i] + "', ";
+		}
+	}
+
+	//Adding value if IS_FROM_USER as an integer
+	if (question.getIfFromUser())
+	{
+		command += "1);";
+	}
+	else
+	{
+		command += "0);";
+	}
+
+	delete& answers;
+
+	try
+	{
+		this->runSqlCommand(command);
+		return OK_CODE;
+	}
+	catch (...)
+	{
+		return ERROR_CODE;
+	}
+
+	
 }
 
 /// <summary>
@@ -322,6 +342,7 @@ int SqliteDatabase::callbackUsers(void* data, int argc, char** argv, char** azCo
 int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** azColName)
 {
 	string quesiton = "", rightAnswer = "", difficulty = "", category = "";
+	bool isFromUser = false;
 	vector<string> answers;
 	Question currentQuestion;
 
@@ -348,13 +369,22 @@ int SqliteDatabase::callbackQuestions(void* data, int argc, char** argv, char** 
 		if (string(azColName[i]).substr(0, 6) == ANSWER_FIELD)
 		{
 			answers.push_back(argv[i]);
+		}
+		if (FROM_USER_FIELD == string(azColName[i]))
+		{
 
-			if (static_cast<unsigned long long>(AMOUNT_ANSWERS) == answers.size())//support compatibility with wider type
+			if (atoi(argv[i])) //from the user
 			{
-				currentQuestion = Question(quesiton, IDatabase::randomizeOrderAnswers(answers), rightAnswer, category, difficulty);
-				(static_cast<list<Question>*>(data))->push_back(currentQuestion);
-				answers.clear();
+				isFromUser = true;
 			}
+			else
+			{
+				isFromUser = false;
+			}
+
+			currentQuestion = Question(quesiton, IDatabase::randomizeOrderAnswers(answers), rightAnswer, category, difficulty, isFromUser);
+			(static_cast<list<Question>*>(data))->push_back(currentQuestion);
+			answers.clear();
 		}
 	}
 	return OK_CODE;

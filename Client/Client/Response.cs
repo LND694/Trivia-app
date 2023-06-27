@@ -30,6 +30,7 @@ namespace Client
         public const int GET_QUESTION_RESP_CODE = 215;
         public const int SUBMIT_ANSWER_RESP_CODE = 216;
         public const int GET_GAME_RES_RESP_CODE = 217;
+        public const int ADD_QUESTION_RESP_CODE = 218;
         public const int ERROR_RESP_CODE = 255;
     }
 
@@ -316,6 +317,15 @@ namespace Client
         public Dictionary<int, string> GetAnswers()
         {
             return new Dictionary<int, string>(this.answers);
+        }
+    }
+
+    public class AddQuestionResponse : ResponseWithStatus
+    {
+        public AddQuestionResponse(int status) :
+            base(status)
+        {
+
         }
     }
 

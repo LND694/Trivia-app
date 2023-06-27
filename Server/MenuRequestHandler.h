@@ -19,8 +19,6 @@ public:
 	bool isRequestRelevent(const RequestInfo& requestInfo) override;
 	RequestResult& handleRequest(const RequestInfo& requestInfo) override;
 private:
-	//Help functions
-	void createErrorResponse(const string errMsg, RequestResult* reqRes);
 
 	RequestResult& signout(const RequestInfo& requestInfo);
 	RequestResult& getRooms(const RequestInfo& requestInfo);
@@ -29,6 +27,7 @@ private:
 	RequestResult& getHighScore(const RequestInfo& requestInfo);
 	RequestResult& joinRoom(const RequestInfo& requestInfo);
 	RequestResult& createRoom(const RequestInfo& requestInfo);
+	RequestResult& addQuestion(const RequestInfo& requestInfo);
 
 	//Fields
 	LoggedUser m_user;

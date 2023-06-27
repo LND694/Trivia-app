@@ -15,7 +15,6 @@ protected:
 
 	//Help functions
 	RequestResult& getRoomState(const RequestInfo& requestInfo);
-	void createErrorResponse(string msg, RequestResult* reqRes);
 
 public:
 	//c`tor

@@ -39,6 +39,7 @@ private:
 	void handleNewClient(SOCKET socket);
 	static Buffer* getDataFromBuffer(const Buffer& buf);
 	static int getCode(const Buffer& buffer);
+	static RequestResult& createErrorResponse(const string errorMsg, IRequestHandler* lastHandler);
 	//Singleton fields
 	static Communicator* m_instance;
 	static Lock m_lock;

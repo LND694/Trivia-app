@@ -22,7 +22,6 @@ private:
 	RequestHandlerFactory* m_handlerFactory;
 
 	//Help function
-	void createErrorResponse(const string errMsg, RequestResult* reqRes);
 	static string checkIfInputValid(const SignupRequest& signupReq);
 };
 

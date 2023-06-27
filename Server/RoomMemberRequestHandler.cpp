@@ -31,6 +31,10 @@ bool RoomMemberRequestHandler::isRequestRelevent(const RequestInfo& requestInfo)
 /// <returns> request result</returns>
 RequestResult& RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
+    if (!this->isRequestRelevent(requestInfo))
+    {
+        throw std::exception(ERROR_MSG.c_str());
+    }
     if (requestInfo.id == LEAVE_ROOM_REQS_CODE)
     {
         return leaveRoom(requestInfo);
@@ -47,26 +51,21 @@ RequestResult& RoomMemberRequestHandler::leaveRoom(const RequestInfo& requestInf
 {
     LeaveRoomResponse leaveResp = LeaveRoomResponse();
     RequestResult* reqRes = new RequestResult();//the result to return
-    if (isRequestRelevent(requestInfo))
-    {
-        try
-        {
-            this->m_roomManager.getRoom(this->m_room.getRoomData().id).removeUser(this->m_user);
-            this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
-        }
-        catch (...)
-        {
 
-        }
-
-        leaveResp.status = OK_STATUS_CODE;
-        reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
-        reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
-    }
-    else 
+    try //it does not matter because of if the room is not exists, it count like
+        //the user left the room
     {
-        createErrorResponse(ERROR_MSG, reqRes);
+        this->m_roomManager.getRoom(this->m_room.getRoomData().id).removeUser(this->m_user);
+        this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
     }
+    catch (...)
+    {
+
+    }
+
+    leaveResp.status = OK_STATUS_CODE;
+    reqRes->response = JsonResponsePacketSerializer::serializeResponse(leaveResp);
+    reqRes->newHandler = this->m_handlerFactory->createMenuRequestHandler(this->m_user);//return the user to the menu
     return *reqRes;
 }
 
@@ -81,52 +80,26 @@ RequestResult& RoomMemberRequestHandler::getRoomState(const RequestInfo& request
 {
     RequestResult* reqRes = new RequestResult();
     GetRoomStateResponse stateResp = GetRoomStateResponse();
-    if (isRequestRelevent(requestInfo))
+
+    //Creating the GetRoomStateResponse
+    this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
+    stateResp.hasGameBegun = this->m_room.getRoomData().isActive;
+    stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
+    stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
+    stateResp.players = this->m_room.getAllUsers();
+    stateResp.status = OK_STATUS_CODE;
+
+    reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
+
+    if (stateResp.hasGameBegun) //the game has already begun
     {
-        try
-        {
-            //Creating the GetRoomStateResponse
-            this->m_room = this->m_roomManager.getRoom(this->m_room.getRoomData().id);
-            stateResp.hasGameBegun = this->m_room.getRoomData().isActive;
-            stateResp.questionCount = this->m_room.getRoomData().numOfQuestionsInGame;
-            stateResp.answerTimeOut = this->m_room.getRoomData().timePerQuestion;
-            stateResp.players = this->m_room.getAllUsers();
-            stateResp.status = OK_STATUS_CODE;
-
-            reqRes->response = JsonResponsePacketSerializer::serializeResponse(stateResp);
-
-            if (stateResp.hasGameBegun) //the game has already begun
-            {
-                reqRes->newHandler = (IRequestHandler*)(this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id));
-            }
-            else
-            {
-                reqRes->newHandler = this;
-            }
-        }
-        catch (const std::exception& excp)
-        {
-            createErrorResponse(excp.what(), reqRes);
-        }
+        reqRes->newHandler = (IRequestHandler*)(this->m_handlerFactory->createGameRequestHandler(this->m_user, this->m_room.getRoomData().id));
     }
     else
     {
-        createErrorResponse(ERROR_MSG, reqRes);
+        reqRes->newHandler = this;
     }
     return *reqRes;
-}
-
-/// <summary>
-/// creates ERROR result for the client
-/// </summary>
-/// <param name="errMsg"> the error message to dispaly</param>
-/// <param name="reqRes"> the request result to return</param>
-void RoomMemberRequestHandler::createErrorResponse(string errMsg, RequestResult* reqRes)
-{
-    ErrorResopnse errResp;
-    errResp.message = errMsg;
-    reqRes->response = JsonResponsePacketSerializer::serializeResponse(errResp);//turn the error message into buffer
-    reqRes->newHandler = this;//if there is a error the new handler will be the current
 }
 
 

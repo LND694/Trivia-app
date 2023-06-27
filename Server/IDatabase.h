@@ -50,6 +50,7 @@ public:
 
 	//Question functions
 	virtual list<Question>& getQuestions(const int amountQuestions) = 0;
+	virtual int insertQuestionToDB(const Question& question) = 0;
 
 	//Statistics functions
 	virtual float getPlayerAverageAnswerTime(const string player) = 0;

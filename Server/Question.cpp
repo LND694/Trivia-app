@@ -8,10 +8,11 @@
 /// <param name="rightAnswer"> The right answer for the question</param>
 /// <param name="category"> The category of the question</param>
 /// <param name="difficulty"> The difficulty level of the question</param>
+/// <param name="isFromUser"> If the question was created by a user</param>
 Question::Question(const string question, const vector<string>& answers,
-	const string rightAnswer, const string category, const string difficulty):
+	const string rightAnswer, const string category, const string difficulty, const bool isFromUser):
 	m_question(question), m_rightAnswer(rightAnswer), 
-	m_category(category), m_difficulty(difficulty)
+	m_category(category), m_difficulty(difficulty), m_isFromUser(isFromUser)
 {
 	if (answers.size() != AMOUNT_ANSWERS)
 	{
@@ -29,7 +30,7 @@ Question::Question(const string question, const vector<string>& answers,
 /// </summary>
 Question::Question():
 	m_question(""), m_rightAnswer(""), m_answers(vector<string>()),
-	m_category(""), m_difficulty("")
+	m_category(""), m_difficulty(""), m_isFromUser(false)
 {
 }
 
@@ -43,6 +44,7 @@ Question::Question(const Question& other)
 	this->m_category = other.m_category;
 	this->m_difficulty = other.m_difficulty;
 	this->m_rightAnswer = other.m_rightAnswer;
+	this->m_isFromUser = other.m_isFromUser;
 
 	//Copying the possibole answers
 	for (const auto& i : other.m_answers)
@@ -108,6 +110,11 @@ unsigned int Question::getCorrectAnswerId() const
 		id++;
 	}
 	return id;
+}
+
+bool Question::getIfFromUser() const
+{
+	return this->m_isFromUser;
 }
 
 void Question::setAnswers(const vector<string>& newAnswers)

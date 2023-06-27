@@ -1,4 +1,4 @@
-﻿namespace Client
+namespace Client
 {
     partial class Form1
     {
@@ -166,7 +166,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.results = new System.Windows.Forms.Panel();
             this.button_WOC24 = new ePOSOne.btnProduct.Button_WOC();
-
             this.button_WOC25 = new ePOSOne.btnProduct.Button_WOC();
             this.questionPanel = new System.Windows.Forms.Panel();
             this.textBox82 = new System.Windows.Forms.TextBox();
@@ -184,7 +183,6 @@
             this.textBox94 = new System.Windows.Forms.TextBox();
             this.button_WOC26 = new ePOSOne.btnProduct.Button_WOC();
             this.button_WOC27 = new ePOSOne.btnProduct.Button_WOC();
-
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -202,6 +200,7 @@
             this.roomAdminPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
             this.results.SuspendLayout();
+            this.questionPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // signUpPanel
@@ -332,7 +331,7 @@
             "054",
             "052",
             "058"});
-            this.comboBox1.Location = new System.Drawing.Point(1620, 560);
+            this.comboBox1.Location = new System.Drawing.Point(1617, 569);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBox1.MaximumSize = new System.Drawing.Size(146, 0);
             this.comboBox1.Name = "comboBox1";
@@ -517,6 +516,7 @@
             // menuPanel
             // 
             this.menuPanel.BackColor = System.Drawing.SystemColors.Highlight;
+            this.menuPanel.Controls.Add(this.button_WOC25);
             this.menuPanel.Controls.Add(this.button_WOC10);
             this.menuPanel.Controls.Add(this.button_WOC9);
             this.menuPanel.Controls.Add(this.button_WOC8);
@@ -2289,6 +2289,236 @@
 
             // button_WOC25
             // 
+<<<<<<< Client/Client/Form1.Designer.cs
+            this.button_WOC25.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button_WOC25.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC25.ButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC25.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC25.ForeColor = System.Drawing.Color.Lime;
+            this.button_WOC25.Location = new System.Drawing.Point(1562, 622);
+            this.button_WOC25.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button_WOC25.Name = "button_WOC25";
+            this.button_WOC25.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC25.OnHoverButtonColor = System.Drawing.Color.HotPink;
+            this.button_WOC25.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC25.Size = new System.Drawing.Size(416, 162);
+            this.button_WOC25.TabIndex = 6;
+            this.button_WOC25.Text = "Add Question";
+            this.button_WOC25.TextColor = System.Drawing.Color.Black;
+            this.button_WOC25.UseVisualStyleBackColor = false;
+            this.button_WOC25.Click += new System.EventHandler(this.button_WOC25_Click);
+            // 
+            // questionPanel
+            // 
+            this.questionPanel.BackColor = System.Drawing.Color.NavajoWhite;
+            this.questionPanel.Controls.Add(this.button_WOC27);
+            this.questionPanel.Controls.Add(this.button_WOC26);
+            this.questionPanel.Controls.Add(this.textBox93);
+            this.questionPanel.Controls.Add(this.textBox94);
+            this.questionPanel.Controls.Add(this.textBox91);
+            this.questionPanel.Controls.Add(this.textBox92);
+            this.questionPanel.Controls.Add(this.textBox89);
+            this.questionPanel.Controls.Add(this.textBox90);
+            this.questionPanel.Controls.Add(this.textBox87);
+            this.questionPanel.Controls.Add(this.textBox88);
+            this.questionPanel.Controls.Add(this.textBox86);
+            this.questionPanel.Controls.Add(this.comboBox3);
+            this.questionPanel.Controls.Add(this.textBox85);
+            this.questionPanel.Controls.Add(this.textBox84);
+            this.questionPanel.Controls.Add(this.textBox82);
+            this.questionPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.questionPanel.Location = new System.Drawing.Point(0, 0);
+            this.questionPanel.Name = "questionPanel";
+            this.questionPanel.Size = new System.Drawing.Size(1924, 992);
+            this.questionPanel.TabIndex = 7;
+            // 
+            // textBox82
+            // 
+            this.textBox82.BackColor = System.Drawing.Color.NavajoWhite;
+            this.textBox82.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox82.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox82.Location = new System.Drawing.Point(939, 21);
+            this.textBox82.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox82.Multiline = true;
+            this.textBox82.Name = "textBox82";
+            this.textBox82.ReadOnly = true;
+            this.textBox82.Size = new System.Drawing.Size(501, 106);
+            this.textBox82.TabIndex = 2;
+            this.textBox82.Text = "Enter a question here:";
+            this.textBox82.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox84
+            // 
+            this.textBox84.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox84.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox84.Location = new System.Drawing.Point(559, 127);
+            this.textBox84.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox84.Name = "textBox84";
+            this.textBox84.ReadOnly = true;
+            this.textBox84.Size = new System.Drawing.Size(192, 31);
+            this.textBox84.TabIndex = 9;
+            this.textBox84.Text = "The Question:";
+            // 
+            // textBox85
+            // 
+            this.textBox85.BackColor = System.Drawing.Color.White;
+            this.textBox85.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox85.Location = new System.Drawing.Point(783, 127);
+            this.textBox85.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox85.Multiline = true;
+            this.textBox85.Name = "textBox85";
+            this.textBox85.Size = new System.Drawing.Size(462, 67);
+            this.textBox85.TabIndex = 14;
+            this.textBox85.WordWrap = false;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.ItemHeight = 20;
+            this.comboBox3.Items.AddRange(new object[] {
+            "easy",
+            "medium",
+            "hard"});
+            this.comboBox3.Location = new System.Drawing.Point(783, 259);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.comboBox3.MaximumSize = new System.Drawing.Size(146, 0);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(146, 28);
+            this.comboBox3.TabIndex = 15;
+            // 
+            // textBox86
+            // 
+            this.textBox86.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox86.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox86.Location = new System.Drawing.Point(559, 259);
+            this.textBox86.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox86.Name = "textBox86";
+            this.textBox86.ReadOnly = true;
+            this.textBox86.Size = new System.Drawing.Size(192, 31);
+            this.textBox86.TabIndex = 16;
+            this.textBox86.Text = "Difficulty:";
+            // 
+            // textBox87
+            // 
+            this.textBox87.BackColor = System.Drawing.Color.White;
+            this.textBox87.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox87.Location = new System.Drawing.Point(783, 410);
+            this.textBox87.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox87.Multiline = true;
+            this.textBox87.Name = "textBox87";
+            this.textBox87.Size = new System.Drawing.Size(462, 67);
+            this.textBox87.TabIndex = 18;
+            this.textBox87.WordWrap = false;
+            // 
+            // textBox88
+            // 
+            this.textBox88.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox88.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox88.Location = new System.Drawing.Point(559, 410);
+            this.textBox88.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox88.Name = "textBox88";
+            this.textBox88.ReadOnly = true;
+            this.textBox88.Size = new System.Drawing.Size(192, 31);
+            this.textBox88.TabIndex = 17;
+            this.textBox88.Text = "The Right Answer:";
+            // 
+            // textBox89
+            // 
+            this.textBox89.BackColor = System.Drawing.Color.White;
+            this.textBox89.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox89.Location = new System.Drawing.Point(1509, 127);
+            this.textBox89.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox89.Multiline = true;
+            this.textBox89.Name = "textBox89";
+            this.textBox89.Size = new System.Drawing.Size(350, 67);
+            this.textBox89.TabIndex = 20;
+            this.textBox89.WordWrap = false;
+            // 
+            // textBox90
+            // 
+            this.textBox90.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox90.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox90.Location = new System.Drawing.Point(1297, 127);
+            this.textBox90.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox90.Name = "textBox90";
+            this.textBox90.ReadOnly = true;
+            this.textBox90.Size = new System.Drawing.Size(192, 31);
+            this.textBox90.TabIndex = 19;
+            this.textBox90.Text = "Another answer:";
+            // 
+            // textBox91
+            // 
+            this.textBox91.BackColor = System.Drawing.Color.White;
+            this.textBox91.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox91.Location = new System.Drawing.Point(1509, 298);
+            this.textBox91.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox91.Multiline = true;
+            this.textBox91.Name = "textBox91";
+            this.textBox91.Size = new System.Drawing.Size(350, 67);
+            this.textBox91.TabIndex = 22;
+            this.textBox91.WordWrap = false;
+            // 
+            // textBox92
+            // 
+            this.textBox92.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox92.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox92.Location = new System.Drawing.Point(1297, 298);
+            this.textBox92.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox92.Name = "textBox92";
+            this.textBox92.ReadOnly = true;
+            this.textBox92.Size = new System.Drawing.Size(192, 31);
+            this.textBox92.TabIndex = 21;
+            this.textBox92.Text = "Another answer:";
+            // 
+            // textBox93
+            // 
+            this.textBox93.BackColor = System.Drawing.Color.White;
+            this.textBox93.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox93.Location = new System.Drawing.Point(1511, 439);
+            this.textBox93.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox93.Multiline = true;
+            this.textBox93.Name = "textBox93";
+            this.textBox93.Size = new System.Drawing.Size(350, 67);
+            this.textBox93.TabIndex = 24;
+            this.textBox93.WordWrap = false;
+            // 
+            // textBox94
+            // 
+            this.textBox94.BackColor = System.Drawing.Color.LightGreen;
+            this.textBox94.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox94.Location = new System.Drawing.Point(1299, 439);
+            this.textBox94.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox94.Name = "textBox94";
+            this.textBox94.ReadOnly = true;
+            this.textBox94.Size = new System.Drawing.Size(192, 31);
+            this.textBox94.TabIndex = 23;
+            this.textBox94.Text = "Another answer:";
+            // 
+            // button_WOC26
+            // 
+            this.button_WOC26.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC26.ButtonColor = System.Drawing.Color.Crimson;
+            this.button_WOC26.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC26.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.button_WOC26.Location = new System.Drawing.Point(207, 681);
+            this.button_WOC26.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button_WOC26.Name = "button_WOC26";
+            this.button_WOC26.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC26.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC26.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC26.Size = new System.Drawing.Size(313, 103);
+            this.button_WOC26.TabIndex = 25;
+            this.button_WOC26.Text = "<Back";
+            this.button_WOC26.TextColor = System.Drawing.Color.Black;
+            this.button_WOC26.UseVisualStyleBackColor = false;
+            this.button_WOC26.Click += new System.EventHandler(this.button_WOC26_Click);
+            // 
+            // button_WOC27
+            // 
+=======
+            // button_WOC25
+            // 
             this.button_WOC25.BackColor = System.Drawing.SystemColors.Highlight;
             this.button_WOC25.BorderColor = System.Drawing.Color.Black;
             this.button_WOC25.ButtonColor = System.Drawing.Color.Yellow;
@@ -2531,7 +2761,6 @@
             this.button_WOC27.TextColor = System.Drawing.Color.Black;
             this.button_WOC27.UseVisualStyleBackColor = false;
             this.button_WOC27.Click += new System.EventHandler(this.button_WOC27_Click);
-
             // 
             // Form1
             // 
@@ -2540,19 +2769,21 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1924, 992);
             this.Controls.Add(this.questionPanel);
+            this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.signUpPanel);
+            this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.roomMemberPanel);
+            this.Controls.Add(this.createRoomPanel);
+            this.Controls.Add(this.roomAdminPanel);
             this.Controls.Add(this.results);
             this.Controls.Add(this.personalStatsPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.statisticsPanel);
-            this.Controls.Add(this.createRoomPanel);
-            this.Controls.Add(this.roomMemberPanel);
-            this.Controls.Add(this.roomAdminPanel);
             this.Controls.Add(this.enterRoomPanel);
-            this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.loginPanel);
-            this.Controls.Add(this.signUpPanel);
             this.Controls.Add(this.openPanel);
-            this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.statisticsPanel);
+            this.Controls.Add(this.enterRoomPanel);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
@@ -2586,6 +2817,8 @@
             this.gamePanel.PerformLayout();
             this.results.ResumeLayout(false);
             this.results.PerformLayout();
+            this.questionPanel.ResumeLayout(false);
+            this.questionPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2728,6 +2961,23 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.TextBox textBox83;
         private ePOSOne.btnProduct.Button_WOC button_WOC24;
+        private ePOSOne.btnProduct.Button_WOC button_WOC25;
+        private System.Windows.Forms.Panel questionPanel;
+        private System.Windows.Forms.TextBox textBox82;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox textBox85;
+        private System.Windows.Forms.TextBox textBox84;
+        private System.Windows.Forms.TextBox textBox87;
+        private System.Windows.Forms.TextBox textBox88;
+        private System.Windows.Forms.TextBox textBox86;
+        private ePOSOne.btnProduct.Button_WOC button_WOC26;
+        private System.Windows.Forms.TextBox textBox93;
+        private System.Windows.Forms.TextBox textBox94;
+        private System.Windows.Forms.TextBox textBox91;
+        private System.Windows.Forms.TextBox textBox92;
+        private System.Windows.Forms.TextBox textBox89;
+        private System.Windows.Forms.TextBox textBox90;
+        private ePOSOne.btnProduct.Button_WOC button_WOC27;
     }
 }
 
