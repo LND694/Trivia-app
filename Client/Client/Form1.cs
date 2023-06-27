@@ -99,18 +99,14 @@ namespace Client
                             this.Invoke((MethodInvoker)delegate {
                                 timer1.Start();
                             });
+                            //Preparing the data for the game
                             timePerQuestion = int.Parse(textBox64.Text);
                             this.seconds = timePerQuestion;
                             UpdateControlText(textBox79, textBox57.Text);
                             MoveTab(this.roomMemberPanel, this.gamePanel);
-
-                            //while (this.gamePanel.Visible)
-                            //{
-                            //    this.timer1_Tick_1(null, null);
-                            //}
                         }
                     }
-                    else
+                    else //the update was failed
                     {
                         button_WOC21_Click(null, null); // leave room
                         ShowErrorMessage("The host left the room", "Leaving room");
@@ -605,6 +601,7 @@ namespace Client
             theHighScores = new Queue<string>(this.highScores);
             this.highScoresLock.ReleaseMutex();
 
+            //Showing the high scores in the textBoxes
             if (theHighScores != null && theHighScores.Count > 0)
             {
                 UpdateControlText(textBox44, theHighScores.Dequeue());
@@ -1022,14 +1019,16 @@ namespace Client
             Dictionary<int, string> answers = null;
             if(seconds == this.roomData.GetAnswerTimeOut())
             {
-
                 try
                 {
+                    //Getting the current question from the server
                     resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
                     if (resp.GetStatus() != Constants.OK_STATUS_CODE)
                     {
                         throw new Exception("You finished all your questions");
                     }
+
+                    //Showing to the user the question and its answers
                     UpdateControlText(textBox81, resp.GetQuestion());
                     answers = resp.GetAnswers();
                     UpdateControlText(button1, answers[0]);
@@ -1043,19 +1042,20 @@ namespace Client
                 }
 
             }
-            UpdateControlText(this.label1, seconds--.ToString());
-            if (seconds == 0)
+            UpdateControlText(this.label1, seconds--.ToString()); //lowring the seconds
+            if (seconds == 0) //the time for the question is over
             {
-                if(!this.isAnswered)
+                if(!this.isAnswered) //the question was not answered
                 {
                     SendAnswer(-1);
                 }
-                if(this.isRight)
+                if(this.isRight) //the user was right
                 {
-                    updateScore(this.textBox20.Text);
+                    UpdateScore(this.textBox20.Text);
                     this.isRight = false;
                     this.isAnswered = false;
                 }
+                //Restarting the seconds
                 seconds = this.roomData.GetAnswerTimeOut();
                 this.wasClicked = false;
                 this.questionsLeft--;
@@ -1065,13 +1065,14 @@ namespace Client
                 this.timer1.Stop();
                 Queue<string> results = new Queue<string>();
 
-                
                 //Waiting for the game to be over
                 do
                 {
                     Thread.Sleep(5000);
                     response = SendRequestToServer<NullableConverter, GetGameResultsResponse>(null, REQUEST_CODES.GET_GAME_RESULT_REQS_CODE);
                 }while(Constants.OK_STATUS_CODE != response.GetStatus());
+
+                //Showing the results
                 foreach (var i in response.GetPlayerResults())
                 {
                     results.Enqueue("Name: " + i.GetUsername() + " Correct Answers: "+i.GetCorrectAnswerCount() + " Average time for question: "+ i.GetAverageAnswerTime());
@@ -1080,7 +1081,12 @@ namespace Client
                 MoveTab(this.gamePanel, this.results);//move to the results tab
             }
         }
-        private void updateScore(string playerName)
+
+        /// <summary>
+        /// The function updates the score of the user.
+        /// </summary>
+        /// <param name="playerName"> The name of the player</param>
+        private void UpdateScore(string playerName)
         {
             // Find the player's index
             int playerIndex = -1;
@@ -1104,6 +1110,12 @@ namespace Client
                 this.listBox3.Items[playerIndex] = playerName + " " + updatedScore;
             }
         }
+
+        /// <summary>
+        /// The function sends the answer to the server and
+        /// updates if it is right or not.
+        /// </summary>
+        /// <param name="id"> The id of the answer.</param>
         private void SendAnswer(int id)
         {
             SubmitAnswerRequest req = new SubmitAnswerRequest(id);
@@ -1150,6 +1162,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Chose option 1
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             if (!this.wasClicked)

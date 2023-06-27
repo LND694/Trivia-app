@@ -92,9 +92,9 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
         playerGameData.currentQuestion = question;
         
         //Getting the answers of the question
-        for (auto i = theAnswers.begin(); i != theAnswers.end(); i++)
+        for (const auto& i : theAnswers)
         {
-            resp.answers.insert({ id, *i });
+            resp.answers.insert({ id, i });
             id++;
         }
 
@@ -109,8 +109,6 @@ RequestResult& GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
     //Creating the RequestResult
     reqRes->response = JsonResponsePacketSerializer::serializeResponse(resp);
     reqRes->newHandler = this;
-
-
 
     return *reqRes;
 }
@@ -178,12 +176,12 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         //Getting the results of the game
 
         //Going over the players of the game and getting their data
-        for (auto i = listOfPlayers.begin(); i != listOfPlayers.end(); i++)
+        for (const auto& i : listOfPlayers)
         {
-            currentGameData = this->m_game.getGameDataOfUser(*i);
+            currentGameData = this->m_game.getGameDataOfUser(i);
 
             //Making the current PlayerResults
-            currentResult.username = i->getUsername();
+            currentResult.username = i.getUsername();
             currentResult.correctAnswerCount = currentGameData.correctAnswerCount;
             currentResult.wrongAnswerCount = currentGameData.wrongAnswerCount;
             currentResult.averageAnswerTime = currentGameData.averageAnswerTime;
@@ -197,10 +195,10 @@ RequestResult& GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
         if (this->m_game.doesAllGotResults())
         {
             //Submitting the statistics of the users
-            for (auto i = listOfPlayers.begin(); i != listOfPlayers.end(); i++)
+            for (const auto& i : listOfPlayers)
             {
                 //Updating statistics of user
-                this->m_gameManager.submitStatistics(currentGameData, *i);
+                this->m_gameManager.submitStatistics(currentGameData, i);
             }
             this->m_gameManager.deleteGame(this->m_game.getGameId());
             this->m_requestHandlerFactory->getRoomManager().deleteRoom(this->m_game.getGameId());

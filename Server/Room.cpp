@@ -38,7 +38,7 @@ void Room::addUser(const LoggedUser& user)
 void Room::removeUser(LoggedUser& user)
 {
 	//using lambda function beacuse stl doesnt know how to handle LoggedUser:
-	std::erase_if(this->m_users, [&user](LoggedUser player) {return user.getUsername() == player.getUsername(); });//erase_if is better (c++20 feature)
+	std::erase_if(this->m_users, [&user](LoggedUser& player) {return user.getUsername() == player.getUsername(); });//erase_if is better (c++20 feature)
 }
 
 vector<string>& Room::getAllUsers() const

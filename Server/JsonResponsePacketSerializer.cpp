@@ -200,9 +200,9 @@ Buffer& JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
     responseData += getField<string>("question", getQuestionResp.question) + SEPERATOR;
 
     //Going over the answers
-    for (auto i = getQuestionResp.answers.begin(); i != getQuestionResp.answers.end(); i++)
+    for (const auto& i : getQuestionResp.answers)
     {
-        answersData += getMapField(i->first, i->second) + SEPERATOR;
+        answersData += getMapField(i.first, i.second) + SEPERATOR;
     }
     if (answersData.length() > 0)
     {
@@ -258,9 +258,9 @@ string JsonResponsePacketSerializer::getVectorString(const vector<string>& vec)
     string vectorStr = "";
 
     //Going over the players's vector
-    for (auto i = vec.begin(); i != vec.end(); i++)
+    for (const auto& i : vec)
     {
-        vectorStr += *i + SEPERATOR;
+        vectorStr += i + SEPERATOR;
     }
     vectorStr.pop_back(); // removing the last SEPERATOR
     return vectorStr;
@@ -321,7 +321,7 @@ string JsonResponsePacketSerializer::getMapField(unsigned int key, string value)
 void JsonResponsePacketSerializer::addStringToBuffer(Buffer* buf, string str)
 {
     //Going over the string
-    for (int i = 0; i < str.length(); i++)
+    for (const auto& i : str)
     {
         buf->push_back(str[i]);
     }

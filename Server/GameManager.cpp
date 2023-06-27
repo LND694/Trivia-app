@@ -14,9 +14,9 @@ int GameManager::getIndexGame(const GameId gameId) const
     int index = 0;
 
     //Going over the games
-    for (auto i = this->m_games.begin(); i != this->m_games.end(); i++)
+    for (const auto& i : this->m_games)
     {
-        if (i->getGameId() == gameId) //the game was found
+        if (i.getGameId() == gameId) //the game was found
         {
             return index;
         }
@@ -63,7 +63,7 @@ Game& GameManager::createGame(const Room& room)
 /// <param name="gameId"> The id of the game.</param>
 void GameManager::deleteGame(const GameId gameId)
 {   
-    std::erase_if(this->m_games, [gameId](Game current) {return current.getGameId() == gameId; });
+    std::erase_if(this->m_games, [gameId](Game& current) {return current.getGameId() == gameId; });
 }
 
 /// <summary>
@@ -91,9 +91,9 @@ vector<Question>& GameManager::getQuestionsFromDB(const int amountQuestions)
     list<Question> questions = this->m_database->getQuestions(amountQuestions);
     vector<Question>* theQuestions = new vector<Question>();
     //Copying the list to a vector
-    for (auto i = questions.begin(); i != questions.end(); i++)
+    for (const auto& i : questions)
     {
-        theQuestions->push_back(*i);
+        theQuestions->push_back(i);
     }
     return *theQuestions;
 }

@@ -13,9 +13,9 @@ Game::Game(const GameId gameId, const Room& room, GameManager& gameManager):
 	vector<string>& players = room.getAllUsers();
 	
 	//Going over the players in the room
-	for (auto i = players.begin(); i != players.end(); i++)
+	for(const auto& i : players)
 	{
-		this->m_players.insert({ LoggedUser(*i), GameData() });
+		this->m_players.insert({ LoggedUser(i), GameData() });
 	}
 
 	this->m_questions = this->m_gameManager.getQuestionsFromDB(room.getRoomData().numOfQuestionsInGame);
@@ -99,9 +99,9 @@ GameData& Game::getGameDataOfUser(const LoggedUser& user)
 bool Game::isGameOver() const
 {
 	//Going over the players
-	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	for (const auto& i : this->m_players)
 	{
-		if (!isUserFinished(i->first))
+		if (!isUserFinished(i.first))
 		{
 			return false;
 		}
@@ -124,9 +124,9 @@ bool Game::isUserFinished(const LoggedUser& user) const
 bool Game::doesAllGotResults() const
 {
 	//Going over the players
-	for (auto i = this->m_players.begin(); i != this->m_players.end(); i++)
+	for (const auto& i : this->m_players)
 	{
-		if (i->second.currentQuestion.getQuestion() != "")
+		if (i.second.currentQuestion.getQuestion() != "")
 		{
 			return false;
 		}

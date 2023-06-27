@@ -162,9 +162,9 @@ bool UserInputChecker::doesHaveASuffix(const string str, const vector<string>& s
     smatch matches;
 
     //Going over the suffixes to find
-    for (auto i = suffixes.begin(); i != suffixes.end(); i++)
+    for (const auto& i : suffixes)
     {
-        regex.assign("((.)+" + *i + ")");
+        regex.assign("((.)+" + i + ")");
         regex_search(str, matches, regex);
         if (!matches.empty())
         {
@@ -187,9 +187,9 @@ bool UserInputChecker::doesHaveAPrefix(const string str, const vector<string>& p
     smatch matches;
 
     //Going over the suffixes to find
-    for (auto i = prefixes.begin(); i != prefixes.end(); i++)
+    for (const auto& i : prefixes)
     {
-        regex.assign("(" + *i + "(.)+)");
+        regex.assign("(" + i + "(.)+)");
         regex_search(str, matches, regex);
         if (!matches.empty())
         {
