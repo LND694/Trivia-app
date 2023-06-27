@@ -1221,6 +1221,67 @@ namespace Client
         {
             MoveTab(this.results, this.menuPanel);
         }
+
+        private void button_WOC26_Click(object sender, EventArgs e)
+        {
+            MoveTab(questionPanel, this.menuPanel);
+        }
+
+        private void button_WOC25_Click(object sender, EventArgs e)
+        {
+            MoveTab(menuPanel, questionPanel);
+        }
+
+        private void button_WOC27_Click(object sender, EventArgs e)
+        {
+            AddQuestionResponse addQuestionResponse = null;
+            AddQuestionRequest addQuestionRequest = null;
+            Queue<string> wrongAnswers = new Queue<string>();
+            bool readyToAdd = true;
+            string question = "", rightAnswer = "", difficulty = "";
+
+            //Checking if all the text are filled
+            for(int i = 0; i < this.questionPanel.Controls.Count; i++)
+            {
+                if(this.questionPanel.Controls[i].Text == "")
+                {
+                    readyToAdd = false;
+                }
+            }
+
+            if(!readyToAdd)
+            {
+                ShowErrorMessage("Please fill all the required inputs.", "Error data");
+            }
+            else
+            {
+                question = textBox85.Text;
+                rightAnswer = textBox87.Text;
+                difficulty = comboBox3.Text;
+                wrongAnswers.Enqueue(textBox89.Text);
+                wrongAnswers.Enqueue(textBox91.Text);
+                wrongAnswers.Enqueue(textBox93.Text);
+
+                addQuestionRequest = new AddQuestionRequest(question, rightAnswer, difficulty, wrongAnswers);
+
+                try
+                {
+                    addQuestionResponse = SendRequestToServer<AddQuestionRequest, AddQuestionResponse>(addQuestionRequest, REQUEST_CODES.ADD_QUESTION_REQS_CODE);
+                    if(addQuestionResponse.GetStatus() == Constants.OK_STATUS_CODE)
+                    {
+                        MessageBox.Show("Your question has been submitted", "Thank you vey much", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        ShowErrorMessage("This question is already exists", "We are sorry");
+                    }
+                }
+                catch(Exception excp)
+                {
+                    ShowErrorMessage(excp.Message, "Error Sending Question");
+                }
+            }
+        }
     }
 }
 

@@ -32,10 +32,9 @@ RequestResult& RoomAdminRequestHandler::handleRequest(const RequestInfo& request
 {
     RequestResult* req = new RequestResult();
 
-    if (!isRequestRelevent(requestInfo))
+    if (!this->isRequestRelevent(requestInfo))
     {
-        createErrorResponse(ERROR_MSG, req);
-        return *req;
+        throw std::exception(ERROR_MSG.c_str());
     }
 
     if (CLOSE_ROOM_REQS_CODE == requestInfo.id)

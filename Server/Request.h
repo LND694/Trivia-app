@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include <vector>
 using std::string;
-
+using std::vector;
 
 /// <summary>
 /// struct for logins
@@ -47,6 +48,14 @@ typedef struct CreateRoomRequest
 	unsigned int answerTimeout{};
 
 }CreateRoomRequest;
+
+typedef struct AddQuestionRequest
+{
+	vector<string> wrongAnswers;
+	string question;
+	string rightAnswer;
+	string difficulty;
+} AddQuestionRequest;
 
 
 typedef struct SubmitAnswerRequest {

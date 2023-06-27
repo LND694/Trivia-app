@@ -18,6 +18,10 @@
 #define QUESTION_COUNT "questionCount"
 #define ROOM_NAME "roomName"
 #define ANSWER_ID "answerId"
+#define QUESTION "question"
+#define WRONG_ANSWERS "wrongAnswers"
+#define RIGHT_ANSWER "rightAnswer"
+#define DIFFICULTY "difficulty"
 
 constexpr int SIZE_LENGTH_DATA_FIELD = 10;
 constexpr int SIZE_CODE_FIELD = 3;
@@ -45,6 +49,7 @@ enum RESPONSE_CODES {
 	GET_QUESTION_RESP_CODE = 215,
 	SUBMIT_ANSWER_RESP_CODE = 216,
 	GET_GAME_RES_RESP_CODE = 217,
+	ADD_QUESTION_RESP_CODE = 218,
 	ERROR_RESP_CODE = 255
 };
 
@@ -66,6 +71,7 @@ enum REQUEST_CODES {
 	GET_QUESTION_REQS_CODE = 115,
 	SUBMIT_ANSWER_REQS_CODE = 116,
 	GET_GAME_RESULT_REQS_CODE = 117,
+	ADD_QUESTION_REQS_CODE = 118,
 	ERROR_REQS_CODE = 255
 };
 
