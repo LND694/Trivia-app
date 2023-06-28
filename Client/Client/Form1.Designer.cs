@@ -2355,9 +2355,6 @@ namespace Client
             this.comboBox3.Items.AddRange(new object[] {
             "easy",
             "medium",
-            "hard",
-            "easy",
-            "medium",
             "hard"});
             this.comboBox3.Location = new System.Drawing.Point(226, 201);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
