@@ -28,7 +28,7 @@ string OTPCryptoAlgorithm::decrypt(const string message, const string key) const
     for (const auto& i : decryptedText)//delete the hex chars after the message
     {
         realText += i;
-        if (i == '}')
+        if (i == '\0')
         {
             break;
         }
