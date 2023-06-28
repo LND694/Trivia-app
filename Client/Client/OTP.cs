@@ -51,8 +51,6 @@ namespace Client
         /// the key, unless there is an exception.</exception>
         public override string Decrypt(byte[] message, byte[] key)
         {
-
-
             byte[] decryptedBytes = new byte[message.Length];
 
             for (int i = 0; i < message.Length; i++)
