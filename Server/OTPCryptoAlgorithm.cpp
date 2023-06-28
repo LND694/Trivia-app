@@ -1,8 +1,8 @@
 #include "OTPCryptoAlgorithm.h"
 
-string OTPCryptoAlgorithm::encrypt(const string message, const string key) const
+string OTPCryptoAlgorithm::encrypt(const string message, const byte* key) const
 {
-    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key), OTP_KEY_SIZE);
     CryptoPP::SecByteBlock plaintextBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
 
     CryptoPP::SecByteBlock encryptedBytes(plaintextBytes.size());
@@ -14,10 +14,10 @@ string OTPCryptoAlgorithm::encrypt(const string message, const string key) const
     return encryptedText;
 }
 
-string OTPCryptoAlgorithm::decrypt(const string message, const string key) const
+string OTPCryptoAlgorithm::decrypt(const string message, const byte* key) const
 {
     string realText;
-    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key), OTP_KEY_SIZE);
     CryptoPP::SecByteBlock encryptedBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
 
     CryptoPP::SecByteBlock decryptedBytes(encryptedBytes.size());

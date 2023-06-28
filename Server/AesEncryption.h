@@ -4,12 +4,14 @@
 #include <cryptopp/filters.h>
 #include <cryptopp/hex.h>
 
+constexpr int AES_KEY_SIZE = 32;
+
 class AesEncryption : public CryptoAlgorithm
 {
 public:
 	AesEncryption();
-	string encrypt(const string message, const string key) const override;
-	string decrypt(const string message, const string key) const override;
+	string encrypt(const string message, const byte* key) const override;
+	string decrypt(const string message, const byte* key) const override;
 	void setIv(const string iv) override;
 private:
 	string _iv;

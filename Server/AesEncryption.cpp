@@ -7,11 +7,11 @@
 /// <param name="key"> the encryption key </param>
 /// <param name="iv"> the intialization vector encryption</param>
 /// <returns> the encrypted string</returns>
-string AesEncryption::encrypt(const string message, const string key) const
+string AesEncryption::encrypt(const string message, const byte* key) const
 {
     string ciphertext;
     // Convert key to SecByteBlock
-    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key), AES_KEY_SIZE);
 
     // Convert IV to SecByteBlock
     CryptoPP::SecByteBlock aesIV(reinterpret_cast<const CryptoPP::byte*>(this->_iv.data()), this->_iv.size());
@@ -38,11 +38,11 @@ string AesEncryption::encrypt(const string message, const string key) const
 /// <param name="key"> the decryption key </param>
 /// <param name="iv"> the intialization vector decryption </param>
 /// <returns>decrypted string</returns>
-string AesEncryption::decrypt(const string message, const string key) const
+string AesEncryption::decrypt(const string message, const byte* key) const
 {
     string decryptedText;
     // Convert key to SecByteBlock
-    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key), AES_KEY_SIZE);
 
     // Convert IV to SecByteBlock
     CryptoPP::SecByteBlock aesIV(reinterpret_cast<const CryptoPP::byte*>(this->_iv.data()), this->_iv.size());
