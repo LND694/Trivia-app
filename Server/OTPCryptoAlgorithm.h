@@ -4,7 +4,7 @@
 #include "CryptoAlgorithm.h"
 
 
-constexpr int OTP_KEY_SIZE = 500;
+constexpr int OTP_KEY_SIZE = 300;
 
 class OTPCryptoAlgorithm : public CryptoAlgorithm
 {
