@@ -113,7 +113,7 @@ void Communicator::handleNewClient(SOCKET socket)
 {
 	int len = 0;
 	char buffer[MAX_SIZE] = { 0 };
-	byte buffer1[MAX_SIZE] = { 0 };
+	byte* buffer1 = nullptr;
 	RequestResult res;
 	RequestInfo info;
 	string username = "";
@@ -134,10 +134,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			//Getting the response of the client and checking the respose time
 			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			for (int i = 0; i < len; i++)
-			{
-				buffer1[i] = buffer[i];
-			}
+			buffer1 = reinterpret_cast<byte*>(buffer);
 			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");

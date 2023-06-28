@@ -30,6 +30,7 @@ namespace Client
         {
             this.components = new System.ComponentModel.Container();
             this.signUpPanel = new System.Windows.Forms.Panel();
+            this.button_WOC4 = new ePOSOne.btnProduct.Button_WOC();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -182,7 +183,6 @@ namespace Client
             this.textBox85 = new System.Windows.Forms.TextBox();
             this.textBox84 = new System.Windows.Forms.TextBox();
             this.textBox82 = new System.Windows.Forms.TextBox();
-            this.button_WOC4 = new ePOSOne.btnProduct.Button_WOC();
             this.signUpPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.menuPanel.SuspendLayout();
@@ -232,6 +232,28 @@ namespace Client
             this.signUpPanel.Name = "signUpPanel";
             this.signUpPanel.Size = new System.Drawing.Size(1283, 645);
             this.signUpPanel.TabIndex = 1;
+            // 
+            // button_WOC4
+            // 
+            this.button_WOC4.BackColor = System.Drawing.Color.Aquamarine;
+            this.button_WOC4.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC4.ButtonColor = System.Drawing.Color.DeepSkyBlue;
+            this.button_WOC4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_WOC4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC4.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC4.ForeColor = System.Drawing.Color.Aquamarine;
+            this.button_WOC4.Location = new System.Drawing.Point(580, 539);
+            this.button_WOC4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button_WOC4.Name = "button_WOC4";
+            this.button_WOC4.OnHoverBorderColor = System.Drawing.Color.Gray;
+            this.button_WOC4.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC4.OnHoverTextColor = System.Drawing.Color.Gray;
+            this.button_WOC4.Size = new System.Drawing.Size(154, 47);
+            this.button_WOC4.TabIndex = 1;
+            this.button_WOC4.Text = "Sign up";
+            this.button_WOC4.TextColor = System.Drawing.Color.Black;
+            this.button_WOC4.UseVisualStyleBackColor = false;
+            this.button_WOC4.Click += new System.EventHandler(this.button_WOC4_Click);
             // 
             // textBox17
             // 
@@ -2402,34 +2424,18 @@ namespace Client
             this.textBox82.Text = "Enter a question here:";
             this.textBox82.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button_WOC4
-            // 
-            this.button_WOC4.BackColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC4.BorderColor = System.Drawing.Color.Black;
-            this.button_WOC4.ButtonColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_WOC4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_WOC4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_WOC4.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_WOC4.ForeColor = System.Drawing.Color.Aquamarine;
-            this.button_WOC4.Location = new System.Drawing.Point(580, 539);
-            this.button_WOC4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button_WOC4.Name = "button_WOC4";
-            this.button_WOC4.OnHoverBorderColor = System.Drawing.Color.Gray;
-            this.button_WOC4.OnHoverButtonColor = System.Drawing.Color.Yellow;
-            this.button_WOC4.OnHoverTextColor = System.Drawing.Color.Gray;
-            this.button_WOC4.Size = new System.Drawing.Size(154, 47);
-            this.button_WOC4.TabIndex = 1;
-            this.button_WOC4.Text = "Sign up";
-            this.button_WOC4.TextColor = System.Drawing.Color.Black;
-            this.button_WOC4.UseVisualStyleBackColor = false;
-            this.button_WOC4.Click += new System.EventHandler(this.button_WOC4_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1283, 645);
+            this.Controls.Add(this.createRoomPanel);
+            this.Controls.Add(this.questionPanel);
+            this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.loginPanel);
+            this.Controls.Add(this.signUpPanel);
+            this.Controls.Add(this.openPanel);
             this.Controls.Add(this.enterRoomPanel);
             this.Controls.Add(this.bestPlayersPanel);
             this.Controls.Add(this.statisticsPanel);
@@ -2438,12 +2444,6 @@ namespace Client
             this.Controls.Add(this.roomMemberPanel);
             this.Controls.Add(this.gamePanel);
             this.Controls.Add(this.results);
-            this.Controls.Add(this.createRoomPanel);
-            this.Controls.Add(this.questionPanel);
-            this.Controls.Add(this.menuPanel);
-            this.Controls.Add(this.loginPanel);
-            this.Controls.Add(this.signUpPanel);
-            this.Controls.Add(this.openPanel);
             this.Name = "Form1";
             this.Text = "Trivia_Yoav_Boaz";
             this.signUpPanel.ResumeLayout(false);

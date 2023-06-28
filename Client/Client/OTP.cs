@@ -59,8 +59,8 @@ namespace Client
             {
                 decryptedBytes[i] = (byte)(message[i] ^ key[i % key.Length]);
             }
-
-            return Encoding.Default.GetString(decryptedBytes);
+            string text = Encoding.Default.GetString(decryptedBytes);
+            return text;
         }
     }
 }

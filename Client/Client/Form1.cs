@@ -1014,6 +1014,7 @@ namespace Client
         private void timer1_Tick_1(object sender, EventArgs e)
         {
             UpdateControlText(textBox80, "questions left: " + questionsLeft);
+            UpdateControlText(this.label1, seconds.ToString()); //lowring the seconds
             GetQuestionResponse resp = null;
             GetGameResultsResponse response = null;
             Dictionary<int, string> answers = null;
@@ -1023,7 +1024,7 @@ namespace Client
                 {
                     //Getting the current question from the server
                     resp = SendRequestToServer<NullableConverter, GetQuestionResponse>(null, REQUEST_CODES.GET_QUESTION_REQS_CODE);
-                    if (resp.GetStatus() != Constants.OK_STATUS_CODE && this.seconds == 0)
+                    if (resp.GetStatus() != Constants.OK_STATUS_CODE)
                     {
                         throw new Exception("You finished all your questions");
                     }
@@ -1042,7 +1043,7 @@ namespace Client
                 }
 
             }
-            UpdateControlText(this.label1, seconds--.ToString()); //lowring the seconds
+            seconds--;
             if (seconds == 0) //the time for the question is over
             {
                 if(!this.isAnswered) //the question was not answered
@@ -1122,10 +1123,10 @@ namespace Client
             try
             {
                 SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
+                this.isAnswered = true;
                 if(response.GetCorrectAnswerId() == id)
                 {
                     this.isRight = true;
-                    this.isAnswered = true;
                 }
             }
             catch (Exception ex)
