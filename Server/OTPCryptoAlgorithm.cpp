@@ -2,14 +2,6 @@
 
 string OTPCryptoAlgorithm::encrypt(const string message, const byte* key) const
 {
-    string realText;
-    //CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key), OTP_KEY_SIZE);
-    //CryptoPP::SecByteBlock encryptedBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
-
-    //CryptoPP::SecByteBlock decryptedBytes(encryptedBytes.size());
-    //CryptoPP::xorbuf(decryptedBytes, encryptedBytes, keyBytes, encryptedBytes.size());
-
-    //string decryptedText(decryptedBytes.begin(), decryptedBytes.end());
     string encryptedText = "";
 
     //Doing xor between the message and the key
@@ -22,14 +14,7 @@ string OTPCryptoAlgorithm::encrypt(const string message, const byte* key) const
 
 string OTPCryptoAlgorithm::decrypt(const string message, const byte* key) const
 {
-    string realText;
-    //CryptoPP::SecByteBlock keyBytes(reinterpret_cast<const CryptoPP::byte*>(key), OTP_KEY_SIZE);
-    //CryptoPP::SecByteBlock encryptedBytes(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size());
-
-    //CryptoPP::SecByteBlock decryptedBytes(encryptedBytes.size());
-    //CryptoPP::xorbuf(decryptedBytes, encryptedBytes, keyBytes, encryptedBytes.size());
-
-    //string decryptedText(decryptedBytes.begin(), decryptedBytes.end());
+    string realText = "";
     string decryptedText = "";
 
     //Doing xor between the message and the key
