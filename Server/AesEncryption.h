@@ -12,7 +12,7 @@ public:
 	AesEncryption();
 	string encrypt(const string message, const byte* key) const override;
 	string decrypt(const string message, const byte* key) const override;
-	void setIv(const string iv) override;
+	void setIv(const byte* iv) override;
 private:
-	string _iv;
+	byte* _iv;
 };

@@ -29,7 +29,7 @@ namespace Client
             key = crypto.GenerateKey();
             aesIV = crypto.GetIV();
             SendEncryptionData(key);
-            //System.Threading.Thread.Sleep(1000);
+            //System.Threading.Thread.Sleep(200);
             //SendEncryptionData(aesIV);
         }
 
