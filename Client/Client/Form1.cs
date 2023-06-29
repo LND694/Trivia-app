@@ -1102,7 +1102,7 @@ namespace Client
             if (playerIndex != -1)
             {
                 string currentEntry = this.listBox3.Items[playerIndex].ToString();
-                int currentScore = int.Parse(currentEntry.Substring(playerName.Length + 1 , 1));
+                int currentScore = int.Parse(currentEntry.Substring(playerName.Length + 1));
                 int updatedScore = currentScore + 1;  // Append score by 1
 
                 // Update the ListBox with the new score
