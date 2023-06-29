@@ -7,27 +7,21 @@
 /// <param name="key"> the encryption key </param>
 /// <param name="iv"> the intialization vector encryption</param>
 /// <returns> the encrypted string</returns>
-string AesEncryption::encrypt(const string message, const string key) const
+string AesEncryption::encrypt(const string message, const byte* key) const
 {
     string ciphertext;
-    // Convert key to SecByteBlock
-    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
 
-    // Convert IV to SecByteBlock
-    CryptoPP::SecByteBlock aesIV(reinterpret_cast<const CryptoPP::byte*>(this->_iv.data()), this->_iv.size());
+    // Convert std::byte* to CryptoPP::byte*
+    const CryptoPP::byte* aesKey = reinterpret_cast<const CryptoPP::byte*>(key);
+    const CryptoPP::byte* aesIV = reinterpret_cast<const CryptoPP::byte*>(_iv);
 
-    // Encryption
-    CryptoPP::AES::Encryption aesEncryption(aesKey, aesKey.size());
+    CryptoPP::AES::Encryption aesEncryption(aesKey, AES_KEY_SIZE);
     CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, aesIV);
 
-    // Set up encryption filters
-    CryptoPP::StringSource encryptor(message, true,
-        new CryptoPP::StreamTransformationFilter(cbcEncryption,
-            new CryptoPP::StringSink(ciphertext),
-            CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING
-        )
+    CryptoPP::StreamTransformationFilter encryptor(cbcEncryption,
+        new CryptoPP::StringSink(ciphertext),
+        CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING
     );
-
     return ciphertext;
 }
 
@@ -38,21 +32,20 @@ string AesEncryption::encrypt(const string message, const string key) const
 /// <param name="key"> the decryption key </param>
 /// <param name="iv"> the intialization vector decryption </param>
 /// <returns>decrypted string</returns>
-string AesEncryption::decrypt(const string message, const string key) const
+string AesEncryption::decrypt(const string message, const byte* key) const
 {
     string decryptedText;
     // Convert key to SecByteBlock
-    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size());
+    CryptoPP::SecByteBlock aesKey(reinterpret_cast<const CryptoPP::byte*>(key), AES_KEY_SIZE);
 
     // Convert IV to SecByteBlock
-    CryptoPP::SecByteBlock aesIV(reinterpret_cast<const CryptoPP::byte*>(this->_iv.data()), this->_iv.size());
+    CryptoPP::SecByteBlock aesIV(reinterpret_cast<const CryptoPP::byte*>(this->_iv), CryptoPP::AES::BLOCKSIZE);
 
     // Decryption
     CryptoPP::AES::Decryption aesDecryption(aesKey, aesKey.size());
     CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, aesIV);
 
-    // Set up decryption filters
-    CryptoPP::StringSource decryptor(message, true,
+    CryptoPP::ArraySource decryptor(reinterpret_cast<const CryptoPP::byte*>(message.data()), message.size(), true,
         new CryptoPP::StreamTransformationFilter(cbcDecryption,
             new CryptoPP::StringSink(decryptedText),
             CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING
@@ -62,9 +55,9 @@ string AesEncryption::decrypt(const string message, const string key) const
     return decryptedText;
 }
 
-void AesEncryption::setIv(const string iv)
+void AesEncryption::setIv(const byte* iv)
 {
-    this->_iv = iv;
+    this->_iv = const_cast<byte*>(iv);
 }
 
 AesEncryption::AesEncryption()

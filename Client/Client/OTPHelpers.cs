@@ -1,4 +1,4 @@
 ﻿internal static class OTPHelpers
 {
-    public const int BYTE_LENGTH = 200;
+    public const int BYTE_LENGTH = 300;
 }

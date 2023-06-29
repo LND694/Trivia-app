@@ -4,9 +4,11 @@
 #include "CryptoAlgorithm.h"
 
 
+constexpr int OTP_KEY_SIZE = 300;
+
 class OTPCryptoAlgorithm : public CryptoAlgorithm
 {
 public:
-	string encrypt(const string message, const string key) const override;
-	string decrypt(const string message, const string key) const override;
+	string encrypt(const string message, const byte* key) const override;
+	string decrypt(const string message, const byte* key) const override;
 };

@@ -1,6 +1,6 @@
 #include "CryptoAlgorithm.h"
 
-void CryptoAlgorithm::setIv(const string iv)
+void CryptoAlgorithm::setIv(const byte* iv)
 {
 }
 

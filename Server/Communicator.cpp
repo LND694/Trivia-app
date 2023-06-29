@@ -22,7 +22,8 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 /// </summary>
 Communicator::~Communicator()
 {
-
+	this->m_keys.clear();
+	this->m_ivs.clear();
 }
 
 /// <summary>
@@ -65,20 +66,21 @@ void Communicator::startHandleRequests()
 /// <param name="socket"> the socket of the connection </param>
 /// <param name="buffer"> the buffer to read from</param>
 /// <returns> the key in hex as string</returns>
-string Communicator::getEncyptionData(SOCKET socket, char* buffer) const
+byte* Communicator::getEncryptionData(SOCKET socket, char* buffer) const
 {
 	int len = 0;
-	string key;
+	byte* key;
 	len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
 	if (len <= 0)
 	{
 		throw std::exception("The client disconnected");
 	}
 	buffer[len] = '\0';//add null terminator
-	key = string(buffer);//convert to string
-	//Reseting the buffer
+	key = new byte[len];
+	//Reseting the buffer and copying it to the key
 	for (int i = 0; i < MAX_SIZE; i++)
 	{
+		key[i] = static_cast<byte>(buffer[i]);
 		buffer[i] = END_STR_SYMBOL;
 	}
 	return key;
@@ -119,13 +121,13 @@ void Communicator::handleNewClient(SOCKET socket)
 	string username = "";
 	Buffer* data = nullptr;
 	time_t sendingTime{};
-	string key = "";
-	string iv = "";
+	byte* key = nullptr;
+	byte* iv = nullptr;
 	string plainText = "";
 	string encryptedText = "";
 	IRequestHandler* currentHandler = nullptr;
-	this->m_keys.insert({ socket,getEncyptionData(socket, buffer) });//init a new pair of socket and key recived by the client
-	this->m_ivs.insert({ socket,getEncyptionData(socket,buffer) });//init iv vector
+	this->m_keys.insert({ socket,getEncryptionData(socket, buffer) });//init a new pair of socket and key recived by the client
+	//this->m_ivs.insert({ socket,getEncryptionData(socket,buffer) });//init iv vector
 	this->m_clients.insert({ socket, this->m_handlerFactory->createLoginRequestHandler()});//init a new pair of the given socket and a login request since it is a new user
 	try 
 	{
@@ -134,17 +136,17 @@ void Communicator::handleNewClient(SOCKET socket)
 			//Getting the response of the client and checking the respose time
 			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			buffer1 = reinterpret_cast<byte*>(buffer);
+			buffer1 = reinterpret_cast<byte*>(buffer);//convert the char buffer to byte buffer
 			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
 			}
 			key = this->m_keys.at(socket);
-			iv = this->m_ivs.at(socket);
-			this->algo->setIv(iv);
+			//iv = this->m_ivs.at(socket);
+			//this->algo->setIv(iv);
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
-			encryptedText = string(reinterpret_cast<char*>(buffer1), len);//byte array to string
+			encryptedText = string(reinterpret_cast<char*>(buffer1), len);//byte buffer to string
 			plainText = this->algo->decrypt(encryptedText, key);
 			cout << "decrypted: " << plainText << endl;
 			Buffer charVector = this->algo->convertToBuffer(plainText);
