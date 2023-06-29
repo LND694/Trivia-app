@@ -24,10 +24,7 @@ namespace Client
             // Generate the OTP key using RNGCryptoServiceProvider
             using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
             {
-                do
-                {
-                    rngCsp.GetBytes(otpKey);
-                }while(otpKey.Length < OTPHelpers.BYTE_LENGTH);
+                rngCsp.GetBytes(otpKey);
             }
             return otpKey;
         }

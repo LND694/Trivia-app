@@ -31,7 +31,6 @@ namespace Client
         private int questionsLeft;
         private bool wasClicked = false;
         private bool isRight = false;
-        private bool isAnswered = false;
 
         public Form1()
         {
@@ -1046,7 +1045,7 @@ namespace Client
             seconds--;
             if (seconds == 0) //the time for the question is over
             {
-                if(!this.isAnswered) //the question was not answered
+                if(!this.wasClicked) //the question was not answered
                 {
                     SendAnswer(-1);
                 }
@@ -1054,7 +1053,6 @@ namespace Client
                 {
                     UpdateScore(this.textBox20.Text);
                     this.isRight = false;
-                    this.isAnswered = false;
                 }
                 //Restarting the seconds
                 seconds = this.roomData.GetAnswerTimeOut();
@@ -1123,7 +1121,7 @@ namespace Client
             try
             {
                 SubmitAnswerResponse response = SendRequestToServer<SubmitAnswerRequest, SubmitAnswerResponse>(req, REQUEST_CODES.SUBMIT_ANSWER_REQS_CODE);
-                this.isAnswered = true;
+                this.wasClicked = true;
                 if(response.GetCorrectAnswerId() == id)
                 {
                     this.isRight = true;

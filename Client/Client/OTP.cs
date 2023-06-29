@@ -25,7 +25,7 @@ namespace Client
         public override byte[] Encrypt(string message, byte[] key)
         {
             // Convert the plaintext and OTP key to byte arrays
-            byte[] plainBytes = Encoding.ASCII.GetBytes(message);
+            byte[] plainBytes = Encoding.UTF8.GetBytes(message);
             // Ensure that the key length matches the plaintext length
             if (plainBytes.Length > key.Length)
             {
@@ -57,7 +57,7 @@ namespace Client
             {
                 decryptedBytes[i] = (byte)(message[i] ^ key[i % key.Length]);
             }
-            string text = Encoding.Default.GetString(decryptedBytes);
+            string text = Encoding.UTF8.GetString(decryptedBytes);
             return text;
         }
     }

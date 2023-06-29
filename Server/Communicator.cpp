@@ -22,7 +22,8 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 /// </summary>
 Communicator::~Communicator()
 {
-
+	this->m_keys.clear();
+	this->m_ivs.clear();
 }
 
 /// <summary>
@@ -135,7 +136,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			//Getting the response of the client and checking the respose time
 			sendingTime = time(nullptr);
 			len = recv(socket, buffer, MAX_SIZE - 1, NULL);//MAX_SIZE-1 for the null terminator
-			buffer1 = reinterpret_cast<byte*>(buffer);
+			buffer1 = reinterpret_cast<byte*>(buffer);//convert the char buffer to byte buffer
 			if (len <= 0)
 			{
 				throw std::exception("The client disconnected");
@@ -145,7 +146,7 @@ void Communicator::handleNewClient(SOCKET socket)
 			//this->algo->setIv(iv);
 			info.receivalTime = time(nullptr) - sendingTime; //the time for the response to come
 
-			encryptedText = string(reinterpret_cast<char*>(buffer1), len);//byte array to string
+			encryptedText = string(reinterpret_cast<char*>(buffer1), len);//byte buffer to string
 			plainText = this->algo->decrypt(encryptedText, key);
 			cout << "decrypted: " << plainText << endl;
 			Buffer charVector = this->algo->convertToBuffer(plainText);
