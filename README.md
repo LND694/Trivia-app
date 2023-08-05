@@ -18,3 +18,7 @@ LND964 (Yoav Levy) and Boaz Sarel
 
 ## Project status
 fully operational
+
+
+##Important Note
+the project was developed in gitlab.com and imported to here so all the issues and milestones are gone.
